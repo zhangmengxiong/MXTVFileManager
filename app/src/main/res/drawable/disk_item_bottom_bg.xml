@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <corners android:bottomLeftRadius="@dimen/bg_radio_size" android:bottomRightRadius="@dimen/bg_radio_size" />
+            <gradient android:angle="90" android:centerX="0.5" android:centerY="0.5" android:endColor="#084282" android:startColor="#033873" />
+        </shape>
+    </item>
+</selector>

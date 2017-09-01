@@ -1,0 +1,4 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="bg_radio_size">13px</dimen>
+</resources>
