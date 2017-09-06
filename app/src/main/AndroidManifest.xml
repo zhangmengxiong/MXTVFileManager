@@ -39,6 +39,7 @@
             android:name=".service.XXService"
             android:enabled="true"
             android:exported="false" />
+        <service android:name="org.fourthline.cling.android.AndroidUpnpServiceImpl" />
     </application>
 
 </manifest>

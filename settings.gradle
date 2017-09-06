@@ -1,1 +1,1 @@
-include ':app', ':JCIFS'
+include ':app', ':JCIFS', ':DLNA'

@@ -3,6 +3,7 @@ package com.mx.tv.file.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.mx.dlna.DlnaScan
 import com.mx.tv.file.samba.IScanCall
 import com.mx.tv.file.samba.SambaScanHelp
 import com.mx.tv.file.samba.SambaServer
@@ -31,5 +32,6 @@ class XXService : Service() {
                 }
             })
         }.start()
+        DlnaScan(this).scan()
     }
 }
