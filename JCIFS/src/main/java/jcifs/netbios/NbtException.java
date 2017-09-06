@@ -36,25 +36,25 @@ public class NbtException extends IOException {
     public static final int CFT_ERR = 0x7;
 
     // session service error codes
-    public static final int CONNECTION_REFUSED    = -1; 
-    public static final int NOT_LISTENING_CALLED  = 0x80;
+    public static final int CONNECTION_REFUSED = -1;
+    public static final int NOT_LISTENING_CALLED = 0x80;
     public static final int NOT_LISTENING_CALLING = 0x81;
-    public static final int CALLED_NOT_PRESENT    = 0x82;
-    public static final int NO_RESOURCES          = 0x83;
-    public static final int UNSPECIFIED           = 0x8F;
+    public static final int CALLED_NOT_PRESENT = 0x82;
+    public static final int NO_RESOURCES = 0x83;
+    public static final int UNSPECIFIED = 0x8F;
 
     public int errorClass;
     public int errorCode;
 
-    public static String getErrorString( int errorClass, int errorCode ) {
+    public static String getErrorString(int errorClass, int errorCode) {
         String result = "";
-        switch( errorClass ) {
+        switch (errorClass) {
             case SUCCESS:
                 result += "SUCCESS";
                 break;
             case ERR_NAM_SRVC:
                 result += "ERR_NAM_SRVC/";
-                switch( errorCode ) {
+                switch (errorCode) {
                     case FMT_ERR:
                         result += "FMT_ERR: Format Error";
                     default:
@@ -63,7 +63,7 @@ public class NbtException extends IOException {
                 break;
             case ERR_SSN_SRVC:
                 result += "ERR_SSN_SRVC/";
-                switch( errorCode ) {
+                switch (errorCode) {
                     case CONNECTION_REFUSED:
                         result += "Connection refused";
                         break;
@@ -92,12 +92,13 @@ public class NbtException extends IOException {
         return result;
     }
 
-    public NbtException( int errorClass, int errorCode ) {
-        super( getErrorString( errorClass, errorCode ));
+    public NbtException(int errorClass, int errorCode) {
+        super(getErrorString(errorClass, errorCode));
         this.errorClass = errorClass;
         this.errorCode = errorCode;
     }
+
     public String toString() {
-        return new String( "errorClass=" + errorClass + ",errorCode=" + errorCode + ",errorString=" + getErrorString( errorClass, errorCode ));
+        return new String("errorClass=" + errorClass + ",errorCode=" + errorCode + ",errorString=" + getErrorString(errorClass, errorCode));
     }
 }

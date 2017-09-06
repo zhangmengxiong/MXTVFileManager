@@ -24,26 +24,32 @@ class Trans2SetFileInformationResponse extends SmbComTransactionResponse {
         subCommand = SmbComTransaction.TRANS2_SET_FILE_INFORMATION;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "Trans2SetFileInformationResponse[" +
-            super.toString() + "]" );
+        return new String("Trans2SetFileInformationResponse[" +
+                super.toString() + "]");
     }
 }

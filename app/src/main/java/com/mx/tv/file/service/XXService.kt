@@ -22,7 +22,8 @@ class XXService : Service() {
                 }
 
                 override fun onFind(sambaServer: SambaServer) {
-                    println("找到Samba服务器: ${sambaServer.IP}  是否需要登录：${sambaServer.needLogin}")
+                    println("找到Samba服务器: ${sambaServer.IP}  是否需要登录：${sambaServer.needLogin} " +
+                            "服务器名字：${sambaServer.serverName}")
                 }
 
                 override fun onScanEnd() {

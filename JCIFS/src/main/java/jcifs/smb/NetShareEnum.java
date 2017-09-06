@@ -27,52 +27,58 @@ class NetShareEnum extends SmbComTransaction {
     NetShareEnum() {
         command = SMB_COM_TRANSACTION;
         subCommand = NET_SHARE_ENUM; // not really true be used by upper logic
-        name = new String( "\\PIPE\\LANMAN" );
+        name = new String("\\PIPE\\LANMAN");
         maxParameterCount = 8;
 
 //        maxDataCount = 4096; why was this set?
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
         setupCount = 0;
         timeout = 5000;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
         byte[] descr;
 
         try {
-            descr = DESCR.getBytes( "ASCII" );
-        } catch( UnsupportedEncodingException uee ) {
+            descr = DESCR.getBytes("ASCII");
+        } catch (UnsupportedEncodingException uee) {
             return 0;
         }
 
-        writeInt2( NET_SHARE_ENUM, dst, dstIndex );
+        writeInt2(NET_SHARE_ENUM, dst, dstIndex);
         dstIndex += 2;
-        System.arraycopy( descr, 0, dst, dstIndex, descr.length );
+        System.arraycopy(descr, 0, dst, dstIndex, descr.length);
         dstIndex += descr.length;
-        writeInt2( 0x0001, dst, dstIndex );
+        writeInt2(0x0001, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( maxDataCount, dst, dstIndex );
+        writeInt2(maxDataCount, dst, dstIndex);
         dstIndex += 2;
 
         return dstIndex - start;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "NetShareEnum[" + super.toString() + "]" );
+        return new String("NetShareEnum[" + super.toString() + "]");
     }
 }

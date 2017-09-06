@@ -20,31 +20,35 @@ package jcifs.netbios;
 
 class NodeStatusRequest extends NameServicePacket {
 
-    NodeStatusRequest( Name name ) {
+    NodeStatusRequest(Name name) {
         questionName = name;
         questionType = NBSTAT;
         isRecurDesired = false;
         isBroadcast = false;
     }
 
-    int writeBodyWireFormat( byte[] dst, int dstIndex ) {
+    int writeBodyWireFormat(byte[] dst, int dstIndex) {
         int tmp = questionName.hexCode;
         questionName.hexCode = 0x00; // type has to be 0x00 for node status
-        int result = writeQuestionSectionWireFormat( dst, dstIndex );
+        int result = writeQuestionSectionWireFormat(dst, dstIndex);
         questionName.hexCode = tmp;
         return result;
     }
-    int readBodyWireFormat( byte[] src, int srcIndex ) {
+
+    int readBodyWireFormat(byte[] src, int srcIndex) {
         return 0;
     }
-    int writeRDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeRDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readRDataWireFormat( byte[] src, int srcIndex ) {
+
+    int readRDataWireFormat(byte[] src, int srcIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "NodeStatusRequest[" +
-            super.toString() + "]" );
+        return new String("NodeStatusRequest[" +
+                super.toString() + "]");
     }
 }

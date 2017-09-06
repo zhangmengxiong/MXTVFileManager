@@ -18,8 +18,6 @@
 
 package jcifs.smb;
 
-import java.util.Date;
-
 class Trans2GetDfsReferralResponse extends SmbComTransactionResponse {
 
     class Referral {
@@ -37,50 +35,50 @@ class Trans2GetDfsReferralResponse extends SmbComTransactionResponse {
         String path = null;
         String node = null;
 
-        int readWireFormat( byte[] buffer, int bufferIndex, int len ) {
+        int readWireFormat(byte[] buffer, int bufferIndex, int len) {
             int start = bufferIndex;
 
-            version = readInt2( buffer, bufferIndex );
-if( version != 3 && version != 1 ) {
-    throw new RuntimeException( "Version " + version + " referral not supported. Please report this to jcifs at samba dot org." );
-}
+            version = readInt2(buffer, bufferIndex);
+            if (version != 3 && version != 1) {
+                throw new RuntimeException("Version " + version + " referral not supported. Please report this to jcifs at samba dot org.");
+            }
             bufferIndex += 2;
-            size = readInt2( buffer, bufferIndex );
+            size = readInt2(buffer, bufferIndex);
             bufferIndex += 2;
-            serverType = readInt2( buffer, bufferIndex );
+            serverType = readInt2(buffer, bufferIndex);
             bufferIndex += 2;
-            flags = readInt2( buffer, bufferIndex );
+            flags = readInt2(buffer, bufferIndex);
             bufferIndex += 2;
-            if( version == 3 ) {
-                proximity = readInt2( buffer, bufferIndex );
+            if (version == 3) {
+                proximity = readInt2(buffer, bufferIndex);
                 bufferIndex += 2;
-                ttl = readInt2( buffer, bufferIndex );
+                ttl = readInt2(buffer, bufferIndex);
                 bufferIndex += 2;
-                pathOffset = readInt2( buffer, bufferIndex );
+                pathOffset = readInt2(buffer, bufferIndex);
                 bufferIndex += 2;
-                altPathOffset = readInt2( buffer, bufferIndex );
+                altPathOffset = readInt2(buffer, bufferIndex);
                 bufferIndex += 2;
-                nodeOffset = readInt2( buffer, bufferIndex );
+                nodeOffset = readInt2(buffer, bufferIndex);
                 bufferIndex += 2;
 
-                path = readString( buffer, start + pathOffset, len, (flags2 & FLAGS2_UNICODE) != 0);
+                path = readString(buffer, start + pathOffset, len, (flags2 & FLAGS2_UNICODE) != 0);
                 if (nodeOffset > 0)
-                    node = readString( buffer, start + nodeOffset, len, (flags2 & FLAGS2_UNICODE) != 0);
-            } else if( version == 1 ) {
-                node = readString( buffer, bufferIndex, len, (flags2 & FLAGS2_UNICODE) != 0);
+                    node = readString(buffer, start + nodeOffset, len, (flags2 & FLAGS2_UNICODE) != 0);
+            } else if (version == 1) {
+                node = readString(buffer, bufferIndex, len, (flags2 & FLAGS2_UNICODE) != 0);
             }
 
             return size;
         }
 
         public String toString() {
-            return new String( "Referral[" +
-                "version=" + version + ",size=" + size +
-                ",serverType=" + serverType + ",flags=" + flags +
-                ",proximity=" + proximity + ",ttl=" + ttl +
-                ",pathOffset=" + pathOffset + ",altPathOffset=" + altPathOffset +
-                ",nodeOffset=" + nodeOffset + ",path=" + path + ",altPath=" + altPath +
-                ",node=" + node + "]" );
+            return new String("Referral[" +
+                    "version=" + version + ",size=" + size +
+                    ",serverType=" + serverType + ",flags=" + flags +
+                    ",proximity=" + proximity + ",ttl=" + ttl +
+                    ",pathOffset=" + pathOffset + ",altPathOffset=" + altPathOffset +
+                    ",nodeOffset=" + nodeOffset + ",path=" + path + ",altPath=" + altPath +
+                    ",node=" + node + "]");
         }
     }
 
@@ -93,49 +91,55 @@ if( version != 3 && version != 1 ) {
         subCommand = SmbComTransaction.TRANS2_GET_DFS_REFERRAL;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         int start = bufferIndex;
 
-        pathConsumed = readInt2( buffer, bufferIndex );
+        pathConsumed = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
             /* Samba 2.2.8a will reply with Unicode paths even though
              * ASCII is negotiated so we must use flags2 (probably
              * should anyway).
              */
-        if((flags2 & FLAGS2_UNICODE) != 0) {
+        if ((flags2 & FLAGS2_UNICODE) != 0) {
             pathConsumed /= 2;
         }
-        numReferrals = readInt2( buffer, bufferIndex );
+        numReferrals = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        flags = readInt2( buffer, bufferIndex );
+        flags = readInt2(buffer, bufferIndex);
         bufferIndex += 4;
 
         referrals = new Referral[numReferrals];
         for (int ri = 0; ri < numReferrals; ri++) {
             referrals[ri] = new Referral();
-            bufferIndex += referrals[ri].readWireFormat( buffer, bufferIndex, len );
+            bufferIndex += referrals[ri].readWireFormat(buffer, bufferIndex, len);
         }
 
         return bufferIndex - start;
     }
+
     public String toString() {
-        return new String( "Trans2GetDfsReferralResponse[" +
-            super.toString() + ",pathConsumed=" + pathConsumed +
-            ",numReferrals=" + numReferrals + ",flags=" + flags + "]" );
+        return new String("Trans2GetDfsReferralResponse[" +
+                super.toString() + ",pathConsumed=" + pathConsumed +
+                ",numReferrals=" + numReferrals + ",flags=" + flags + "]");
     }
 }

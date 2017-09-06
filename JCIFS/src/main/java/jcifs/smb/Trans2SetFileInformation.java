@@ -26,7 +26,7 @@ class Trans2SetFileInformation extends SmbComTransaction {
     private int attributes;
     private long createTime, lastWriteTime;
 
-    Trans2SetFileInformation( int fid, int attributes, long createTime, long lastWriteTime ) {
+    Trans2SetFileInformation(int fid, int attributes, long createTime, long lastWriteTime) {
         this.fid = fid;
         this.attributes = attributes;
         this.createTime = createTime;
@@ -35,55 +35,67 @@ class Trans2SetFileInformation extends SmbComTransaction {
         subCommand = TRANS2_SET_FILE_INFORMATION;
         maxParameterCount = 6;
         maxDataCount = 0;
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00;
         return 2;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( fid, dst, dstIndex );
+        writeInt2(fid, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( SMB_FILE_BASIC_INFO, dst, dstIndex );
+        writeInt2(SMB_FILE_BASIC_INFO, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( 0, dst, dstIndex );
+        writeInt2(0, dst, dstIndex);
         dstIndex += 2;
 
         return dstIndex - start;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeTime( createTime, dst, dstIndex ); dstIndex += 8;
-        writeInt8( 0L, dst, dstIndex ); dstIndex += 8;
-        writeTime( lastWriteTime, dst, dstIndex ); dstIndex += 8;
-        writeInt8( 0L, dst, dstIndex ); dstIndex += 8;
+        writeTime(createTime, dst, dstIndex);
+        dstIndex += 8;
+        writeInt8(0L, dst, dstIndex);
+        dstIndex += 8;
+        writeTime(lastWriteTime, dst, dstIndex);
+        dstIndex += 8;
+        writeInt8(0L, dst, dstIndex);
+        dstIndex += 8;
 /* Samba 2.2.7 needs ATTR_NORMAL
  */
-        writeInt2( 0x80 | attributes, dst, dstIndex ); dstIndex += 2; 
+        writeInt2(0x80 | attributes, dst, dstIndex);
+        dstIndex += 2;
                                         /* 6 zeros observed with NT */
-        writeInt8( 0L, dst, dstIndex ); dstIndex += 6;
+        writeInt8(0L, dst, dstIndex);
+        dstIndex += 6;
 
                 /* Also observed 4 byte alignment but we stick
                  * with the default for jCIFS which is 2 */
 
         return dstIndex - start;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "Trans2SetFileInformation[" + super.toString() +
-            ",fid=" + fid + "]" );
+        return new String("Trans2SetFileInformation[" + super.toString() +
+                ",fid=" + fid + "]");
     }
 }

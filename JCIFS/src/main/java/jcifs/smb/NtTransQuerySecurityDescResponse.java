@@ -28,23 +28,28 @@ class NtTransQuerySecurityDescResponse extends SmbComNtTransactionResponse {
         super();
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
-        length = readInt4( buffer, bufferIndex );
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
+        length = readInt4(buffer, bufferIndex);
         return 4;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         int start = bufferIndex;
 
         if (errorCode != 0)
@@ -59,8 +64,9 @@ class NtTransQuerySecurityDescResponse extends SmbComNtTransactionResponse {
 
         return bufferIndex - start;
     }
+
     public String toString() {
-        return new String( "NtTransQuerySecurityResponse[" +
-            super.toString() + "]" );
+        return new String("NtTransQuerySecurityResponse[" +
+                super.toString() + "]");
     }
 }

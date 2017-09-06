@@ -18,8 +18,9 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.smb.*;
-import jcifs.dcerpc.ndr.*;
+import jcifs.dcerpc.ndr.NdrLong;
+import jcifs.smb.FileEntry;
+import jcifs.smb.SmbShareInfo;
 
 public class MsrpcDfsRootEnum extends netdfs.NetrDfsEnumEx {
 
@@ -32,7 +33,7 @@ public class MsrpcDfsRootEnum extends netdfs.NetrDfsEnumEx {
     }
 
     public FileEntry[] getEntries() {
-        netdfs.DfsEnumArray200 a200 = (netdfs.DfsEnumArray200)info.e;
+        netdfs.DfsEnumArray200 a200 = (netdfs.DfsEnumArray200) info.e;
         SmbShareInfo[] entries = new SmbShareInfo[a200.count];
         for (int i = 0; i < a200.count; i++) {
             entries[i] = new SmbShareInfo(a200.s[i].dfs_name, 0, null);

@@ -24,37 +24,37 @@ abstract class SmbComNtTransactionResponse extends SmbComTransactionResponse {
         super();
     }
 
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
-        buffer[bufferIndex++] = (byte)0x00;        // Reserved
-        buffer[bufferIndex++] = (byte)0x00;        // Reserved
-        buffer[bufferIndex++] = (byte)0x00;        // Reserved
+        buffer[bufferIndex++] = (byte) 0x00;        // Reserved
+        buffer[bufferIndex++] = (byte) 0x00;        // Reserved
+        buffer[bufferIndex++] = (byte) 0x00;        // Reserved
 
-        totalParameterCount = readInt4( buffer, bufferIndex );
-        if( bufDataStart == 0 ) {
+        totalParameterCount = readInt4(buffer, bufferIndex);
+        if (bufDataStart == 0) {
             bufDataStart = totalParameterCount;
         }
         bufferIndex += 4;
-        totalDataCount = readInt4( buffer, bufferIndex );
+        totalDataCount = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        parameterCount = readInt4( buffer, bufferIndex );
+        parameterCount = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        parameterOffset = readInt4( buffer, bufferIndex );
+        parameterOffset = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        parameterDisplacement = readInt4( buffer, bufferIndex );
+        parameterDisplacement = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        dataCount = readInt4( buffer, bufferIndex );
+        dataCount = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        dataOffset = readInt4( buffer, bufferIndex );
+        dataOffset = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        dataDisplacement = readInt4( buffer, bufferIndex );
+        dataDisplacement = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
         setupCount = buffer[bufferIndex] & 0xFF;
         bufferIndex += 2;
-        if( setupCount != 0 ) {
-            if( log.level >= 3 )
-                log.println( "setupCount is not zero: " + setupCount );
+        if (setupCount != 0) {
+            if (log.level >= 3)
+                log.println("setupCount is not zero: " + setupCount);
         }
 
         return bufferIndex - start;

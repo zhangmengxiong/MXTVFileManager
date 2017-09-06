@@ -18,22 +18,21 @@
 
 package jcifs.smb;
 
-import jcifs.Config;
-
 class SmbComWrite extends ServerMessageBlock {
 
     private int fid,
-        count,
-        offset,
-        remaining,
-        off;
+            count,
+            offset,
+            remaining,
+            off;
     private byte[] b;
 
     SmbComWrite() {
         super();
         command = SMB_COM_WRITE;
     }
-    SmbComWrite( int fid, int offset, int remaining, byte[] b, int off, int len ) {
+
+    SmbComWrite(int fid, int offset, int remaining, byte[] b, int off, int len) {
         this.fid = fid;
         this.count = len;
         this.offset = offset;
@@ -43,10 +42,10 @@ class SmbComWrite extends ServerMessageBlock {
         command = SMB_COM_WRITE;
     }
 
-    void setParam( int fid, long offset, int remaining,
-                    byte[] b, int off, int len ) {
+    void setParam(int fid, long offset, int remaining,
+                  byte[] b, int off, int len) {
         this.fid = fid;
-        this.offset = (int)(offset & 0xFFFFFFFFL);
+        this.offset = (int) (offset & 0xFFFFFFFFL);
         this.remaining = remaining;
         this.b = b;
         this.off = off;
@@ -55,43 +54,48 @@ class SmbComWrite extends ServerMessageBlock {
                         * like writeandx will choke if session
                         * closes in between */
     }
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( fid, dst, dstIndex );
+        writeInt2(fid, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( count, dst, dstIndex );
+        writeInt2(count, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( offset, dst, dstIndex );
+        writeInt4(offset, dst, dstIndex);
         dstIndex += 4;
-        writeInt2( remaining, dst, dstIndex );
+        writeInt2(remaining, dst, dstIndex);
         dstIndex += 2;
 
         return dstIndex - start;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        dst[dstIndex++] = (byte)0x01; /* BufferFormat */
-        writeInt2( count, dst, dstIndex ); /* DataLength? */
+        dst[dstIndex++] = (byte) 0x01; /* BufferFormat */
+        writeInt2(count, dst, dstIndex); /* DataLength? */
         dstIndex += 2;
-        System.arraycopy( b, off, dst, dstIndex, count );
+        System.arraycopy(b, off, dst, dstIndex, count);
         dstIndex += count;
 
         return dstIndex - start;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComWrite[" +
-            super.toString() +
-            ",fid=" + fid +
-            ",count=" + count +
-            ",offset=" + offset +
-            ",remaining=" + remaining + "]" );
+        return new String("SmbComWrite[" +
+                super.toString() +
+                ",fid=" + fid +
+                ",count=" + count +
+                ",offset=" + offset +
+                ",remaining=" + remaining + "]");
     }
 }

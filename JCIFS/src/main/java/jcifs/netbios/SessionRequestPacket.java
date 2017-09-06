@@ -29,27 +29,30 @@ public class SessionRequestPacket extends SessionServicePacket {
         calledName = new Name();
         callingName = new Name();
     }
-    public SessionRequestPacket( Name calledName, Name callingName ) {
+
+    public SessionRequestPacket(Name calledName, Name callingName) {
         type = SESSION_REQUEST;
         this.calledName = calledName;
         this.callingName = callingName;
     }
-    int writeTrailerWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeTrailerWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
-        dstIndex += calledName.writeWireFormat( dst, dstIndex );
-        dstIndex += callingName.writeWireFormat( dst, dstIndex );
+        dstIndex += calledName.writeWireFormat(dst, dstIndex);
+        dstIndex += callingName.writeWireFormat(dst, dstIndex);
         return dstIndex - start;
     }
-    int readTrailerWireFormat( InputStream in,
-                            byte[] buffer,
-                            int bufferIndex )
-                            throws IOException {
+
+    int readTrailerWireFormat(InputStream in,
+                              byte[] buffer,
+                              int bufferIndex)
+            throws IOException {
         int start = bufferIndex;
-        if( in.read( buffer, bufferIndex, length ) != length ) {
-            throw new IOException( "invalid session request wire format" );
+        if (in.read(buffer, bufferIndex, length) != length) {
+            throw new IOException("invalid session request wire format");
         }
-        bufferIndex += calledName.readWireFormat( buffer, bufferIndex );
-        bufferIndex += callingName.readWireFormat( buffer, bufferIndex );
+        bufferIndex += calledName.readWireFormat(buffer, bufferIndex);
+        bufferIndex += callingName.readWireFormat(buffer, bufferIndex);
         return bufferIndex - start;
     }
 }

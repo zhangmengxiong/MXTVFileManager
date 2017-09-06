@@ -19,6 +19,7 @@
 package jcifs.smb;
 
 import java.util.Date;
+
 import jcifs.util.Hexdump;
 
 class SmbComQueryInformationResponse extends ServerMessageBlock implements Info {
@@ -28,7 +29,7 @@ class SmbComQueryInformationResponse extends ServerMessageBlock implements Info 
     private long serverTimeZoneOffset;
     private int fileSize = 0;
 
-    SmbComQueryInformationResponse( long serverTimeZoneOffset ) {
+    SmbComQueryInformationResponse(long serverTimeZoneOffset) {
         this.serverTimeZoneOffset = serverTimeZoneOffset;
         command = SMB_COM_QUERY_INFORMATION;
     }
@@ -36,41 +37,49 @@ class SmbComQueryInformationResponse extends ServerMessageBlock implements Info 
     public int getAttributes() {
         return fileAttributes;
     }
+
     public long getCreateTime() {
         return lastWriteTime + serverTimeZoneOffset;
     }
+
     public long getLastWriteTime() {
         return lastWriteTime + serverTimeZoneOffset;
     }
+
     public long getSize() {
         return fileSize;
     }
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
-        if( wordCount == 0 ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
+        if (wordCount == 0) {
             return 0;
         }
-        fileAttributes = readInt2( buffer, bufferIndex );
+        fileAttributes = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        lastWriteTime = readUTime( buffer, bufferIndex );
+        lastWriteTime = readUTime(buffer, bufferIndex);
         bufferIndex += 4;
-        fileSize = readInt4( buffer, bufferIndex );
+        fileSize = readInt4(buffer, bufferIndex);
         return 20;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComQueryInformationResponse[" +
-            super.toString() +
-            ",fileAttributes=0x" + Hexdump.toHexString( fileAttributes, 4 ) +
-            ",lastWriteTime=" + new Date( lastWriteTime ) +
-            ",fileSize=" + fileSize + "]" );
+        return new String("SmbComQueryInformationResponse[" +
+                super.toString() +
+                ",fileAttributes=0x" + Hexdump.toHexString(fileAttributes, 4) +
+                ",lastWriteTime=" + new Date(lastWriteTime) +
+                ",fileSize=" + fileSize + "]");
     }
 }
 

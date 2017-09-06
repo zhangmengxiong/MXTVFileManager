@@ -19,7 +19,7 @@
 package jcifs.smb;
 
 /**
-This class can be extended by applications that wish to trap authentication related exceptions and automatically retry the exceptional operation with different credentials. Read <a href="../../../authhandler.html">jCIFS Exceptions and NtlmAuthenticator</a> for complete details.
+ * This class can be extended by applications that wish to trap authentication related exceptions and automatically retry the exceptional operation with different credentials. Read <a href="../../../authhandler.html">jCIFS Exceptions and NtlmAuthenticator</a> for complete details.
  */
 
 public abstract class NtlmAuthenticator {
@@ -34,12 +34,12 @@ public abstract class NtlmAuthenticator {
         sae = null;
     }
 
-/**
-Set the default <tt>NtlmAuthenticator</tt>. Once the default authenticator is set it cannot be changed. Calling this metho again will have no effect.
- */
+    /**
+     * Set the default <tt>NtlmAuthenticator</tt>. Once the default authenticator is set it cannot be changed. Calling this metho again will have no effect.
+     */
 
-    public synchronized static void setDefault( NtlmAuthenticator a ) {
-        if( auth != null ) {
+    public synchronized static void setDefault(NtlmAuthenticator a) {
+        if (auth != null) {
             return;
         }
         auth = a;
@@ -48,29 +48,31 @@ Set the default <tt>NtlmAuthenticator</tt>. Once the default authenticator is se
     protected final String getRequestingURL() {
         return url;
     }
+
     protected final SmbAuthException getRequestingException() {
         return sae;
     }
 
-/**
-Used internally by jCIFS when an <tt>SmbAuthException</tt> is trapped to retrieve new user credentials.
- */
+    /**
+     * Used internally by jCIFS when an <tt>SmbAuthException</tt> is trapped to retrieve new user credentials.
+     */
 
     public static NtlmPasswordAuthentication
-                requestNtlmPasswordAuthentication( String url, SmbAuthException sae ) {
-        if( auth == null ) {
+    requestNtlmPasswordAuthentication(String url, SmbAuthException sae) {
+        if (auth == null) {
             return null;
         }
-        synchronized( auth ) {
+        synchronized (auth) {
             auth.url = url;
             auth.sae = sae;
             return auth.getNtlmPasswordAuthentication();
         }
     }
-/**
-An application extending this class must provide an implementation for this method that returns new user credentials try try when accessing SMB resources described by the <tt>getRequestingURL</tt> and <tt>getRequestingException</tt> methods.
-If this method returns <tt>null</tt> the <tt>SmbAuthException</tt> that triggered the authenticator check will simply be rethrown. The default implementation returns <tt>null</tt>.
-*/
+
+    /**
+     * An application extending this class must provide an implementation for this method that returns new user credentials try try when accessing SMB resources described by the <tt>getRequestingURL</tt> and <tt>getRequestingException</tt> methods.
+     * If this method returns <tt>null</tt> the <tt>SmbAuthException</tt> that triggered the authenticator check will simply be rethrown. The default implementation returns <tt>null</tt>.
+     */
     protected NtlmPasswordAuthentication getNtlmPasswordAuthentication() {
         return null;
     }

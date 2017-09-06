@@ -18,15 +18,13 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.smb.*;
-import jcifs.dcerpc.*;
-import jcifs.dcerpc.ndr.*;
+import jcifs.dcerpc.ndr.NdrObject;
 
 public class MsrpcQueryInformationPolicy extends lsarpc.LsarQueryInformationPolicy {
 
     public MsrpcQueryInformationPolicy(LsaPolicyHandle policyHandle,
-                    short level,
-                    NdrObject info) {
+                                       short level,
+                                       NdrObject info) {
         super(policyHandle, level, info);
         ptype = 0;
         flags = DCERPC_FIRST_FRAG | DCERPC_LAST_FRAG;

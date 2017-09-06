@@ -25,7 +25,7 @@ import java.security.MessageDigest;
  * HMACT64 is defined by Luke Leighton as a modified HMAC-MD5 (RFC 2104)
  * in which the key is truncated at 64 bytes (rather than being hashed
  * via MD5).
- */ 
+ */
 public class HMACT64 extends MessageDigest implements Cloneable {
 
     private static final int BLOCK_LENGTH = 64;

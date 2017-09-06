@@ -26,10 +26,10 @@ class Trans2FindFirst2 extends SmbComTransaction {
     // flags
 
     private static final int FLAGS_CLOSE_AFTER_THIS_REQUEST = 0x01;
-    private static final int FLAGS_CLOSE_IF_END_REACHED     = 0x02;
-    private static final int FLAGS_RETURN_RESUME_KEYS       = 0x04;
+    private static final int FLAGS_CLOSE_IF_END_REACHED = 0x02;
+    private static final int FLAGS_RETURN_RESUME_KEYS = 0x04;
     private static final int FLAGS_RESUME_FROM_PREVIOUS_END = 0x08;
-    private static final int FLAGS_FIND_WITH_BACKUP_INTENT  = 0x10;
+    private static final int FLAGS_FIND_WITH_BACKUP_INTENT = 0x10;
 
     private static final int DEFAULT_LIST_SIZE = 65535;
     private static final int DEFAULT_LIST_COUNT = 200;
@@ -42,19 +42,19 @@ class Trans2FindFirst2 extends SmbComTransaction {
 
     // information levels
 
-    static final int SMB_INFO_STANDARD                 = 1;
-    static final int SMB_INFO_QUERY_EA_SIZE            = 2;
-    static final int SMB_INFO_QUERY_EAS_FROM_LIST      = 3;
-    static final int SMB_FIND_FILE_DIRECTORY_INFO      = 0x101;
+    static final int SMB_INFO_STANDARD = 1;
+    static final int SMB_INFO_QUERY_EA_SIZE = 2;
+    static final int SMB_INFO_QUERY_EAS_FROM_LIST = 3;
+    static final int SMB_FIND_FILE_DIRECTORY_INFO = 0x101;
     static final int SMB_FIND_FILE_FULL_DIRECTORY_INFO = 0x102;
-    static final int SMB_FILE_NAMES_INFO               = 0x103;
-    static final int SMB_FILE_BOTH_DIRECTORY_INFO      = 0x104;
+    static final int SMB_FILE_NAMES_INFO = 0x103;
+    static final int SMB_FILE_BOTH_DIRECTORY_INFO = 0x104;
 
-    static final int LIST_SIZE = Config.getInt( "jcifs.smb.client.listSize", DEFAULT_LIST_SIZE );
-    static final int LIST_COUNT = Config.getInt( "jcifs.smb.client.listCount", DEFAULT_LIST_COUNT );
+    static final int LIST_SIZE = Config.getInt("jcifs.smb.client.listSize", DEFAULT_LIST_SIZE);
+    static final int LIST_COUNT = Config.getInt("jcifs.smb.client.listCount", DEFAULT_LIST_COUNT);
 
-    Trans2FindFirst2( String filename, String wildcard, int searchAttributes ) {
-        if( filename.equals( "\\" )) {
+    Trans2FindFirst2(String filename, String wildcard, int searchAttributes) {
+        if (filename.equals("\\")) {
             this.path = filename;
         } else {
             this.path = filename + "\\";
@@ -73,47 +73,53 @@ class Trans2FindFirst2 extends SmbComTransaction {
         maxSetupCount = 0;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00;
         return 2;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( searchAttributes, dst, dstIndex );
+        writeInt2(searchAttributes, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( LIST_COUNT, dst, dstIndex );
+        writeInt2(LIST_COUNT, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( flags, dst, dstIndex );
+        writeInt2(flags, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( informationLevel, dst, dstIndex );
+        writeInt2(informationLevel, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( searchStorageType, dst, dstIndex );
+        writeInt4(searchStorageType, dst, dstIndex);
         dstIndex += 4;
-        dstIndex += writeString( path + wildcard, dst, dstIndex );
+        dstIndex += writeString(path + wildcard, dst, dstIndex);
 
         return dstIndex - start;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "Trans2FindFirst2[" + super.toString() +
-            ",searchAttributes=0x" + Hexdump.toHexString( searchAttributes, 2 ) +
-            ",searchCount=" + LIST_COUNT +
-            ",flags=0x" + Hexdump.toHexString( flags, 2 ) +
-            ",informationLevel=0x" + Hexdump.toHexString( informationLevel, 3 ) +
-            ",searchStorageType=" + searchStorageType +
-            ",filename=" + path + "]" );
+        return new String("Trans2FindFirst2[" + super.toString() +
+                ",searchAttributes=0x" + Hexdump.toHexString(searchAttributes, 2) +
+                ",searchCount=" + LIST_COUNT +
+                ",flags=0x" + Hexdump.toHexString(flags, 2) +
+                ",informationLevel=0x" + Hexdump.toHexString(informationLevel, 3) +
+                ",searchStorageType=" + searchStorageType +
+                ",filename=" + path + "]");
     }
 }

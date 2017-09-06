@@ -21,9 +21,9 @@ package jcifs.dcerpc.msrpc;
 
 import java.io.IOException;
 
+import jcifs.dcerpc.DcerpcHandle;
+import jcifs.dcerpc.rpc;
 import jcifs.smb.SmbException;
-
-import jcifs.dcerpc.*;
 
 public class LsaPolicyHandle extends rpc.policy_handle {
 

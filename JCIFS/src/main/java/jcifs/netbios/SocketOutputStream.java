@@ -19,29 +19,29 @@
 package jcifs.netbios;
 
 import java.io.FilterOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 class SocketOutputStream extends FilterOutputStream {
 
-    SocketOutputStream( OutputStream out ) {
-        super( out );
+    SocketOutputStream(OutputStream out) {
+        super(out);
     }
 
-    public synchronized void write( byte[] b, int off, int len ) throws IOException {
-        if( len > 0xFFFF ) {
-            throw new IOException( "write too large: " + len );
-        } else if( off < 4 ) {
-            throw new IOException( "NetBIOS socket output buffer requires 4 bytes available before off" );
+    public synchronized void write(byte[] b, int off, int len) throws IOException {
+        if (len > 0xFFFF) {
+            throw new IOException("write too large: " + len);
+        } else if (off < 4) {
+            throw new IOException("NetBIOS socket output buffer requires 4 bytes available before off");
         }
 
         off -= 4;
 
-        b[off + 0] = (byte)SessionServicePacket.SESSION_MESSAGE;
-        b[off + 1] = (byte)0x00; 
-        b[off + 2] = (byte)(( len >> 8 ) & 0xFF ); 
-        b[off + 3] = (byte)( len & 0xFF ); 
+        b[off + 0] = (byte) SessionServicePacket.SESSION_MESSAGE;
+        b[off + 1] = (byte) 0x00;
+        b[off + 2] = (byte) ((len >> 8) & 0xFF);
+        b[off + 3] = (byte) (len & 0xFF);
 
-        out.write( b, off, 4 + len );
+        out.write(b, off, 4 + len);
     }
 }

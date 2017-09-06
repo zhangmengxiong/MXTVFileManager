@@ -1,7 +1,10 @@
 package jcifs.dcerpc.msrpc;
 
-import jcifs.dcerpc.*;
-import jcifs.dcerpc.ndr.*;
+import jcifs.dcerpc.DcerpcMessage;
+import jcifs.dcerpc.ndr.NdrBuffer;
+import jcifs.dcerpc.ndr.NdrException;
+import jcifs.dcerpc.ndr.NdrLong;
+import jcifs.dcerpc.ndr.NdrObject;
 
 public class netdfs {
 
@@ -14,6 +17,7 @@ public class netdfs {
     public static final int DFS_STORAGE_STATE_OFFLINE = 0x0001;
     public static final int DFS_STORAGE_STATE_ONLINE = 0x0002;
     public static final int DFS_STORAGE_STATE_ACTIVE = 0x0004;
+
     public static class DfsInfo1 extends NdrObject {
 
         public String entry_path;
@@ -28,6 +32,7 @@ public class netdfs {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
             int _entry_pathp = _src.dec_ndr_long();
@@ -39,6 +44,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsEnumArray1 extends NdrObject {
 
         public int count;
@@ -62,9 +68,10 @@ public class netdfs {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _sp = _src.dec_ndr_long();
 
             if (_sp != 0) {
@@ -74,7 +81,8 @@ public class netdfs {
                 _src.advance(4 * _ss);
 
                 if (s == null) {
-                    if (_ss < 0 || _ss > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_ss < 0 || _ss > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     s = new DfsInfo1[_ss];
                 }
                 _src = _src.derive(_si);
@@ -87,6 +95,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsStorageInfo extends NdrObject {
 
         public int state;
@@ -110,9 +119,10 @@ public class netdfs {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            state = (int)_src.dec_ndr_long();
+            state = (int) _src.dec_ndr_long();
             int _server_namep = _src.dec_ndr_long();
             int _share_namep = _src.dec_ndr_long();
 
@@ -128,6 +138,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsInfo3 extends NdrObject {
 
         public String path;
@@ -167,12 +178,13 @@ public class netdfs {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
             int _pathp = _src.dec_ndr_long();
             int _commentp = _src.dec_ndr_long();
-            state = (int)_src.dec_ndr_long();
-            num_stores = (int)_src.dec_ndr_long();
+            state = (int) _src.dec_ndr_long();
+            num_stores = (int) _src.dec_ndr_long();
             int _storesp = _src.dec_ndr_long();
 
             if (_pathp != 0) {
@@ -192,7 +204,8 @@ public class netdfs {
                 _src.advance(12 * _storess);
 
                 if (stores == null) {
-                    if (_storess < 0 || _storess > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_storess < 0 || _storess > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     stores = new DfsStorageInfo[_storess];
                 }
                 _src = _src.derive(_storesi);
@@ -205,6 +218,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsEnumArray3 extends NdrObject {
 
         public int count;
@@ -228,9 +242,10 @@ public class netdfs {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _sp = _src.dec_ndr_long();
 
             if (_sp != 0) {
@@ -240,7 +255,8 @@ public class netdfs {
                 _src.advance(20 * _ss);
 
                 if (s == null) {
-                    if (_ss < 0 || _ss > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_ss < 0 || _ss > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     s = new DfsInfo3[_ss];
                 }
                 _src = _src.derive(_si);
@@ -253,6 +269,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsInfo200 extends NdrObject {
 
         public String dfs_name;
@@ -267,6 +284,7 @@ public class netdfs {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
             int _dfs_namep = _src.dec_ndr_long();
@@ -278,6 +296,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsEnumArray200 extends NdrObject {
 
         public int count;
@@ -301,9 +320,10 @@ public class netdfs {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _sp = _src.dec_ndr_long();
 
             if (_sp != 0) {
@@ -313,7 +333,8 @@ public class netdfs {
                 _src.advance(4 * _ss);
 
                 if (s == null) {
-                    if (_ss < 0 || _ss > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_ss < 0 || _ss > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     s = new DfsInfo200[_ss];
                 }
                 _src = _src.derive(_si);
@@ -326,6 +347,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsInfo300 extends NdrObject {
 
         public int flags;
@@ -342,9 +364,10 @@ public class netdfs {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            flags = (int)_src.dec_ndr_long();
+            flags = (int) _src.dec_ndr_long();
             int _dfs_namep = _src.dec_ndr_long();
 
             if (_dfs_namep != 0) {
@@ -354,6 +377,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsEnumArray300 extends NdrObject {
 
         public int count;
@@ -377,9 +401,10 @@ public class netdfs {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _sp = _src.dec_ndr_long();
 
             if (_sp != 0) {
@@ -389,7 +414,8 @@ public class netdfs {
                 _src.advance(8 * _ss);
 
                 if (s == null) {
-                    if (_ss < 0 || _ss > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_ss < 0 || _ss > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     s = new DfsInfo300[_ss];
                 }
                 _src = _src.derive(_si);
@@ -402,6 +428,7 @@ public class netdfs {
             }
         }
     }
+
     public static class DfsEnumStruct extends NdrObject {
 
         public int level;
@@ -420,9 +447,10 @@ public class netdfs {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            level = (int)_src.dec_ndr_long();
+            level = (int) _src.dec_ndr_long();
             _src.dec_ndr_long(); /* union discriminant */
             int _ep = _src.dec_ndr_long();
 
@@ -436,9 +464,12 @@ public class netdfs {
             }
         }
     }
+
     public static class NetrDfsEnumEx extends DcerpcMessage {
 
-        public int getOpnum() { return 0x15; }
+        public int getOpnum() {
+            return 0x15;
+        }
 
         public int retval;
         public String dfs_name;
@@ -448,10 +479,10 @@ public class netdfs {
         public NdrLong totalentries;
 
         public NetrDfsEnumEx(String dfs_name,
-                    int level,
-                    int prefmaxlen,
-                    DfsEnumStruct info,
-                    NdrLong totalentries) {
+                             int level,
+                             int prefmaxlen,
+                             DfsEnumStruct info,
+                             NdrLong totalentries) {
             this.dfs_name = dfs_name;
             this.level = level;
             this.prefmaxlen = prefmaxlen;
@@ -474,6 +505,7 @@ public class netdfs {
 
             }
         }
+
         public void decode_out(NdrBuffer _src) throws NdrException {
             int _infop = _src.dec_ndr_long();
             if (_infop != 0) {
@@ -488,7 +520,7 @@ public class netdfs {
                 totalentries.decode(_src);
 
             }
-            retval = (int)_src.dec_ndr_long();
+            retval = (int) _src.dec_ndr_long();
         }
     }
 }

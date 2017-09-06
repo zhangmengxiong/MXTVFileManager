@@ -20,25 +20,29 @@ package jcifs.smb;
 
 class SmbComLogoffAndX extends AndXServerMessageBlock {
 
-    SmbComLogoffAndX( ServerMessageBlock andx ) {
-        super( andx );
+    SmbComLogoffAndX(ServerMessageBlock andx) {
+        super(andx);
         command = SMB_COM_LOGOFF_ANDX;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComLogoffAndX[" +
-            super.toString() + "]" );
+        return new String("SmbComLogoffAndX[" +
+                super.toString() + "]");
     }
 }

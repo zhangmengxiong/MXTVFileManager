@@ -19,34 +19,34 @@
 package jcifs.smb;
 
 import jcifs.Config;
-import jcifs.util.*;
 
 class SmbComWriteAndX extends AndXServerMessageBlock {
 
     private static final int READ_ANDX_BATCH_LIMIT =
-                            Config.getInt( "jcifs.smb.client.WriteAndX.ReadAndX", 1 );
+            Config.getInt("jcifs.smb.client.WriteAndX.ReadAndX", 1);
     private static final int CLOSE_BATCH_LIMIT =
-                            Config.getInt( "jcifs.smb.client.WriteAndX.Close", 1 );
+            Config.getInt("jcifs.smb.client.WriteAndX.Close", 1);
 
     private int fid,
-        remaining,
-        dataLength,
-        dataOffset,
-        off;
+            remaining,
+            dataLength,
+            dataOffset,
+            off;
     private byte[] b;
     private long offset;
 
-private int pad;
+    private int pad;
 
     int writeMode;
 
     SmbComWriteAndX() {
-        super( null );
+        super(null);
         command = SMB_COM_WRITE_ANDX;
     }
-    SmbComWriteAndX( int fid, long offset, int remaining,
-                    byte[] b, int off, int len, ServerMessageBlock andx ) {
-        super( andx );
+
+    SmbComWriteAndX(int fid, long offset, int remaining,
+                    byte[] b, int off, int len, ServerMessageBlock andx) {
+        super(andx);
         this.fid = fid;
         this.offset = offset;
         this.remaining = remaining;
@@ -56,8 +56,8 @@ private int pad;
         command = SMB_COM_WRITE_ANDX;
     }
 
-    void setParam( int fid, long offset, int remaining,
-                    byte[] b, int off, int len ) {
+    void setParam(int fid, long offset, int remaining,
+                  byte[] b, int off, int len) {
         this.fid = fid;
         this.offset = offset;
         this.remaining = remaining;
@@ -68,71 +68,77 @@ private int pad;
                         * like writeandx will choke if session
                         * closes in between */
     }
-    int getBatchLimit( byte command ) {
-        if( command == SMB_COM_READ_ANDX ) {
+
+    int getBatchLimit(byte command) {
+        if (command == SMB_COM_READ_ANDX) {
             return READ_ANDX_BATCH_LIMIT;
         }
-        if( command == SMB_COM_CLOSE ) {
+        if (command == SMB_COM_CLOSE) {
             return CLOSE_BATCH_LIMIT;
         }
         return 0;
     }
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
         dataOffset = (dstIndex - headerStart) + 26; // 26 = off from here to pad
 
-pad = ( dataOffset - headerStart ) % 4;
-pad = pad == 0 ? 0 : 4 - pad;
-dataOffset += pad;
+        pad = (dataOffset - headerStart) % 4;
+        pad = pad == 0 ? 0 : 4 - pad;
+        dataOffset += pad;
 
-        writeInt2( fid, dst, dstIndex );
+        writeInt2(fid, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( offset, dst, dstIndex );
+        writeInt4(offset, dst, dstIndex);
         dstIndex += 4;
-        for( int i = 0; i < 4; i++ ) {
-            dst[dstIndex++] = (byte)0xFF;
+        for (int i = 0; i < 4; i++) {
+            dst[dstIndex++] = (byte) 0xFF;
         }
-        writeInt2( writeMode, dst, dstIndex );
+        writeInt2(writeMode, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( remaining, dst, dstIndex );
+        writeInt2(remaining, dst, dstIndex);
         dstIndex += 2;
-        dst[dstIndex++] = (byte)0x00;
-        dst[dstIndex++] = (byte)0x00;
-        writeInt2( dataLength, dst, dstIndex );
+        dst[dstIndex++] = (byte) 0x00;
+        dst[dstIndex++] = (byte) 0x00;
+        writeInt2(dataLength, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( dataOffset, dst, dstIndex );
+        writeInt2(dataOffset, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( offset >> 32, dst, dstIndex );
+        writeInt4(offset >> 32, dst, dstIndex);
         dstIndex += 4;
 
         return dstIndex - start;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-while( pad-- > 0 ) {
-    dst[dstIndex++] = (byte)0xEE;
-}
-        System.arraycopy( b, off, dst, dstIndex, dataLength );
+        while (pad-- > 0) {
+            dst[dstIndex++] = (byte) 0xEE;
+        }
+        System.arraycopy(b, off, dst, dstIndex, dataLength);
         dstIndex += dataLength;
 
         return dstIndex - start;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComWriteAndX[" +
-            super.toString() +
-            ",fid=" + fid +
-            ",offset=" + offset +
-            ",writeMode=" + writeMode +
-            ",remaining=" + remaining +
-            ",dataLength=" + dataLength +
-            ",dataOffset=" + dataOffset + "]" );
+        return new String("SmbComWriteAndX[" +
+                super.toString() +
+                ",fid=" + fid +
+                ",offset=" + offset +
+                ",writeMode=" + writeMode +
+                ",remaining=" + remaining +
+                ",dataLength=" + dataLength +
+                ",dataOffset=" + dataOffset + "]");
     }
 }

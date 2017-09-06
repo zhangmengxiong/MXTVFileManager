@@ -23,7 +23,7 @@ class TransCallNamedPipe extends SmbComTransaction {
     private byte[] pipeData;
     private int pipeDataOff, pipeDataLen;
 
-    TransCallNamedPipe( String pipeName, byte[] data, int off, int len ) {
+    TransCallNamedPipe(String pipeName, byte[] data, int off, int len) {
         name = pipeName;
         pipeData = data;
         pipeDataOff = off;
@@ -33,41 +33,47 @@ class TransCallNamedPipe extends SmbComTransaction {
         timeout = 0xFFFFFFFF;
         maxParameterCount = 0;
         maxDataCount = 0xFFFF;
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
         setupCount = 2;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00;
         // this says "Transaction priority" in netmon
-        dst[dstIndex++] = (byte)0x00; // no FID
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00; // no FID
+        dst[dstIndex++] = (byte) 0x00;
         return 4;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
-        if(( dst.length - dstIndex ) < pipeDataLen ) {
-            if( log.level >= 3 )
-                log.println( "TransCallNamedPipe data too long for buffer" );
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
+        if ((dst.length - dstIndex) < pipeDataLen) {
+            if (log.level >= 3)
+                log.println("TransCallNamedPipe data too long for buffer");
             return 0;
         }
-        System.arraycopy( pipeData, pipeDataOff, dst, dstIndex, pipeDataLen );
+        System.arraycopy(pipeData, pipeDataOff, dst, dstIndex, pipeDataLen);
         return pipeDataLen;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "TransCallNamedPipe[" + super.toString() +
-            ",pipeName=" + name + "]" );
+        return new String("TransCallNamedPipe[" + super.toString() +
+                ",pipeName=" + name + "]");
     }
 }

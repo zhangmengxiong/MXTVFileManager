@@ -23,9 +23,9 @@ import java.util.Enumeration;
 abstract class SmbComTransactionResponse extends ServerMessageBlock implements Enumeration {
 
     // relative to headerStart
-    private static final int SETUP_OFFSET        = 61;
+    private static final int SETUP_OFFSET = 61;
 
-    private static final int DISCONNECT_TID      = 0x01;
+    private static final int DISCONNECT_TID = 0x01;
     private static final int ONE_WAY_TRANSACTION = 0x02;
 
     private int pad;
@@ -61,69 +61,75 @@ abstract class SmbComTransactionResponse extends ServerMessageBlock implements E
     void reset() {
         super.reset();
         bufDataStart = 0;
-        isPrimary = hasMore = true; 
+        isPrimary = hasMore = true;
         parametersDone = dataDone = false;
     }
+
     public boolean hasMoreElements() {
         return errorCode == 0 && hasMore;
     }
+
     public Object nextElement() {
-        if( isPrimary ) {
+        if (isPrimary) {
             isPrimary = false;
         }
         return this;
     }
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
-        totalParameterCount = readInt2( buffer, bufferIndex );
-        if( bufDataStart == 0 ) {
+        totalParameterCount = readInt2(buffer, bufferIndex);
+        if (bufDataStart == 0) {
             bufDataStart = totalParameterCount;
         }
         bufferIndex += 2;
-        totalDataCount = readInt2( buffer, bufferIndex );
+        totalDataCount = readInt2(buffer, bufferIndex);
         bufferIndex += 4; // Reserved
-        parameterCount = readInt2( buffer, bufferIndex );
+        parameterCount = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        parameterOffset = readInt2( buffer, bufferIndex );
+        parameterOffset = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        parameterDisplacement = readInt2( buffer, bufferIndex );
+        parameterDisplacement = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        dataCount = readInt2( buffer, bufferIndex );
+        dataCount = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        dataOffset = readInt2( buffer, bufferIndex );
+        dataOffset = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        dataDisplacement = readInt2( buffer, bufferIndex );
+        dataDisplacement = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
         setupCount = buffer[bufferIndex] & 0xFF;
         bufferIndex += 2;
-        if( setupCount != 0 ) {
-            if( log.level > 2 )
-                log.println( "setupCount is not zero: " + setupCount );
+        if (setupCount != 0) {
+            if (log.level > 2)
+                log.println("setupCount is not zero: " + setupCount);
         }
 
         return bufferIndex - start;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         pad = pad1 = 0;
         int n;
 
-        if( parameterCount > 0 ) {
-            bufferIndex += pad = parameterOffset - ( bufferIndex - headerStart );
-            System.arraycopy( buffer, bufferIndex, txn_buf,
-                            bufParameterStart + parameterDisplacement, parameterCount );
+        if (parameterCount > 0) {
+            bufferIndex += pad = parameterOffset - (bufferIndex - headerStart);
+            System.arraycopy(buffer, bufferIndex, txn_buf,
+                    bufParameterStart + parameterDisplacement, parameterCount);
             bufferIndex += parameterCount;
         }
-        if( dataCount > 0 ) {
-            bufferIndex += pad1 = dataOffset - ( bufferIndex - headerStart );
-            System.arraycopy( buffer, bufferIndex, txn_buf,
-                            bufDataStart + dataDisplacement, dataCount );
+        if (dataCount > 0) {
+            bufferIndex += pad1 = dataOffset - (bufferIndex - headerStart);
+            System.arraycopy(buffer, bufferIndex, txn_buf,
+                    bufDataStart + dataDisplacement, dataCount);
             bufferIndex += dataCount;
         }
 
@@ -131,43 +137,48 @@ abstract class SmbComTransactionResponse extends ServerMessageBlock implements E
          * read. If so call the read methods.
          */
 
-        if( !parametersDone &&
-                ( parameterDisplacement + parameterCount ) == totalParameterCount) {
+        if (!parametersDone &&
+                (parameterDisplacement + parameterCount) == totalParameterCount) {
             parametersDone = true;
         }
 
-        if( !dataDone && ( dataDisplacement + dataCount ) == totalDataCount) {
+        if (!dataDone && (dataDisplacement + dataCount) == totalDataCount) {
             dataDone = true;
         }
 
-        if( parametersDone && dataDone ) {
+        if (parametersDone && dataDone) {
             hasMore = false;
-            readParametersWireFormat( txn_buf, bufParameterStart, totalParameterCount );
-            readDataWireFormat( txn_buf, bufDataStart, totalDataCount );
+            readParametersWireFormat(txn_buf, bufParameterStart, totalParameterCount);
+            readDataWireFormat(txn_buf, bufDataStart, totalDataCount);
         }
 
         return pad + parameterCount + pad1 + dataCount;
     }
 
-    abstract int writeSetupWireFormat( byte[] dst, int dstIndex );
-    abstract int writeParametersWireFormat( byte[] dst, int dstIndex );
-    abstract int writeDataWireFormat( byte[] dst, int dstIndex );
-    abstract int readSetupWireFormat( byte[] buffer, int bufferIndex, int len );
-    abstract int readParametersWireFormat( byte[] buffer, int bufferIndex, int len );
-    abstract int readDataWireFormat( byte[] buffer, int bufferIndex, int len );
+    abstract int writeSetupWireFormat(byte[] dst, int dstIndex);
+
+    abstract int writeParametersWireFormat(byte[] dst, int dstIndex);
+
+    abstract int writeDataWireFormat(byte[] dst, int dstIndex);
+
+    abstract int readSetupWireFormat(byte[] buffer, int bufferIndex, int len);
+
+    abstract int readParametersWireFormat(byte[] buffer, int bufferIndex, int len);
+
+    abstract int readDataWireFormat(byte[] buffer, int bufferIndex, int len);
 
     public String toString() {
-        return new String( super.toString() +
-            ",totalParameterCount=" + totalParameterCount +
-            ",totalDataCount=" + totalDataCount +
-            ",parameterCount=" + parameterCount +
-            ",parameterOffset=" + parameterOffset +
-            ",parameterDisplacement=" + parameterDisplacement +
-            ",dataCount=" + dataCount +
-            ",dataOffset=" + dataOffset +
-            ",dataDisplacement=" + dataDisplacement +
-            ",setupCount=" + setupCount +
-            ",pad=" + pad +
-            ",pad1=" + pad1 );
+        return new String(super.toString() +
+                ",totalParameterCount=" + totalParameterCount +
+                ",totalDataCount=" + totalDataCount +
+                ",parameterCount=" + parameterCount +
+                ",parameterOffset=" + parameterOffset +
+                ",parameterDisplacement=" + parameterDisplacement +
+                ",dataCount=" + dataCount +
+                ",dataOffset=" + dataOffset +
+                ",dataDisplacement=" + dataDisplacement +
+                ",setupCount=" + setupCount +
+                ",pad=" + pad +
+                ",pad1=" + pad1);
     }
 }

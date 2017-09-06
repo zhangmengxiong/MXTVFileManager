@@ -18,8 +18,8 @@
 
 package jcifs.util;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MimeMap {
 
@@ -38,74 +38,75 @@ public class MimeMap {
         int n;
 
         in = new byte[IN_SIZE];
-        InputStream is = getClass().getClassLoader().getResourceAsStream( "jcifs/util/mime.map" );
+        InputStream is = getClass().getClassLoader().getResourceAsStream("jcifs/util/mime.map");
 
         inLen = 0;
-        while(( n = is.read( in, inLen, IN_SIZE - inLen )) != -1 ) {
+        while ((n = is.read(in, inLen, IN_SIZE - inLen)) != -1) {
             inLen += n;
         }
-        if( inLen < 100 || inLen == IN_SIZE ) {
-            throw new IOException( "Error reading jcifs/util/mime.map resource" );
+        if (inLen < 100 || inLen == IN_SIZE) {
+            throw new IOException("Error reading jcifs/util/mime.map resource");
         }
         is.close();
     }
 
-    public String getMimeType( String extension ) throws IOException {
-        return getMimeType( extension, "application/octet-stream" );
+    public String getMimeType(String extension) throws IOException {
+        return getMimeType(extension, "application/octet-stream");
     }
-    public String getMimeType( String extension, String def ) throws IOException {
+
+    public String getMimeType(String extension, String def) throws IOException {
         int state, t, x, i, off;
         byte ch;
         byte[] type = new byte[128];
         byte[] buf = new byte[16];
-        byte[] ext = extension.toLowerCase().getBytes( "ASCII" );
+        byte[] ext = extension.toLowerCase().getBytes("ASCII");
 
         state = ST_START;
         t = x = i = 0;
-        for( off = 0; off < inLen; off++ ) {
+        for (off = 0; off < inLen; off++) {
             ch = in[off];
-            switch( state ) {
+            switch (state) {
                 case ST_START:
-                    if( ch == ' ' || ch == '\t' ) {
+                    if (ch == ' ' || ch == '\t') {
                         break;
-                    } else if( ch == '#' ) {
+                    } else if (ch == '#') {
                         state = ST_COMM;
                         break;
                     }
                     state = ST_TYPE;
                 case ST_TYPE:
-                    if( ch == ' ' || ch == '\t' ) {
+                    if (ch == ' ' || ch == '\t') {
                         state = ST_GAP;
                     } else {
                         type[t++] = ch;
                     }
                     break;
                 case ST_COMM:
-                    if( ch == '\n' ) {
+                    if (ch == '\n') {
                         t = x = i = 0;
                         state = ST_START;
                     }
                     break;
                 case ST_GAP:
-                    if( ch == ' ' || ch == '\t' ) {
+                    if (ch == ' ' || ch == '\t') {
                         break;
                     }
                     state = ST_EXT;
                 case ST_EXT:
-                    switch( ch ) {
+                    switch (ch) {
                         case ' ':
                         case '\t':
                         case '\n':
                         case '#':
-                            for( i = 0; i < x && x == ext.length && buf[i] == ext[i]; i++ ) {
+                            for (i = 0; i < x && x == ext.length && buf[i] == ext[i]; i++) {
                                 ;
                             }
-                            if( i == ext.length ) {
-                                return new String( type, 0, t, "ASCII" );
+                            if (i == ext.length) {
+                                return new String(type, 0, t, "ASCII");
                             }
-                            if( ch == '#' ) {
+                            if (ch == '#') {
                                 state = ST_COMM;
-                            } else if( ch == '\n' ) {
+                            } else if (ch == '\n') {
                                 t = x = i = 0;
                                 state = ST_START;
                             }

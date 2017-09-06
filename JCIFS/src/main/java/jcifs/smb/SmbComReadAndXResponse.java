@@ -25,43 +25,49 @@ class SmbComReadAndXResponse extends AndXServerMessageBlock {
 
     SmbComReadAndXResponse() {
     }
-    SmbComReadAndXResponse( byte[] b, int off ) {
+
+    SmbComReadAndXResponse(byte[] b, int off) {
         this.b = b;
         this.off = off;
     }
 
-    void setParam( byte[] b, int off ) {
+    void setParam(byte[] b, int off) {
         this.b = b;
         this.off = off;
     }
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
         bufferIndex += 2; // reserved
-        dataCompactionMode = readInt2( buffer, bufferIndex );
+        dataCompactionMode = readInt2(buffer, bufferIndex);
         bufferIndex += 4; // 2 reserved
-        dataLength = readInt2( buffer, bufferIndex );
+        dataLength = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        dataOffset = readInt2( buffer, bufferIndex );
+        dataOffset = readInt2(buffer, bufferIndex);
         bufferIndex += 12; // 10 reserved
 
         return bufferIndex - start;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         // handled special in SmbTransport.doRecv()
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComReadAndXResponse[" +
-            super.toString() +
-            ",dataCompactionMode=" + dataCompactionMode +
-            ",dataLength=" + dataLength +
-            ",dataOffset=" + dataOffset + "]" );
+        return new String("SmbComReadAndXResponse[" +
+                super.toString() +
+                ",dataCompactionMode=" + dataCompactionMode +
+                ",dataLength=" + dataLength +
+                ",dataOffset=" + dataOffset + "]");
     }
 }

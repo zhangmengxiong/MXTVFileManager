@@ -19,12 +19,15 @@
 
 package jcifs.dcerpc;
 
-import java.net.*;
-import java.io.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 
-import jcifs.dcerpc.ndr.NdrBuffer;
-import jcifs.smb.*;
-import jcifs.util.*;
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbFileInputStream;
+import jcifs.smb.SmbFileOutputStream;
+import jcifs.smb.SmbNamedPipe;
+import jcifs.util.Encdec;
 
 public class DcerpcPipeHandle extends DcerpcHandle {
 
@@ -34,16 +37,16 @@ public class DcerpcPipeHandle extends DcerpcHandle {
     boolean isStart = true;
 
     public DcerpcPipeHandle(String url,
-                NtlmPasswordAuthentication auth)
-                throws UnknownHostException, MalformedURLException, DcerpcException {
+                            NtlmPasswordAuthentication auth)
+            throws UnknownHostException, MalformedURLException, DcerpcException {
         binding = DcerpcHandle.parseBinding(url);
         url = "smb://" + binding.server + "/IPC$/" + binding.endpoint.substring(6);
 
         String params = "", server, address;
-        server = (String)binding.getOption("server");
+        server = (String) binding.getOption("server");
         if (server != null)
             params += "&server=" + server;
-        address = (String)binding.getOption("address");
+        address = (String) binding.getOption("address");
         if (server != null)
             params += "&address=" + address;
         if (params.length() > 0)
@@ -56,22 +59,23 @@ public class DcerpcPipeHandle extends DcerpcHandle {
     }
 
     protected void doSendFragment(byte[] buf,
-                    int off,
-                    int length,
-                    boolean isDirect) throws IOException {
+                                  int off,
+                                  int length,
+                                  boolean isDirect) throws IOException {
         if (out != null && out.isOpen() == false)
             throw new IOException("DCERPC pipe is no longer open");
 
         if (in == null)
-            in = (SmbFileInputStream)pipe.getNamedPipeInputStream();
+            in = (SmbFileInputStream) pipe.getNamedPipeInputStream();
         if (out == null)
-            out = (SmbFileOutputStream)pipe.getNamedPipeOutputStream();
+            out = (SmbFileOutputStream) pipe.getNamedPipeOutputStream();
         if (isDirect) {
-            out.writeDirect( buf, off, length, 1 );
+            out.writeDirect(buf, off, length, 1);
             return;
         }
         out.write(buf, off, length);
     }
+
     protected void doReceiveFragment(byte[] buf, boolean isDirect) throws IOException {
         int off, flags, length;
 
@@ -99,6 +103,7 @@ public class DcerpcPipeHandle extends DcerpcHandle {
             off += in.readDirect(buf, off, length - off);
         }
     }
+
     public void close() throws IOException {
         state = 0;
         if (out != null)

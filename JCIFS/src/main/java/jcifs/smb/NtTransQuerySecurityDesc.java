@@ -25,7 +25,7 @@ class NtTransQuerySecurityDesc extends SmbComNtTransaction {
     int fid;
     int securityInformation;
 
-    NtTransQuerySecurityDesc( int fid, int securityInformation ) {
+    NtTransQuerySecurityDesc(int fid, int securityInformation) {
         this.fid = fid;
         this.securityInformation = securityInformation;
         command = SMB_COM_NT_TRANSACT;
@@ -34,39 +34,45 @@ class NtTransQuerySecurityDesc extends SmbComNtTransaction {
         totalDataCount = 0;
         maxParameterCount = 4;
         maxDataCount = 32768;
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( fid, dst, dstIndex );
+        writeInt2(fid, dst, dstIndex);
         dstIndex += 2;
-        dst[dstIndex++] = (byte)0x00; // Reserved
-        dst[dstIndex++] = (byte)0x00; // Reserved
-        writeInt4( securityInformation, dst, dstIndex );
+        dst[dstIndex++] = (byte) 0x00; // Reserved
+        dst[dstIndex++] = (byte) 0x00; // Reserved
+        writeInt4(securityInformation, dst, dstIndex);
         dstIndex += 4;
 
         return dstIndex - start;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "NtTransQuerySecurityDesc[" + super.toString() +
-            ",fid=0x" + Hexdump.toHexString( fid, 4 ) +
-            ",securityInformation=0x" + Hexdump.toHexString( securityInformation, 8 ) + "]" );
+        return new String("NtTransQuerySecurityDesc[" + super.toString() +
+                ",fid=0x" + Hexdump.toHexString(fid, 4) +
+                ",securityInformation=0x" + Hexdump.toHexString(securityInformation, 8) + "]");
     }
 }

@@ -20,12 +20,10 @@
 package jcifs.ntlmssp;
 
 import java.io.IOException;
-
 import java.net.UnknownHostException;
 
-import jcifs.netbios.NbtAddress;
-
 import jcifs.Config;
+import jcifs.netbios.NbtAddress;
 
 /**
  * Represents an NTLMSSP Type-1 message.
@@ -50,7 +48,8 @@ public class Type1Message extends NtlmMessage {
         String defaultWorkstation = null;
         try {
             defaultWorkstation = NbtAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException ex) { }
+        } catch (UnknownHostException ex) {
+        }
         DEFAULT_WORKSTATION = defaultWorkstation;
     }
 
@@ -65,12 +64,12 @@ public class Type1Message extends NtlmMessage {
     /**
      * Creates a Type-1 message with the specified parameters.
      *
-     * @param flags The flags to apply to this message.
-     * @param suppliedDomain The supplied authentication domain.
+     * @param flags               The flags to apply to this message.
+     * @param suppliedDomain      The supplied authentication domain.
      * @param suppliedWorkstation The supplied workstation name.
      */
     public Type1Message(int flags, String suppliedDomain,
-            String suppliedWorkstation) {
+                        String suppliedWorkstation) {
         setFlags(getDefaultFlags() | flags);
         setSuppliedDomain(suppliedDomain);
         if (suppliedWorkstation == null)
@@ -108,7 +107,7 @@ public class Type1Message extends NtlmMessage {
 
     /**
      * Returns the supplied workstation name.
-     * 
+     *
      * @return A <code>String</code> containing the supplied workstation name.
      */
     public String getSuppliedWorkstation() {
@@ -117,7 +116,7 @@ public class Type1Message extends NtlmMessage {
 
     /**
      * Sets the supplied workstation name for this message.
-     * 
+     *
      * @param suppliedWorkstation The supplied workstation for this message.
      */
     public void setSuppliedWorkstation(String suppliedWorkstation) {
@@ -177,7 +176,7 @@ public class Type1Message extends NtlmMessage {
     /**
      * Returns the default flags for a generic Type-1 message in the
      * current environment.
-     * 
+     *
      * @return An <code>int</code> containing the default flags.
      */
     public static int getDefaultFlags() {

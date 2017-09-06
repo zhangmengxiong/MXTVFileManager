@@ -18,12 +18,10 @@
 
 package jcifs.smb;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.io.PrintStream;
 
 public class Handler extends URLStreamHandler {
 
@@ -32,34 +30,36 @@ public class Handler extends URLStreamHandler {
     protected int getDefaultPort() {
         return SmbConstants.DEFAULT_PORT;
     }
-    public URLConnection openConnection( URL u ) throws IOException {
-        return new SmbFile( u );
+
+    public URLConnection openConnection(URL u) throws IOException {
+        return new SmbFile(u);
     }
-    protected void parseURL( URL u, String spec, int start, int limit ) {
+
+    protected void parseURL(URL u, String spec, int start, int limit) {
         String host = u.getHost();
         String path, ref;
         int port;
 
-        if( spec.equals( "smb://" )) {
+        if (spec.equals("smb://")) {
             spec = "smb:////";
             limit += 2;
-        } else if( spec.startsWith( "smb://" ) == false &&
-                    host != null && host.length() == 0 ) {
+        } else if (spec.startsWith("smb://") == false &&
+                host != null && host.length() == 0) {
             spec = "//" + spec;
             limit += 2;
         }
-        super.parseURL( u, spec, start, limit );
+        super.parseURL(u, spec, start, limit);
         path = u.getPath();
         ref = u.getRef();
         if (ref != null) {
             path += '#' + ref;
         }
         port = u.getPort();
-        if( port == -1 ) {
+        if (port == -1) {
             port = getDefaultPort();
         }
-        setURL( u, "smb", u.getHost(), port,
-                    u.getAuthority(), u.getUserInfo(),
-                    path, u.getQuery(), null );
+        setURL(u, "smb", u.getHost(), port,
+                u.getAuthority(), u.getUserInfo(),
+                path, u.getQuery(), null);
     }
 }

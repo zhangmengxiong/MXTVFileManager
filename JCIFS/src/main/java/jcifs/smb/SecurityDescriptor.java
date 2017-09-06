@@ -27,9 +27,11 @@ public class SecurityDescriptor {
 
     public SecurityDescriptor() {
     }
+
     public SecurityDescriptor(byte[] buffer, int bufferIndex, int len) throws IOException {
         this.decode(buffer, bufferIndex, len);
     }
+
     public int decode(byte[] buffer, int bufferIndex, int len) throws IOException {
         int start = bufferIndex;
 
@@ -55,7 +57,7 @@ public class SecurityDescriptor {
         bufferIndex += 4;
 
         if (numAces > 4096)
-            throw new IOException( "Invalid SecurityDescriptor" );
+            throw new IOException("Invalid SecurityDescriptor");
 
         if (daclOffset != 0) {
             aces = new ACE[numAces];
@@ -69,6 +71,7 @@ public class SecurityDescriptor {
 
         return bufferIndex - start;
     }
+
     public String toString() {
         String ret = "SecurityDescriptor:\n";
         if (aces != null) {

@@ -20,7 +20,10 @@ package jcifs.dcerpc.msrpc;
 
 import java.io.IOException;
 
-import jcifs.dcerpc.*;
+import jcifs.dcerpc.DcerpcError;
+import jcifs.dcerpc.DcerpcException;
+import jcifs.dcerpc.DcerpcHandle;
+import jcifs.dcerpc.rpc;
 
 public class SamrPolicyHandle extends rpc.policy_handle {
 

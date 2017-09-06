@@ -1,9 +1,9 @@
 package jcifs.dcerpc.msrpc;
 
-import jcifs.dcerpc.*;
-import jcifs.dcerpc.ndr.*;
-
-import jcifs.util.Hexdump;
+import jcifs.dcerpc.DcerpcMessage;
+import jcifs.dcerpc.ndr.NdrBuffer;
+import jcifs.dcerpc.ndr.NdrException;
+import jcifs.dcerpc.ndr.NdrObject;
 
 public class srvsvc {
 
@@ -25,6 +25,7 @@ public class srvsvc {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
             int _netnamep = _src.dec_ndr_long();
@@ -36,6 +37,7 @@ public class srvsvc {
             }
         }
     }
+
     public static class ShareInfoCtr0 extends NdrObject {
 
         public int count;
@@ -59,9 +61,10 @@ public class srvsvc {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _arrayp = _src.dec_ndr_long();
 
             if (_arrayp != 0) {
@@ -71,7 +74,8 @@ public class srvsvc {
                 _src.advance(4 * _arrays);
 
                 if (array == null) {
-                    if (_arrays < 0 || _arrays > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_arrays < 0 || _arrays > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     array = new ShareInfo0[_arrays];
                 }
                 _src = _src.derive(_arrayi);
@@ -84,6 +88,7 @@ public class srvsvc {
             }
         }
     }
+
     public static class ShareInfo1 extends NdrObject {
 
         public String netname;
@@ -107,10 +112,11 @@ public class srvsvc {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
             int _netnamep = _src.dec_ndr_long();
-            type = (int)_src.dec_ndr_long();
+            type = (int) _src.dec_ndr_long();
             int _remarkp = _src.dec_ndr_long();
 
             if (_netnamep != 0) {
@@ -125,6 +131,7 @@ public class srvsvc {
             }
         }
     }
+
     public static class ShareInfoCtr1 extends NdrObject {
 
         public int count;
@@ -148,9 +155,10 @@ public class srvsvc {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _arrayp = _src.dec_ndr_long();
 
             if (_arrayp != 0) {
@@ -160,7 +168,8 @@ public class srvsvc {
                 _src.advance(12 * _arrays);
 
                 if (array == null) {
-                    if (_arrays < 0 || _arrays > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_arrays < 0 || _arrays > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     array = new ShareInfo1[_arrays];
                 }
                 _src = _src.derive(_arrayi);
@@ -173,6 +182,7 @@ public class srvsvc {
             }
         }
     }
+
     public static class ShareInfo502 extends NdrObject {
 
         public String netname;
@@ -232,17 +242,18 @@ public class srvsvc {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
             int _netnamep = _src.dec_ndr_long();
-            type = (int)_src.dec_ndr_long();
+            type = (int) _src.dec_ndr_long();
             int _remarkp = _src.dec_ndr_long();
-            permissions = (int)_src.dec_ndr_long();
-            max_uses = (int)_src.dec_ndr_long();
-            current_uses = (int)_src.dec_ndr_long();
+            permissions = (int) _src.dec_ndr_long();
+            max_uses = (int) _src.dec_ndr_long();
+            current_uses = (int) _src.dec_ndr_long();
             int _pathp = _src.dec_ndr_long();
             int _passwordp = _src.dec_ndr_long();
-            sd_size = (int)_src.dec_ndr_long();
+            sd_size = (int) _src.dec_ndr_long();
             int _security_descriptorp = _src.dec_ndr_long();
 
             if (_netnamep != 0) {
@@ -272,16 +283,18 @@ public class srvsvc {
                 _src.advance(1 * _security_descriptors);
 
                 if (security_descriptor == null) {
-                    if (_security_descriptors < 0 || _security_descriptors > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_security_descriptors < 0 || _security_descriptors > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     security_descriptor = new byte[_security_descriptors];
                 }
                 _src = _src.derive(_security_descriptori);
                 for (int _i = 0; _i < _security_descriptors; _i++) {
-                    security_descriptor[_i] = (byte)_src.dec_ndr_small();
+                    security_descriptor[_i] = (byte) _src.dec_ndr_small();
                 }
             }
         }
     }
+
     public static class ShareInfoCtr502 extends NdrObject {
 
         public int count;
@@ -305,9 +318,10 @@ public class srvsvc {
                 }
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            count = (int)_src.dec_ndr_long();
+            count = (int) _src.dec_ndr_long();
             int _arrayp = _src.dec_ndr_long();
 
             if (_arrayp != 0) {
@@ -317,7 +331,8 @@ public class srvsvc {
                 _src.advance(40 * _arrays);
 
                 if (array == null) {
-                    if (_arrays < 0 || _arrays > 0xFFFF) throw new NdrException( NdrException.INVALID_CONFORMANCE );
+                    if (_arrays < 0 || _arrays > 0xFFFF)
+                        throw new NdrException(NdrException.INVALID_CONFORMANCE);
                     array = new ShareInfo502[_arrays];
                 }
                 _src = _src.derive(_arrayi);
@@ -330,9 +345,12 @@ public class srvsvc {
             }
         }
     }
+
     public static class ShareEnumAll extends DcerpcMessage {
 
-        public int getOpnum() { return 0x0f; }
+        public int getOpnum() {
+            return 0x0f;
+        }
 
         public int retval;
         public String servername;
@@ -343,11 +361,11 @@ public class srvsvc {
         public int resume_handle;
 
         public ShareEnumAll(String servername,
-                    int level,
-                    NdrObject info,
-                    int prefmaxlen,
-                    int totalentries,
-                    int resume_handle) {
+                            int level,
+                            NdrObject info,
+                            int prefmaxlen,
+                            int totalentries,
+                            int resume_handle) {
             this.servername = servername;
             this.level = level;
             this.info = info;
@@ -374,8 +392,9 @@ public class srvsvc {
             _dst.enc_ndr_long(prefmaxlen);
             _dst.enc_ndr_long(resume_handle);
         }
+
         public void decode_out(NdrBuffer _src) throws NdrException {
-            level = (int)_src.dec_ndr_long();
+            level = (int) _src.dec_ndr_long();
             _src.dec_ndr_long(); /* union discriminant */
             int _infop = _src.dec_ndr_long();
             if (_infop != 0) {
@@ -386,14 +405,17 @@ public class srvsvc {
                 info.decode(_src);
 
             }
-            totalentries = (int)_src.dec_ndr_long();
-            resume_handle = (int)_src.dec_ndr_long();
-            retval = (int)_src.dec_ndr_long();
+            totalentries = (int) _src.dec_ndr_long();
+            resume_handle = (int) _src.dec_ndr_long();
+            retval = (int) _src.dec_ndr_long();
         }
     }
+
     public static class ShareGetInfo extends DcerpcMessage {
 
-        public int getOpnum() { return 0x10; }
+        public int getOpnum() {
+            return 0x10;
+        }
 
         public int retval;
         public String servername;
@@ -402,9 +424,9 @@ public class srvsvc {
         public NdrObject info;
 
         public ShareGetInfo(String servername,
-                    String sharename,
-                    int level,
-                    NdrObject info) {
+                            String sharename,
+                            int level,
+                            NdrObject info) {
             this.servername = servername;
             this.sharename = sharename;
             this.level = level;
@@ -420,6 +442,7 @@ public class srvsvc {
             _dst.enc_ndr_string(sharename);
             _dst.enc_ndr_long(level);
         }
+
         public void decode_out(NdrBuffer _src) throws NdrException {
             _src.dec_ndr_long(); /* union discriminant */
             int _infop = _src.dec_ndr_long();
@@ -431,9 +454,10 @@ public class srvsvc {
                 info.decode(_src);
 
             }
-            retval = (int)_src.dec_ndr_long();
+            retval = (int) _src.dec_ndr_long();
         }
     }
+
     public static class ServerInfo100 extends NdrObject {
 
         public int platform_id;
@@ -450,9 +474,10 @@ public class srvsvc {
 
             }
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            platform_id = (int)_src.dec_ndr_long();
+            platform_id = (int) _src.dec_ndr_long();
             int _namep = _src.dec_ndr_long();
 
             if (_namep != 0) {
@@ -462,9 +487,12 @@ public class srvsvc {
             }
         }
     }
+
     public static class ServerGetInfo extends DcerpcMessage {
 
-        public int getOpnum() { return 0x15; }
+        public int getOpnum() {
+            return 0x15;
+        }
 
         public int retval;
         public String servername;
@@ -485,6 +513,7 @@ public class srvsvc {
             }
             _dst.enc_ndr_long(level);
         }
+
         public void decode_out(NdrBuffer _src) throws NdrException {
             _src.dec_ndr_long(); /* union discriminant */
             int _infop = _src.dec_ndr_long();
@@ -496,9 +525,10 @@ public class srvsvc {
                 info.decode(_src);
 
             }
-            retval = (int)_src.dec_ndr_long();
+            retval = (int) _src.dec_ndr_long();
         }
     }
+
     public static class TimeOfDayInfo extends NdrObject {
 
         public int elapsedt;
@@ -530,26 +560,30 @@ public class srvsvc {
             _dst.enc_ndr_long(weekday);
 
         }
+
         public void decode(NdrBuffer _src) throws NdrException {
             _src.align(4);
-            elapsedt = (int)_src.dec_ndr_long();
-            msecs = (int)_src.dec_ndr_long();
-            hours = (int)_src.dec_ndr_long();
-            mins = (int)_src.dec_ndr_long();
-            secs = (int)_src.dec_ndr_long();
-            hunds = (int)_src.dec_ndr_long();
-            timezone = (int)_src.dec_ndr_long();
-            tinterval = (int)_src.dec_ndr_long();
-            day = (int)_src.dec_ndr_long();
-            month = (int)_src.dec_ndr_long();
-            year = (int)_src.dec_ndr_long();
-            weekday = (int)_src.dec_ndr_long();
+            elapsedt = (int) _src.dec_ndr_long();
+            msecs = (int) _src.dec_ndr_long();
+            hours = (int) _src.dec_ndr_long();
+            mins = (int) _src.dec_ndr_long();
+            secs = (int) _src.dec_ndr_long();
+            hunds = (int) _src.dec_ndr_long();
+            timezone = (int) _src.dec_ndr_long();
+            tinterval = (int) _src.dec_ndr_long();
+            day = (int) _src.dec_ndr_long();
+            month = (int) _src.dec_ndr_long();
+            year = (int) _src.dec_ndr_long();
+            weekday = (int) _src.dec_ndr_long();
 
         }
     }
+
     public static class RemoteTOD extends DcerpcMessage {
 
-        public int getOpnum() { return 0x1c; }
+        public int getOpnum() {
+            return 0x1c;
+        }
 
         public int retval;
         public String servername;
@@ -567,6 +601,7 @@ public class srvsvc {
 
             }
         }
+
         public void decode_out(NdrBuffer _src) throws NdrException {
             int _infop = _src.dec_ndr_long();
             if (_infop != 0) {
@@ -576,7 +611,7 @@ public class srvsvc {
                 info.decode(_src);
 
             }
-            retval = (int)_src.dec_ndr_long();
+            retval = (int) _src.dec_ndr_long();
         }
     }
 }

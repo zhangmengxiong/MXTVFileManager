@@ -19,36 +19,36 @@
 
 package jcifs.smb;
 
-import java.net.URL;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 /**
  * This class will allow a Java program to read and write data to Named
  * Pipes and Transact NamedPipes.
- *
+ * <p>
  * <p>There are three Win32 function calls provided by the Windows SDK
  * that are important in the context of using jCIFS. They are:
- *
+ * <p>
  * <ul>
  * <li> <code>CallNamedPipe</code> A message-type pipe call that opens,
- *      writes to, reads from, and closes the pipe in a single operation.
+ * writes to, reads from, and closes the pipe in a single operation.
  * <li> <code>TransactNamedPipe</code> A message-type pipe call that
- *      writes to and reads from an existing pipe descriptor in one operation.
+ * writes to and reads from an existing pipe descriptor in one operation.
  * <li> <code>CreateFile</code>, <code>ReadFile</code>,
- *      <code>WriteFile</code>, and <code>CloseFile</code> A byte-type pipe can
- *      be opened, written to, read from and closed using the standard Win32
- *      file operations.
+ * <code>WriteFile</code>, and <code>CloseFile</code> A byte-type pipe can
+ * be opened, written to, read from and closed using the standard Win32
+ * file operations.
  * </ul>
- *
+ * <p>
  * <p>The jCIFS API maps all of these operations into the standard Java
  * <code>XxxputStream</code> interface. A special <code>PIPE_TYPE</code>
  * flags is necessary to distinguish which type of Named Pipe behavior
  * is desired.
- *
+ * <p>
  * <p><table border="1" cellpadding="3" cellspacing="0" width="100%">
  * <tr bgcolor="#ccccff">
  * <td colspan="2"><b><code>SmbNamedPipe</code> Constructor Examples</b></td>
@@ -77,11 +77,10 @@ import java.net.UnknownHostException;
  * being used.
  * </td></tr>
  * </table>
- *
+ * <p>
  * <p>See <a href="../../../pipes.html">Using jCIFS to Connect to Win32
  * Named Pipes</a> for a detailed description of how to use jCIFS with
  * Win32 Named Pipe server processes.
- *
  */
 
 public class SmbNamedPipe extends SmbFile {
@@ -102,13 +101,13 @@ public class SmbNamedPipe extends SmbFile {
      * The pipe should be opened for both reading and writing.
      */
 
-    public static final int PIPE_TYPE_RDWR   = O_RDWR;
+    public static final int PIPE_TYPE_RDWR = O_RDWR;
 
     /**
      * Pipe operations should behave like the <code>CallNamedPipe</code> Win32 Named Pipe function.
      */
 
-    public static final int PIPE_TYPE_CALL   = 0x0100;
+    public static final int PIPE_TYPE_CALL = 0x0100;
 
     /**
      * Pipe operations should behave like the <code>TransactNamedPipe</code> Win32 Named Pipe function.
@@ -129,21 +128,23 @@ public class SmbNamedPipe extends SmbFile {
      * operator <code>|</code>. See the examples listed above.
      */
 
-    public SmbNamedPipe( String url, int pipeType )
-                            throws MalformedURLException, UnknownHostException {
-        super( url );
+    public SmbNamedPipe(String url, int pipeType)
+            throws MalformedURLException, UnknownHostException {
+        super(url);
         this.pipeType = pipeType;
         type = TYPE_NAMED_PIPE;
     }
-    public SmbNamedPipe( String url, int pipeType, NtlmPasswordAuthentication auth )
-                            throws MalformedURLException, UnknownHostException {
-        super( url, auth );
+
+    public SmbNamedPipe(String url, int pipeType, NtlmPasswordAuthentication auth)
+            throws MalformedURLException, UnknownHostException {
+        super(url, auth);
         this.pipeType = pipeType;
         type = TYPE_NAMED_PIPE;
     }
-    public SmbNamedPipe( URL url, int pipeType, NtlmPasswordAuthentication auth )
-                            throws MalformedURLException, UnknownHostException {
-        super( url, auth );
+
+    public SmbNamedPipe(URL url, int pipeType, NtlmPasswordAuthentication auth)
+            throws MalformedURLException, UnknownHostException {
+        super(url, auth);
         this.pipeType = pipeType;
         type = TYPE_NAMED_PIPE;
     }
@@ -160,13 +161,13 @@ public class SmbNamedPipe extends SmbFile {
      */
 
     public InputStream getNamedPipeInputStream() throws IOException {
-        if( pipeIn == null ) {
-            if(( pipeType & PIPE_TYPE_CALL ) == PIPE_TYPE_CALL ||
-                    ( pipeType & PIPE_TYPE_TRANSACT ) == PIPE_TYPE_TRANSACT ) {
-                pipeIn = new TransactNamedPipeInputStream( this );
+        if (pipeIn == null) {
+            if ((pipeType & PIPE_TYPE_CALL) == PIPE_TYPE_CALL ||
+                    (pipeType & PIPE_TYPE_TRANSACT) == PIPE_TYPE_TRANSACT) {
+                pipeIn = new TransactNamedPipeInputStream(this);
             } else {
                 pipeIn = new SmbFileInputStream(this,
-                            (pipeType & 0xFFFF00FF) | SmbFile.O_EXCL);
+                        (pipeType & 0xFFFF00FF) | SmbFile.O_EXCL);
             }
         }
         return pipeIn;
@@ -181,13 +182,13 @@ public class SmbNamedPipe extends SmbFile {
      */
 
     public OutputStream getNamedPipeOutputStream() throws IOException {
-        if( pipeOut == null ) {
-            if(( pipeType & PIPE_TYPE_CALL ) == PIPE_TYPE_CALL ||
-                    ( pipeType & PIPE_TYPE_TRANSACT ) == PIPE_TYPE_TRANSACT ) {
-                pipeOut = new TransactNamedPipeOutputStream( this );
+        if (pipeOut == null) {
+            if ((pipeType & PIPE_TYPE_CALL) == PIPE_TYPE_CALL ||
+                    (pipeType & PIPE_TYPE_TRANSACT) == PIPE_TYPE_TRANSACT) {
+                pipeOut = new TransactNamedPipeOutputStream(this);
             } else {
                 pipeOut = new SmbFileOutputStream(this, false,
-                            (pipeType & 0xFFFF00FF) | SmbFile.O_EXCL );
+                        (pipeType & 0xFFFF00FF) | SmbFile.O_EXCL);
             }
         }
         return pipeOut;

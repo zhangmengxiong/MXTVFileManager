@@ -19,8 +19,6 @@
 
 package jcifs.dcerpc;
 
-import jcifs.util.*;
-
 public class UUID extends rpc.uuid_t {
 
     public static int hex_to_bin(char[] arr, int offset, int length) {
@@ -31,14 +29,32 @@ public class UUID extends rpc.uuid_t {
         for (ai = offset; ai < arr.length && count < length; ai++) {
             value <<= 4;
             switch (arr[ai]) {
-                case '0': case '1': case '2': case '3': case '4':
-                case '5': case '6': case '7': case '8': case '9':
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
                     value += arr[ai] - '0';
                     break;
-                case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'D':
+                case 'E':
+                case 'F':
                     value += 10 + (arr[ai] - 'A');
                     break;
-                case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+                case 'a':
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'e':
+                case 'f':
                     value += 10 + (arr[ai] - 'a');
                     break;
                 default:
@@ -49,9 +65,11 @@ public class UUID extends rpc.uuid_t {
 
         return value;
     }
+
     static final char[] HEXCHARS = {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
     };
+
     public static String bin_to_hex(int value, int length) {
         char[] arr = new char[length];
         int ai = arr.length;
@@ -61,8 +79,14 @@ public class UUID extends rpc.uuid_t {
         }
         return new String(arr);
     }
-    private static byte B(int i) { return (byte)(i & 0xFF); }
-    private static short S(int i) { return (short)(i & 0xFFFF); }
+
+    private static byte B(int i) {
+        return (byte) (i & 0xFF);
+    }
+
+    private static short S(int i) {
+        return (short) (i & 0xFFFF);
+    }
 
     public UUID(rpc.uuid_t uuid) {
         time_low = uuid.time_low;
@@ -78,6 +102,7 @@ public class UUID extends rpc.uuid_t {
         node[4] = uuid.node[4];
         node[5] = uuid.node[5];
     }
+
     public UUID(String str) {
         char[] arr = str.toCharArray();
         time_low = hex_to_bin(arr, 0, 8);

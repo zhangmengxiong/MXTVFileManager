@@ -24,34 +24,38 @@ class NameQueryResponse extends NameServicePacket {
         recordName = new Name();
     }
 
-    int writeBodyWireFormat( byte[] dst, int dstIndex ) {
+    int writeBodyWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readBodyWireFormat( byte[] src, int srcIndex ) {
-        return readResourceRecordWireFormat( src, srcIndex );
+
+    int readBodyWireFormat(byte[] src, int srcIndex) {
+        return readResourceRecordWireFormat(src, srcIndex);
     }
-    int writeRDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeRDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readRDataWireFormat( byte[] src, int srcIndex ) {
-        if( resultCode != 0 || opCode != QUERY ) {
+
+    int readRDataWireFormat(byte[] src, int srcIndex) {
+        if (resultCode != 0 || opCode != QUERY) {
             return 0;
         }
-        boolean groupName = (( src[srcIndex] & 0x80 ) == 0x80 ) ? true : false;
-        int nodeType = ( src[srcIndex] & 0x60 ) >> 5;
+        boolean groupName = ((src[srcIndex] & 0x80) == 0x80) ? true : false;
+        int nodeType = (src[srcIndex] & 0x60) >> 5;
         srcIndex += 2;
-        int address = readInt4( src, srcIndex );
-        if( address != 0 ) {
-            addrEntry[addrIndex] = new NbtAddress( recordName, address, groupName, nodeType );
+        int address = readInt4(src, srcIndex);
+        if (address != 0) {
+            addrEntry[addrIndex] = new NbtAddress(recordName, address, groupName, nodeType);
         } else {
             addrEntry[addrIndex] = null;
         }
 
         return 6;
     }
+
     public String toString() {
-        return new String( "NameQueryResponse[" +
-            super.toString() +
-            ",addrEntry=" + addrEntry + "]" );
+        return new String("NameQueryResponse[" +
+                super.toString() +
+                ",addrEntry=" + addrEntry + "]");
     }
 }

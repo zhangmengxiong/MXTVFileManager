@@ -23,24 +23,24 @@ public class DosFileFilter implements SmbFileFilter {
     protected String wildcard;
     protected int attributes;
 
-/* This filter can be considerably more efficient than other file filters
- * as the specifed wildcard and attributes are passed to the server for
- * filtering there (although attributes are largely ignored by servers
- * they are filtered locally by the default accept method).
- */
-    public DosFileFilter( String wildcard, int attributes ) {
+    /* This filter can be considerably more efficient than other file filters
+     * as the specifed wildcard and attributes are passed to the server for
+     * filtering there (although attributes are largely ignored by servers
+     * they are filtered locally by the default accept method).
+     */
+    public DosFileFilter(String wildcard, int attributes) {
         this.wildcard = wildcard;
         this.attributes = attributes;
     }
 
-/* This returns true if the file's attributes contain any of the attributes
- * specified for this filter. The wildcard has no influence on this
- * method as the server should have performed that filtering already. The
- * attributes are asserted here only because server file systems may not
- * support filtering by all attributes (e.g. even though ATTR_DIRECTORY was
- * specified the server may still return objects that are not directories).
- */
-    public boolean accept( SmbFile file ) throws SmbException {
+    /* This returns true if the file's attributes contain any of the attributes
+     * specified for this filter. The wildcard has no influence on this
+     * method as the server should have performed that filtering already. The
+     * attributes are asserted here only because server file systems may not
+     * support filtering by all attributes (e.g. even though ATTR_DIRECTORY was
+     * specified the server may still return objects that are not directories).
+     */
+    public boolean accept(SmbFile file) throws SmbException {
         return (file.getAttributes() & attributes) != 0;
     }
 }

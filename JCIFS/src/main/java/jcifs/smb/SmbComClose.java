@@ -18,38 +18,40 @@
 
 package jcifs.smb;
 
-import java.util.Date;
-
 class SmbComClose extends ServerMessageBlock {
 
     private int fid;
     private long lastWriteTime;
 
-    SmbComClose( int fid, long lastWriteTime ) {
+    SmbComClose(int fid, long lastWriteTime) {
         this.fid = fid;
         this.lastWriteTime = lastWriteTime;
         command = SMB_COM_CLOSE;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
-        writeInt2( fid, dst, dstIndex );
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
+        writeInt2(fid, dst, dstIndex);
         dstIndex += 2;
-        writeUTime( lastWriteTime, dst, dstIndex );
+        writeUTime(lastWriteTime, dst, dstIndex);
         return 6;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComClose[" +
-            super.toString() +
-            ",fid=" + fid +
-            ",lastWriteTime=" + lastWriteTime + "]" );
+        return new String("SmbComClose[" +
+                super.toString() +
+                ",fid=" + fid +
+                ",lastWriteTime=" + lastWriteTime + "]");
     }
 }

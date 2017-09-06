@@ -22,7 +22,7 @@ class TransPeekNamedPipe extends SmbComTransaction {
 
     private int fid;
 
-    TransPeekNamedPipe( String pipeName, int fid ) {
+    TransPeekNamedPipe(String pipeName, int fid) {
         name = pipeName;
         this.fid = fid;
         command = SMB_COM_TRANSACTION;
@@ -30,34 +30,40 @@ class TransPeekNamedPipe extends SmbComTransaction {
         timeout = 0xFFFFFFFF;
         maxParameterCount = 6;
         maxDataCount = 1;
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
         setupCount = 2;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00;
         // this says "Transaction priority" in netmon
-        writeInt2( fid, dst, dstIndex );
+        writeInt2(fid, dst, dstIndex);
         return 4;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "TransPeekNamedPipe[" + super.toString() +
-            ",pipeName=" + name + "]" );
+        return new String("TransPeekNamedPipe[" + super.toString() +
+                ",pipeName=" + name + "]");
     }
 }

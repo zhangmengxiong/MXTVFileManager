@@ -29,9 +29,9 @@ public abstract class NtlmMessage implements NtlmFlags {
     /**
      * The NTLMSSP "preamble".
      */
-    protected static final byte[] NTLMSSP_SIGNATURE = new byte[] {
-        (byte) 'N', (byte) 'T', (byte) 'L', (byte) 'M',
-        (byte) 'S', (byte) 'S', (byte) 'P', (byte) 0
+    protected static final byte[] NTLMSSP_SIGNATURE = new byte[]{
+            (byte) 'N', (byte) 'T', (byte) 'L', (byte) 'M',
+            (byte) 'S', (byte) 'S', (byte) 'P', (byte) 0
     };
 
     private static final String OEM_ENCODING = Config.DEFAULT_OEM_ENCODING;
@@ -70,11 +70,11 @@ public abstract class NtlmMessage implements NtlmFlags {
 
     /**
      * Sets or clears the specified flag.
-     * 
-     * @param flag The flag to set/clear (i.e.,
-     * <code>NTLMSSP_NEGOTIATE_OEM</code>).
+     *
+     * @param flag  The flag to set/clear (i.e.,
+     *              <code>NTLMSSP_NEGOTIATE_OEM</code>).
      * @param value Indicates whether to set (<code>true</code>) or
-     * clear (<code>false</code>) the specified flag.
+     *              clear (<code>false</code>) the specified flag.
      */
     public void setFlag(int flag, boolean value) {
         setFlags(value ? (getFlags() | flag) :
@@ -113,7 +113,7 @@ public abstract class NtlmMessage implements NtlmFlags {
     }
 
     static void writeSecurityBuffer(byte[] dest, int offset, int bodyOffset,
-            byte[] src) {
+                                    byte[] src) {
         int length = (src != null) ? src.length : 0;
         if (length == 0) return;
         writeUShort(dest, offset, length);

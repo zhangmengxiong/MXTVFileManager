@@ -22,6 +22,7 @@ package jcifs.dcerpc.ndr;
 public abstract class NdrObject {
 
     public abstract void encode(NdrBuffer dst) throws NdrException;
+
     public abstract void decode(NdrBuffer src) throws NdrException;
 }
 

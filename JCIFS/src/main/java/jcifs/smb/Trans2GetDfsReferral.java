@@ -22,45 +22,51 @@ class Trans2GetDfsReferral extends SmbComTransaction {
 
     private int maxReferralLevel = 3;
 
-    Trans2GetDfsReferral( String filename ) {
+    Trans2GetDfsReferral(String filename) {
         path = filename;
         command = SMB_COM_TRANSACTION2;
         subCommand = TRANS2_GET_DFS_REFERRAL;
         totalDataCount = 0;
         maxParameterCount = 0;
         maxDataCount = 4096;
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00;
         return 2;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( maxReferralLevel, dst, dstIndex );
+        writeInt2(maxReferralLevel, dst, dstIndex);
         dstIndex += 2;
-        dstIndex += writeString( path, dst, dstIndex );
+        dstIndex += writeString(path, dst, dstIndex);
 
         return dstIndex - start;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "Trans2GetDfsReferral[" + super.toString() +
-            ",maxReferralLevel=0x" + maxReferralLevel +
-            ",filename=" + path + "]" );
+        return new String("Trans2GetDfsReferral[" + super.toString() +
+                ",maxReferralLevel=0x" + maxReferralLevel +
+                ",filename=" + path + "]");
     }
 }

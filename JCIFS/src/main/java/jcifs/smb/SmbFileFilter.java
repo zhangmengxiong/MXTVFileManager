@@ -19,5 +19,5 @@
 package jcifs.smb;
 
 public interface SmbFileFilter {
-    public boolean accept( SmbFile file ) throws SmbException;
+    public boolean accept(SmbFile file) throws SmbException;
 }

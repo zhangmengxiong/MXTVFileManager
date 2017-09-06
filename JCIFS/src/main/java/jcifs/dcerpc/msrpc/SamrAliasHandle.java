@@ -20,16 +20,16 @@ package jcifs.dcerpc.msrpc;
 
 import java.io.IOException;
 
+import jcifs.dcerpc.DcerpcHandle;
+import jcifs.dcerpc.rpc;
 import jcifs.smb.SmbException;
-
-import jcifs.dcerpc.*;
 
 public class SamrAliasHandle extends rpc.policy_handle {
 
     public SamrAliasHandle(DcerpcHandle handle,
-                SamrDomainHandle domainHandle,
-                int access,
-                int rid) throws IOException {
+                           SamrDomainHandle domainHandle,
+                           int access,
+                           int rid) throws IOException {
         MsrpcSamrOpenAlias rpc = new MsrpcSamrOpenAlias(domainHandle, access, rid, this);
         handle.sendrecv(rpc);
         if (rpc.retval != 0)

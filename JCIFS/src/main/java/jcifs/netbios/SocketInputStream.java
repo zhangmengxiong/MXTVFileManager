@@ -18,8 +18,8 @@
 
 package jcifs.netbios;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 class SocketInputStream extends InputStream {
 
@@ -30,68 +30,70 @@ class SocketInputStream extends InputStream {
     private int tot, bip, n;
     private byte[] header, tmp;
 
-    SocketInputStream( InputStream in ) {
+    SocketInputStream(InputStream in) {
         this.in = in;
         header = new byte[4];
         tmp = new byte[TMP_BUFFER_SIZE];
     }
 
     public synchronized int read() throws IOException {
-        if( read( tmp, 0, 1 ) < 0 ) {
+        if (read(tmp, 0, 1) < 0) {
             return -1;
         }
         return tmp[0] & 0xFF;
     }
-    public synchronized int read( byte[] b ) throws IOException {
-        return read( b, 0, b.length );
+
+    public synchronized int read(byte[] b) throws IOException {
+        return read(b, 0, b.length);
     }
 
     /* This method will not return until len bytes have been read
      * or the stream has been closed.
      */
 
-    public synchronized int read( byte[] b, int off, int len ) throws IOException {
-        if( len == 0 ) {
+    public synchronized int read(byte[] b, int off, int len) throws IOException {
+        if (len == 0) {
             return 0;
         }
         tot = 0;
 
-        while( true ) {
-            while( bip > 0 ) {
-                n = in.read( b, off, Math.min( len, bip ));
-                if( n == -1 ) {
+        while (true) {
+            while (bip > 0) {
+                n = in.read(b, off, Math.min(len, bip));
+                if (n == -1) {
                     return tot > 0 ? tot : -1;
                 }
                 tot += n;
                 off += n;
                 len -= n;
                 bip -= n;
-                if( len == 0 ) {
+                if (len == 0) {
                     return tot;
                 }
             }
 
-            switch( SessionServicePacket.readPacketType( in, header, 0 )) {
+            switch (SessionServicePacket.readPacketType(in, header, 0)) {
                 case SessionServicePacket.SESSION_KEEP_ALIVE:
                     break;
                 case SessionServicePacket.SESSION_MESSAGE:
-                    bip = SessionServicePacket.readLength( header, 0 );
+                    bip = SessionServicePacket.readLength(header, 0);
                     break;
                 case -1:
-                    if( tot > 0 ) {
+                    if (tot > 0) {
                         return tot;
                     }
                     return -1;
             }
         }
     }
-    public synchronized long skip( long numbytes ) throws IOException {
-        if( numbytes <= 0 ) {
+
+    public synchronized long skip(long numbytes) throws IOException {
+        if (numbytes <= 0) {
             return 0;
         }
         long n = numbytes;
-        while( n > 0 ) {
-            int r = read( tmp, 0, (int)Math.min( (long)TMP_BUFFER_SIZE, n ));
+        while (n > 0) {
+            int r = read(tmp, 0, (int) Math.min((long) TMP_BUFFER_SIZE, n));
             if (r < 0) {
                 break;
             }
@@ -99,12 +101,14 @@ class SocketInputStream extends InputStream {
         }
         return numbytes - n;
     }
+
     public int available() throws IOException {
-        if( bip > 0 ) {
+        if (bip > 0) {
             return bip;
         }
         return in.available();
     }
+
     public void close() throws IOException {
         in.close();
     }

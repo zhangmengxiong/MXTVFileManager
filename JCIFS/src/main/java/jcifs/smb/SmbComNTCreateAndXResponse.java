@@ -19,86 +19,91 @@
 package jcifs.smb;
 
 import java.util.Date;
+
 import jcifs.util.Hexdump;
 
 class SmbComNTCreateAndXResponse extends AndXServerMessageBlock {
 
     static final int EXCLUSIVE_OPLOCK_GRANTED = 1;
-    static final int BATCH_OPLOCK_GRANTED     = 2;
-    static final int LEVEL_II_OPLOCK_GRANTED  = 3;
+    static final int BATCH_OPLOCK_GRANTED = 2;
+    static final int LEVEL_II_OPLOCK_GRANTED = 3;
 
     byte oplockLevel;
     int fid,
-        createAction,
-        extFileAttributes,
-        fileType,
-        deviceState;
+            createAction,
+            extFileAttributes,
+            fileType,
+            deviceState;
     long creationTime,
-        lastAccessTime,
-        lastWriteTime,
-        changeTime,
-        allocationSize,
-        endOfFile;
+            lastAccessTime,
+            lastWriteTime,
+            changeTime,
+            allocationSize,
+            endOfFile;
     boolean directory;
-boolean isExtended;
+    boolean isExtended;
 
     SmbComNTCreateAndXResponse() {
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
         oplockLevel = buffer[bufferIndex++];
-        fid = readInt2( buffer, bufferIndex );
+        fid = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        createAction = readInt4( buffer, bufferIndex );
+        createAction = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        creationTime = readTime( buffer, bufferIndex );
+        creationTime = readTime(buffer, bufferIndex);
         bufferIndex += 8;
-        lastAccessTime = readTime( buffer, bufferIndex );
+        lastAccessTime = readTime(buffer, bufferIndex);
         bufferIndex += 8;
-        lastWriteTime = readTime( buffer, bufferIndex );
+        lastWriteTime = readTime(buffer, bufferIndex);
         bufferIndex += 8;
-        changeTime = readTime( buffer, bufferIndex );
+        changeTime = readTime(buffer, bufferIndex);
         bufferIndex += 8;
-        extFileAttributes = readInt4( buffer, bufferIndex );
+        extFileAttributes = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        allocationSize = readInt8( buffer, bufferIndex );
+        allocationSize = readInt8(buffer, bufferIndex);
         bufferIndex += 8;
-        endOfFile = readInt8( buffer, bufferIndex );
+        endOfFile = readInt8(buffer, bufferIndex);
         bufferIndex += 8;
-        fileType = readInt2( buffer, bufferIndex );
+        fileType = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        deviceState = readInt2( buffer, bufferIndex );
+        deviceState = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        directory = ( buffer[bufferIndex++] & 0xFF ) > 0;
+        directory = (buffer[bufferIndex++] & 0xFF) > 0;
 
         return bufferIndex - start;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComNTCreateAndXResponse[" +
-            super.toString() +
-            ",oplockLevel=" + oplockLevel +
-            ",fid=" + fid +
-            ",createAction=0x" + Hexdump.toHexString( createAction, 4 ) +
-            ",creationTime=" + new Date( creationTime ) +
-            ",lastAccessTime=" + new Date( lastAccessTime ) +
-            ",lastWriteTime=" + new Date( lastWriteTime ) +
-            ",changeTime=" + new Date( changeTime ) +
-            ",extFileAttributes=0x" + Hexdump.toHexString( extFileAttributes, 4 ) +
-            ",allocationSize=" + allocationSize +
-            ",endOfFile=" + endOfFile +
-            ",fileType=" + fileType +
-            ",deviceState=" + deviceState +
-            ",directory=" + directory + "]" );
+        return new String("SmbComNTCreateAndXResponse[" +
+                super.toString() +
+                ",oplockLevel=" + oplockLevel +
+                ",fid=" + fid +
+                ",createAction=0x" + Hexdump.toHexString(createAction, 4) +
+                ",creationTime=" + new Date(creationTime) +
+                ",lastAccessTime=" + new Date(lastAccessTime) +
+                ",lastWriteTime=" + new Date(lastWriteTime) +
+                ",changeTime=" + new Date(changeTime) +
+                ",extFileAttributes=0x" + Hexdump.toHexString(extFileAttributes, 4) +
+                ",allocationSize=" + allocationSize +
+                ",endOfFile=" + endOfFile +
+                ",fileType=" + fileType +
+                ",deviceState=" + deviceState +
+                ",directory=" + directory + "]");
     }
 }

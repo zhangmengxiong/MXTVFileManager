@@ -21,8 +21,8 @@ package jcifs.smb;
 abstract class SmbComNtTransaction extends SmbComTransaction {
 
     // relative to headerStart
-    private static final int NTT_PRIMARY_SETUP_OFFSET       = 69;
-    private static final int NTT_SECONDARY_PARAMETER_OFFSET  = 51;
+    private static final int NTT_PRIMARY_SETUP_OFFSET = 69;
+    private static final int NTT_SECONDARY_PARAMETER_OFFSET = 51;
 
     static final int NT_TRANSACT_QUERY_SECURITY_DESC = 6;
 
@@ -34,47 +34,47 @@ abstract class SmbComNtTransaction extends SmbComTransaction {
         secondaryParameterOffset = NTT_SECONDARY_PARAMETER_OFFSET;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
         if (command != SMB_COM_NT_TRANSACT_SECONDARY) {
             dst[dstIndex++] = maxSetupCount;
         } else {
-            dst[dstIndex++] = (byte)0x00;          // Reserved
+            dst[dstIndex++] = (byte) 0x00;          // Reserved
         }
-        dst[dstIndex++] = (byte)0x00;          // Reserved
-        dst[dstIndex++] = (byte)0x00;          // Reserved
-        writeInt4( totalParameterCount, dst, dstIndex );
+        dst[dstIndex++] = (byte) 0x00;          // Reserved
+        dst[dstIndex++] = (byte) 0x00;          // Reserved
+        writeInt4(totalParameterCount, dst, dstIndex);
         dstIndex += 4;
-        writeInt4( totalDataCount, dst, dstIndex );
+        writeInt4(totalDataCount, dst, dstIndex);
         dstIndex += 4;
         if (command != SMB_COM_NT_TRANSACT_SECONDARY) {
-            writeInt4( maxParameterCount, dst, dstIndex );
+            writeInt4(maxParameterCount, dst, dstIndex);
             dstIndex += 4;
-            writeInt4( maxDataCount, dst, dstIndex );
-            dstIndex += 4;
-        }
-        writeInt4( parameterCount, dst, dstIndex );
-        dstIndex += 4;
-        writeInt4(( parameterCount == 0 ? 0 : parameterOffset ), dst, dstIndex );
-        dstIndex += 4;
-        if (command == SMB_COM_NT_TRANSACT_SECONDARY) {
-            writeInt4( parameterDisplacement, dst, dstIndex );
+            writeInt4(maxDataCount, dst, dstIndex);
             dstIndex += 4;
         }
-        writeInt4( dataCount, dst, dstIndex );
+        writeInt4(parameterCount, dst, dstIndex);
         dstIndex += 4;
-        writeInt4(( dataCount == 0 ? 0 : dataOffset ), dst, dstIndex );
+        writeInt4((parameterCount == 0 ? 0 : parameterOffset), dst, dstIndex);
         dstIndex += 4;
         if (command == SMB_COM_NT_TRANSACT_SECONDARY) {
-            writeInt4( dataDisplacement, dst, dstIndex );
+            writeInt4(parameterDisplacement, dst, dstIndex);
             dstIndex += 4;
-            dst[dstIndex++] = (byte)0x00;      // Reserved1
+        }
+        writeInt4(dataCount, dst, dstIndex);
+        dstIndex += 4;
+        writeInt4((dataCount == 0 ? 0 : dataOffset), dst, dstIndex);
+        dstIndex += 4;
+        if (command == SMB_COM_NT_TRANSACT_SECONDARY) {
+            writeInt4(dataDisplacement, dst, dstIndex);
+            dstIndex += 4;
+            dst[dstIndex++] = (byte) 0x00;      // Reserved1
         } else {
-            dst[dstIndex++] = (byte)setupCount;
-            writeInt2( function, dst, dstIndex );
+            dst[dstIndex++] = (byte) setupCount;
+            writeInt2(function, dst, dstIndex);
             dstIndex += 2;
-            dstIndex += writeSetupWireFormat( dst, dstIndex );
+            dstIndex += writeSetupWireFormat(dst, dstIndex);
         }
 
         return dstIndex - start;

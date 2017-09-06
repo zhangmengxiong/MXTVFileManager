@@ -20,11 +20,9 @@
 package jcifs.ntlmssp;
 
 import java.io.IOException;
-
 import java.net.UnknownHostException;
 
 import jcifs.Config;
-
 import jcifs.netbios.NbtAddress;
 
 /**
@@ -55,7 +53,8 @@ public class Type2Message extends NtlmMessage {
         if (DEFAULT_DOMAIN != null) {
             try {
                 domain = DEFAULT_DOMAIN.getBytes(UNI_ENCODING);
-            } catch (IOException ex) { }
+            } catch (IOException ex) {
+            }
         }
         int domainLength = domain.length;
         byte[] server = new byte[0];
@@ -64,9 +63,11 @@ public class Type2Message extends NtlmMessage {
             if (host != null) {
                 try {
                     server = host.getBytes(UNI_ENCODING);
-                } catch (IOException ex) { }
+                } catch (IOException ex) {
+                }
             }
-        } catch (UnknownHostException ex) { }
+        } catch (UnknownHostException ex) {
+        }
         int serverLength = server.length;
         byte[] targetInfo = new byte[(domainLength > 0 ? domainLength + 4 : 0) +
                 (serverLength > 0 ? serverLength + 4 : 0) + 4];
@@ -110,22 +111,22 @@ public class Type2Message extends NtlmMessage {
     /**
      * Creates a Type-2 message in response to the given Type-1 message.
      *
-     * @param type1 The Type-1 message which this represents a response to.
+     * @param type1     The Type-1 message which this represents a response to.
      * @param challenge The challenge from the domain controller/server.
-     * @param target The authentication target.
+     * @param target    The authentication target.
      */
     public Type2Message(Type1Message type1, byte[] challenge, String target) {
         this(getDefaultFlags(type1), challenge, (type1 != null &&
                 target == null && type1.getFlag(NTLMSSP_REQUEST_TARGET)) ?
-                        getDefaultDomain() : target);
+                getDefaultDomain() : target);
     }
 
     /**
      * Creates a Type-2 message with the specified parameters.
      *
-     * @param flags The flags to apply to this message.
+     * @param flags     The flags to apply to this message.
      * @param challenge The challenge from the domain controller/server.
-     * @param target The authentication target.
+     * @param target    The authentication target.
      */
     public Type2Message(int flags, byte[] challenge, String target) {
         setFlags(flags);
@@ -186,7 +187,7 @@ public class Type2Message extends NtlmMessage {
      * @return A <code>byte[]</code> containing the target information block.
      * The target information block is used by the client to create an
      * NTLMv2 response.
-     */ 
+     */
     public byte[] getTargetInformation() {
         return targetInformation;
     }
@@ -195,7 +196,7 @@ public class Type2Message extends NtlmMessage {
      * Sets the target information block.
      * The target information block is used by the client to create
      * an NTLMv2 response.
-     * 
+     *
      * @param targetInformation The target information block.
      */
     public void setTargetInformation(byte[] targetInformation) {
@@ -274,10 +275,10 @@ public class Type2Message extends NtlmMessage {
         byte[] targetInformation = getTargetInformation();
 
         return "Type2Message[target=" + target +
-            ",challenge=" + (challenge == null ? "null" : "<" + challenge.length + " bytes>") +
-            ",context=" + (context == null ? "null" : "<" + context.length + " bytes>") +
-            ",targetInformation=" + (targetInformation == null ? "null" : "<" + targetInformation.length + " bytes>") +
-            ",flags=0x" + jcifs.util.Hexdump.toHexString(getFlags(), 8) + "]";
+                ",challenge=" + (challenge == null ? "null" : "<" + challenge.length + " bytes>") +
+                ",context=" + (context == null ? "null" : "<" + context.length + " bytes>") +
+                ",targetInformation=" + (targetInformation == null ? "null" : "<" + targetInformation.length + " bytes>") +
+                ",flags=0x" + jcifs.util.Hexdump.toHexString(getFlags(), 8) + "]";
     }
 
     /**

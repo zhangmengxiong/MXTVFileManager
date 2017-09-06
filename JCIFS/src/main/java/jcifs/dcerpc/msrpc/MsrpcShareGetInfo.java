@@ -21,8 +21,8 @@ package jcifs.dcerpc.msrpc;
 
 import java.io.IOException;
 
-import jcifs.smb.*;
-import jcifs.util.Hexdump;
+import jcifs.smb.ACE;
+import jcifs.smb.SecurityDescriptor;
 
 public class MsrpcShareGetInfo extends srvsvc.ShareGetInfo {
 
@@ -33,7 +33,7 @@ public class MsrpcShareGetInfo extends srvsvc.ShareGetInfo {
     }
 
     public ACE[] getSecurity() throws IOException {
-        srvsvc.ShareInfo502 info502 = (srvsvc.ShareInfo502)info;
+        srvsvc.ShareInfo502 info502 = (srvsvc.ShareInfo502) info;
         if (info502.security_descriptor != null) {
             SecurityDescriptor sd;
             sd = new SecurityDescriptor(info502.security_descriptor, 0, info502.sd_size);

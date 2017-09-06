@@ -18,14 +18,12 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.dcerpc.*;
-
 public class MsrpcSamrOpenAlias extends samr.SamrOpenAlias {
 
     public MsrpcSamrOpenAlias(SamrDomainHandle handle,
-                    int access,
-                    int rid,
-                    SamrAliasHandle aliasHandle) {
+                              int access,
+                              int rid,
+                              SamrAliasHandle aliasHandle) {
         super(handle, access, rid, aliasHandle);
         ptype = 0;
         flags = DCERPC_FIRST_FRAG | DCERPC_LAST_FRAG;

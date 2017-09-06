@@ -18,10 +18,6 @@
 
 package jcifs.smb;
 
-import java.io.InputStream;
-import java.io.IOException;
-import jcifs.util.Hexdump;
-
 class NetShareEnumResponse extends SmbComTransactionResponse {
 
     private int converter, totalAvailableEntries;
@@ -29,63 +25,69 @@ class NetShareEnumResponse extends SmbComTransactionResponse {
     NetShareEnumResponse() {
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         int start = bufferIndex;
 
-        status = readInt2( buffer, bufferIndex );
+        status = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        converter = readInt2( buffer, bufferIndex );
+        converter = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        numEntries = readInt2( buffer, bufferIndex );
+        numEntries = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        totalAvailableEntries = readInt2( buffer, bufferIndex );
+        totalAvailableEntries = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
 
         return bufferIndex - start;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         int start = bufferIndex;
         SmbShareInfo e;
 
         useUnicode = false;
 
         results = new SmbShareInfo[numEntries];
-        for( int i = 0; i < numEntries; i++ ) {
+        for (int i = 0; i < numEntries; i++) {
             results[i] = e = new SmbShareInfo();
-            e.netName = readString( buffer, bufferIndex, 13, false );
+            e.netName = readString(buffer, bufferIndex, 13, false);
             bufferIndex += 14;
-            e.type = readInt2( buffer, bufferIndex );
+            e.type = readInt2(buffer, bufferIndex);
             bufferIndex += 2;
-            int off = readInt4( buffer, bufferIndex );
+            int off = readInt4(buffer, bufferIndex);
             bufferIndex += 4;
-            off = ( off & 0xFFFF ) - converter;
+            off = (off & 0xFFFF) - converter;
             off = start + off;
-            e.remark = readString( buffer, off, 128, false );
+            e.remark = readString(buffer, off, 128, false);
 
             if (log.level >= 4)
-                log.println( e );
+                log.println(e);
         }
 
         return bufferIndex - start;
     }
+
     public String toString() {
-        return new String( "NetShareEnumResponse[" +
+        return new String("NetShareEnumResponse[" +
                 super.toString() +
                 ",status=" + status +
                 ",converter=" + converter +
                 ",entriesReturned=" + numEntries +
-                ",totalAvailableEntries=" + totalAvailableEntries + "]" );
+                ",totalAvailableEntries=" + totalAvailableEntries + "]");
     }
 }

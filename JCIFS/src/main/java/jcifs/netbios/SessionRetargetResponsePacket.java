@@ -31,20 +31,21 @@ class SessionRetargetResponsePacket extends SessionServicePacket {
         length = 6;
     }
 
-    int writeTrailerWireFormat( byte[] dst, int dstIndex ) {
+    int writeTrailerWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readTrailerWireFormat( InputStream in,
-                            byte[] buffer,
-                            int bufferIndex )
-                            throws IOException {
-        if( in.read( buffer, bufferIndex, length ) != length ) {
-            throw new IOException( "unexpected EOF reading netbios retarget session response" );
+
+    int readTrailerWireFormat(InputStream in,
+                              byte[] buffer,
+                              int bufferIndex)
+            throws IOException {
+        if (in.read(buffer, bufferIndex, length) != length) {
+            throw new IOException("unexpected EOF reading netbios retarget session response");
         }
-        int addr = readInt4( buffer, bufferIndex );
+        int addr = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        retargetAddress = new NbtAddress( null, addr, false, NbtAddress.B_NODE );
-        retargetPort = readInt2( buffer, bufferIndex );
+        retargetAddress = new NbtAddress(null, addr, false, NbtAddress.B_NODE);
+        retargetPort = readInt2(buffer, bufferIndex);
         return length;
     }
 }

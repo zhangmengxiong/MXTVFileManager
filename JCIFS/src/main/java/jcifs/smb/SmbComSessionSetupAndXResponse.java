@@ -18,8 +18,6 @@
 
 package jcifs.smb;
 
-import java.io.UnsupportedEncodingException;
-
 class SmbComSessionSetupAndXResponse extends AndXServerMessageBlock {
 
     private String nativeOs = "";
@@ -29,19 +27,21 @@ class SmbComSessionSetupAndXResponse extends AndXServerMessageBlock {
     boolean isLoggedInAsGuest;
     byte[] blob = null;
 
-    SmbComSessionSetupAndXResponse( ServerMessageBlock andx ) {
-        super( andx );
+    SmbComSessionSetupAndXResponse(ServerMessageBlock andx) {
+        super(andx);
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
-        isLoggedInAsGuest = ( buffer[bufferIndex] & 0x01 ) == 0x01 ? true : false;
+        isLoggedInAsGuest = (buffer[bufferIndex] & 0x01) == 0x01 ? true : false;
         bufferIndex += 2;
         if (extendedSecurity) {
             int blobLength = readInt2(buffer, bufferIndex);
@@ -50,17 +50,18 @@ class SmbComSessionSetupAndXResponse extends AndXServerMessageBlock {
         }
         return bufferIndex - start;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
         if (extendedSecurity) {
             System.arraycopy(buffer, bufferIndex, blob, 0, blob.length);
             bufferIndex += blob.length;
         }
-        nativeOs = readString( buffer, bufferIndex );
-        bufferIndex += stringWireLength( nativeOs, bufferIndex );
-        nativeLanMan = readString( buffer, bufferIndex, start + byteCount, 255, useUnicode );
-        bufferIndex += stringWireLength( nativeLanMan, bufferIndex );
+        nativeOs = readString(buffer, bufferIndex);
+        bufferIndex += stringWireLength(nativeOs, bufferIndex);
+        nativeLanMan = readString(buffer, bufferIndex, start + byteCount, 255, useUnicode);
+        bufferIndex += stringWireLength(nativeLanMan, bufferIndex);
         if (!extendedSecurity) {
             primaryDomain = readString(buffer, bufferIndex, start + byteCount, 255, useUnicode);
             bufferIndex += stringWireLength(primaryDomain, bufferIndex);
@@ -68,13 +69,14 @@ class SmbComSessionSetupAndXResponse extends AndXServerMessageBlock {
 
         return bufferIndex - start;
     }
+
     public String toString() {
-        String result = new String( "SmbComSessionSetupAndXResponse[" +
-            super.toString() +
-            ",isLoggedInAsGuest=" + isLoggedInAsGuest +
-            ",nativeOs=" + nativeOs +
-            ",nativeLanMan=" + nativeLanMan +
-            ",primaryDomain=" + primaryDomain + "]" );
+        String result = new String("SmbComSessionSetupAndXResponse[" +
+                super.toString() +
+                ",isLoggedInAsGuest=" + isLoggedInAsGuest +
+                ",nativeOs=" + nativeOs +
+                ",nativeLanMan=" + nativeLanMan +
+                ",primaryDomain=" + primaryDomain + "]");
         return result;
     }
 }

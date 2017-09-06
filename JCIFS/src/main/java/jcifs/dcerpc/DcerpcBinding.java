@@ -22,7 +22,10 @@ package jcifs.dcerpc;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import jcifs.dcerpc.msrpc.*;
+import jcifs.dcerpc.msrpc.lsarpc;
+import jcifs.dcerpc.msrpc.netdfs;
+import jcifs.dcerpc.msrpc.samr;
+import jcifs.dcerpc.msrpc.srvsvc;
 
 public class DcerpcBinding {
 
@@ -36,8 +39,7 @@ public class DcerpcBinding {
         INTERFACES.put("netdfs", netdfs.getSyntax());
     }
 
-    public static void addInterface(String name, String syntax)
-    {
+    public static void addInterface(String name, String syntax) {
         INTERFACES.put(name, syntax);
     }
 
@@ -59,7 +61,7 @@ public class DcerpcBinding {
             endpoint = val.toString();
             String lep = endpoint.toLowerCase();
             if (lep.startsWith("\\pipe\\")) {
-                String iface = (String)INTERFACES.get(lep.substring(6));
+                String iface = (String) INTERFACES.get(lep.substring(6));
                 if (iface != null) {
                     int c, p;
                     c = iface.indexOf(':');
@@ -76,6 +78,7 @@ public class DcerpcBinding {
             options = new HashMap();
         options.put(key, val);
     }
+
     Object getOption(String key) {
         if (key.equals("endpoint"))
             return endpoint;

@@ -35,25 +35,23 @@ public class DfsReferral extends SmbException {
     Map map;
     String key = null;
 
-    public DfsReferral()
-    {
+    public DfsReferral() {
         this.next = this;
     }
 
-    void append(DfsReferral dr)
-    {
+    void append(DfsReferral dr) {
         dr.next = next;
         next = dr;
     }
 
     public String toString() {
         return "DfsReferral[pathConsumed=" + pathConsumed +
-            ",server=" + server +
-            ",share=" + share +
-            ",link=" + link +
-            ",path=" + path +
-            ",ttl=" + ttl +
-            ",expiration=" + expiration +
-            ",resolveHashes=" + resolveHashes + "]";
+                ",server=" + server +
+                ",share=" + share +
+                ",link=" + link +
+                ",path=" + path +
+                ",ttl=" + ttl +
+                ",expiration=" + expiration +
+                ",resolveHashes=" + resolveHashes + "]";
     }
 }

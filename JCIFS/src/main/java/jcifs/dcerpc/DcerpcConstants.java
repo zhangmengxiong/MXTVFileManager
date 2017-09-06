@@ -23,12 +23,12 @@ public interface DcerpcConstants {
 
     public static final UUID DCERPC_UUID_SYNTAX_NDR = new UUID("8a885d04-1ceb-11c9-9fe8-08002b104860");
 
-    public static final int DCERPC_FIRST_FRAG      = 0x01; /* First fragment */
-    public static final int DCERPC_LAST_FRAG       = 0x02; /* Last fragment */
-    public static final int DCERPC_PENDING_CANCEL  = 0x04; /* Cancel was pending at sender */
-    public static final int DCERPC_RESERVED_1      = 0x08;
-    public static final int DCERPC_CONC_MPX        = 0x10; /* supports concurrent multiplexing */
+    public static final int DCERPC_FIRST_FRAG = 0x01; /* First fragment */
+    public static final int DCERPC_LAST_FRAG = 0x02; /* Last fragment */
+    public static final int DCERPC_PENDING_CANCEL = 0x04; /* Cancel was pending at sender */
+    public static final int DCERPC_RESERVED_1 = 0x08;
+    public static final int DCERPC_CONC_MPX = 0x10; /* supports concurrent multiplexing */
     public static final int DCERPC_DID_NOT_EXECUTE = 0x20;
-    public static final int DCERPC_MAYBE           = 0x40; /* `maybe' call semantics requested */
-    public static final int DCERPC_OBJECT_UUID     = 0x80; /* if true, a non-nil object UUID */
+    public static final int DCERPC_MAYBE = 0x40; /* `maybe' call semantics requested */
+    public static final int DCERPC_OBJECT_UUID = 0x80; /* if true, a non-nil object UUID */
 }

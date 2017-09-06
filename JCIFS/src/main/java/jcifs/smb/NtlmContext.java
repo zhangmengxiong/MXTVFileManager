@@ -18,15 +18,16 @@
 
 package jcifs.smb;
 
-import java.io.IOException;
-import java.security.*;
-import jcifs.ntlmssp.*;
-import jcifs.util.LogStream;
-import jcifs.util.Hexdump;
+import jcifs.ntlmssp.NtlmFlags;
+import jcifs.ntlmssp.Type1Message;
+import jcifs.ntlmssp.Type2Message;
+import jcifs.ntlmssp.Type3Message;
 import jcifs.util.Encdec;
+import jcifs.util.Hexdump;
+import jcifs.util.LogStream;
 
 /**
-For initiating NTLM authentication (including NTLMv2). If you want to add NTLMv2 authentication support to something this is what you want to use. See the code for details. Note that JCIFS does not implement the acceptor side of NTLM authentication.
+ * For initiating NTLM authentication (including NTLMv2). If you want to add NTLMv2 authentication support to something this is what you want to use. See the code for details. Note that JCIFS does not implement the acceptor side of NTLM authentication.
  */
 
 public class NtlmContext {
@@ -50,8 +51,8 @@ public class NtlmContext {
                 NtlmFlags.NTLMSSP_NEGOTIATE_128;
         if (doSigning) {
             this.ntlmsspFlags |= NtlmFlags.NTLMSSP_NEGOTIATE_SIGN |
-                NtlmFlags.NTLMSSP_NEGOTIATE_ALWAYS_SIGN |
-                NtlmFlags.NTLMSSP_NEGOTIATE_KEY_EXCH;
+                    NtlmFlags.NTLMSSP_NEGOTIATE_ALWAYS_SIGN |
+                    NtlmFlags.NTLMSSP_NEGOTIATE_KEY_EXCH;
         }
         this.workstation = Type1Message.getDefaultWorkstation();
         log = LogStream.getInstance();
@@ -59,11 +60,11 @@ public class NtlmContext {
 
     public String toString() {
         String ret = "NtlmContext[auth=" + auth +
-            ",ntlmsspFlags=0x" + Hexdump.toHexString(ntlmsspFlags, 8) +
-            ",workstation=" + workstation +
-            ",isEstablished=" + isEstablished +
-            ",state=" + state +
-            ",serverChallenge=";
+                ",ntlmsspFlags=0x" + Hexdump.toHexString(ntlmsspFlags, 8) +
+                ",workstation=" + workstation +
+                ",isEstablished=" + isEstablished +
+                ",state=" + state +
+                ",serverChallenge=";
         if (serverChallenge == null) {
             ret += "null";
         } else {
@@ -82,24 +83,23 @@ public class NtlmContext {
     public boolean isEstablished() {
         return isEstablished;
     }
-    public byte[] getServerChallenge()
-    {
+
+    public byte[] getServerChallenge() {
         return serverChallenge;
     }
-    public byte[] getSigningKey()
-    {
+
+    public byte[] getSigningKey() {
         return signingKey;
     }
-    public String getNetbiosName()
-    {
+
+    public String getNetbiosName() {
         return netbiosName;
     }
 
-    private String getNtlmsspListItem(byte[] type2token, int id0)
-    {
+    private String getNtlmsspListItem(byte[] type2token, int id0) {
         int ri = 58;
 
-        for ( ;; ) {
+        for (; ; ) {
             int id = Encdec.dec_uint16le(type2token, ri);
             int len = Encdec.dec_uint16le(type2token, ri + 2);
             ri += 4;
@@ -117,6 +117,7 @@ public class NtlmContext {
 
         return null;
     }
+
     public byte[] initSecContext(byte[] token, int offset, int len) throws SmbException {
         switch (state) {
             case 1:
@@ -147,11 +148,11 @@ public class NtlmContext {
 //                  netbiosName = getNtlmsspListItem(token, 0x0001);
 
                     Type3Message msg3 = new Type3Message(msg2,
-                                auth.getPassword(),
-                                auth.getDomain(),
-                                auth.getUsername(),
-                                workstation,
-                                ntlmsspFlags);
+                            auth.getPassword(),
+                            auth.getDomain(),
+                            auth.getUsername(),
+                            workstation,
+                            ntlmsspFlags);
                     token = msg3.toByteArray();
 
                     if (log.level >= 4) {

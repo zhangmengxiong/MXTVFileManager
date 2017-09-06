@@ -20,25 +20,29 @@ package jcifs.netbios;
 
 class NameQueryRequest extends NameServicePacket {
 
-    NameQueryRequest( Name name ) {
+    NameQueryRequest(Name name) {
         questionName = name;
         questionType = NB;
     }
 
-    int writeBodyWireFormat( byte[] dst, int dstIndex ) {
-        return writeQuestionSectionWireFormat( dst, dstIndex );
+    int writeBodyWireFormat(byte[] dst, int dstIndex) {
+        return writeQuestionSectionWireFormat(dst, dstIndex);
     }
-    int readBodyWireFormat( byte[] src, int srcIndex ) {
-        return readQuestionSectionWireFormat( src, srcIndex );
+
+    int readBodyWireFormat(byte[] src, int srcIndex) {
+        return readQuestionSectionWireFormat(src, srcIndex);
     }
-    int writeRDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeRDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readRDataWireFormat( byte[] src, int srcIndex ) {
+
+    int readRDataWireFormat(byte[] src, int srcIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "NameQueryRequest[" +
-            super.toString() + "]" );
+        return new String("NameQueryRequest[" +
+                super.toString() + "]");
     }
 }

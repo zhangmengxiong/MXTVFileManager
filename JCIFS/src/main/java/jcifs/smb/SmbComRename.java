@@ -26,41 +26,45 @@ class SmbComRename extends ServerMessageBlock {
     private String oldFileName;
     private String newFileName;
 
-    SmbComRename( String oldFileName, String newFileName ) {
+    SmbComRename(String oldFileName, String newFileName) {
         command = SMB_COM_RENAME;
         this.oldFileName = oldFileName;
         this.newFileName = newFileName;
         searchAttributes = ATTR_HIDDEN | ATTR_SYSTEM | ATTR_DIRECTORY;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
-        writeInt2( searchAttributes, dst, dstIndex );
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
+        writeInt2(searchAttributes, dst, dstIndex);
         return 2;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        dst[dstIndex++] = (byte)0x04;
-        dstIndex += writeString( oldFileName, dst, dstIndex );
-        dst[dstIndex++] = (byte)0x04;
-        if( useUnicode ) {
-            dst[dstIndex++] = (byte)'\0';
+        dst[dstIndex++] = (byte) 0x04;
+        dstIndex += writeString(oldFileName, dst, dstIndex);
+        dst[dstIndex++] = (byte) 0x04;
+        if (useUnicode) {
+            dst[dstIndex++] = (byte) '\0';
         }
-        dstIndex += writeString( newFileName, dst, dstIndex );
+        dstIndex += writeString(newFileName, dst, dstIndex);
 
         return dstIndex - start;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComRename[" +
-            super.toString() +
-            ",searchAttributes=0x" + Hexdump.toHexString( searchAttributes, 4 ) +
-            ",oldFileName=" + oldFileName +
-            ",newFileName=" + newFileName + "]" );
+        return new String("SmbComRename[" +
+                super.toString() +
+                ",searchAttributes=0x" + Hexdump.toHexString(searchAttributes, 4) +
+                ",oldFileName=" + oldFileName +
+                ",newFileName=" + newFileName + "]");
     }
 }

@@ -22,27 +22,31 @@ class SmbComFindClose2 extends ServerMessageBlock {
 
     private int sid;
 
-    SmbComFindClose2( int sid ) {
+    SmbComFindClose2(int sid) {
         this.sid = sid;
         command = SMB_COM_FIND_CLOSE2;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
-        writeInt2( sid, dst, dstIndex );
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
+        writeInt2(sid, dst, dstIndex);
         return 2;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComFindClose2[" +
-            super.toString() +
-            ",sid=" + sid + "]" );
+        return new String("SmbComFindClose2[" +
+                super.toString() +
+                ",sid=" + sid + "]");
     }
 }

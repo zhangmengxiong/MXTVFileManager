@@ -18,68 +18,69 @@
 
 package jcifs.smb;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 class SmbComOpenAndXResponse extends AndXServerMessageBlock {
 
     int fid,
-        fileAttributes,
-        dataSize,
-        grantedAccess,
-        fileType,
-        deviceState,
-        action,
-        serverFid;
+            fileAttributes,
+            dataSize,
+            grantedAccess,
+            fileType,
+            deviceState,
+            action,
+            serverFid;
     long lastWriteTime;
 
     SmbComOpenAndXResponse() {
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
-        fid = readInt2( buffer, bufferIndex );
+        fid = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        fileAttributes = readInt2( buffer, bufferIndex );
+        fileAttributes = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        lastWriteTime = readUTime( buffer, bufferIndex );
+        lastWriteTime = readUTime(buffer, bufferIndex);
         bufferIndex += 4;
-        dataSize = readInt4( buffer, bufferIndex );
+        dataSize = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        grantedAccess = readInt2( buffer, bufferIndex );
+        grantedAccess = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        fileType = readInt2( buffer, bufferIndex );
+        fileType = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        deviceState = readInt2( buffer, bufferIndex );
+        deviceState = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        action = readInt2( buffer, bufferIndex );
+        action = readInt2(buffer, bufferIndex);
         bufferIndex += 2;
-        serverFid = readInt4( buffer, bufferIndex );
+        serverFid = readInt4(buffer, bufferIndex);
         bufferIndex += 6;
 
         return bufferIndex - start;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComOpenAndXResponse[" +
-            super.toString() +
-            ",fid=" + fid +
-            ",fileAttributes=" + fileAttributes +
-            ",lastWriteTime=" + lastWriteTime +
-            ",dataSize=" + dataSize +
-            ",grantedAccess=" + grantedAccess +
-            ",fileType=" + fileType +
-            ",deviceState=" + deviceState +
-            ",action=" + action +
-            ",serverFid=" + serverFid + "]" );
+        return new String("SmbComOpenAndXResponse[" +
+                super.toString() +
+                ",fid=" + fid +
+                ",fileAttributes=" + fileAttributes +
+                ",lastWriteTime=" + lastWriteTime +
+                ",dataSize=" + dataSize +
+                ",grantedAccess=" + grantedAccess +
+                ",fileType=" + fileType +
+                ",deviceState=" + deviceState +
+                ",action=" + action +
+                ",serverFid=" + serverFid + "]");
     }
 }

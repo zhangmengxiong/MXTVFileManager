@@ -19,8 +19,8 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.smb.*;
-import jcifs.util.Hexdump;
+import jcifs.smb.FileEntry;
+import jcifs.smb.SmbShareInfo;
 
 public class MsrpcShareEnum extends srvsvc.ShareEnumAll {
 
@@ -44,7 +44,7 @@ public class MsrpcShareEnum extends srvsvc.ShareEnumAll {
          * interface (because it is generated from IDL). Therefore
          * we must create an array of objects that do.
          */
-        srvsvc.ShareInfoCtr1 ctr = (srvsvc.ShareInfoCtr1)info;
+        srvsvc.ShareInfoCtr1 ctr = (srvsvc.ShareInfoCtr1) info;
         MsrpcShareInfo1[] entries = new MsrpcShareInfo1[ctr.count];
         for (int i = 0; i < ctr.count; i++) {
             entries[i] = new MsrpcShareInfo1(ctr.array[i]);

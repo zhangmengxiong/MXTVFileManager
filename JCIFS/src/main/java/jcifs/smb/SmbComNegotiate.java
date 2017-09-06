@@ -29,30 +29,34 @@ class SmbComNegotiate extends ServerMessageBlock {
         flags2 = DEFAULT_FLAGS2;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         byte[] dialects;
         try {
-            dialects = DIALECTS.getBytes( "ASCII" );
-        } catch( UnsupportedEncodingException uee ) {
+            dialects = DIALECTS.getBytes("ASCII");
+        } catch (UnsupportedEncodingException uee) {
             return 0;
         }
-        System.arraycopy( dialects, 0, dst, dstIndex, dialects.length );
+        System.arraycopy(dialects, 0, dst, dstIndex, dialects.length);
         return dialects.length;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComNegotiate[" +
-            super.toString() +
-            ",wordCount="   + wordCount +
-            ",dialects=NT LM 0.12]" );
+        return new String("SmbComNegotiate[" +
+                super.toString() +
+                ",wordCount=" + wordCount +
+                ",dialects=NT LM 0.12]");
     }
 }
 

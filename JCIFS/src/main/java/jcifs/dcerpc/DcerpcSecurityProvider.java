@@ -20,8 +20,8 @@ package jcifs.dcerpc;
 
 import jcifs.dcerpc.ndr.NdrBuffer;
 
-public interface DcerpcSecurityProvider
-{
+public interface DcerpcSecurityProvider {
     void wrap(NdrBuffer outgoing) throws DcerpcException;
+
     void unwrap(NdrBuffer incoming) throws DcerpcException;
 }

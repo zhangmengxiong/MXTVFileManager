@@ -30,32 +30,40 @@ class TransPeekNamedPipeResponse extends SmbComTransactionResponse {
 
     int status, available;
 
-    TransPeekNamedPipeResponse( SmbNamedPipe pipe ) {
+    TransPeekNamedPipeResponse(SmbNamedPipe pipe) {
         this.pipe = pipe;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
-        available = readInt2( buffer, bufferIndex ); bufferIndex += 2;
-        head = readInt2( buffer, bufferIndex ); bufferIndex += 2;
-        status = readInt2( buffer, bufferIndex );
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
+        available = readInt2(buffer, bufferIndex);
+        bufferIndex += 2;
+        head = readInt2(buffer, bufferIndex);
+        bufferIndex += 2;
+        status = readInt2(buffer, bufferIndex);
         return 6;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "TransPeekNamedPipeResponse[" + super.toString() + "]" );
+        return new String("TransPeekNamedPipeResponse[" + super.toString() + "]");
     }
 }

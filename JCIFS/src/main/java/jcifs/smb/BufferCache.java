@@ -22,19 +22,19 @@ import jcifs.Config;
 
 public class BufferCache {
 
-    private static final int MAX_BUFFERS = Config.getInt( "jcifs.smb.maxBuffers", 16 );
+    private static final int MAX_BUFFERS = Config.getInt("jcifs.smb.maxBuffers", 16);
 
     static Object[] cache = new Object[MAX_BUFFERS];
     private static int freeBuffers = 0;
 
     static public byte[] getBuffer() {
-        synchronized( cache ) {
+        synchronized (cache) {
             byte[] buf;
 
             if (freeBuffers > 0) {
                 for (int i = 0; i < MAX_BUFFERS; i++) {
-                    if( cache[i] != null ) {
-                        buf = (byte[])cache[i];
+                    if (cache[i] != null) {
+                        buf = (byte[]) cache[i];
                         cache[i] = null;
                         freeBuffers--;
                         return buf;
@@ -47,14 +47,16 @@ public class BufferCache {
             return buf;
         }
     }
-    static void getBuffers( SmbComTransaction req, SmbComTransactionResponse rsp ) {
-        synchronized( cache ) {
+
+    static void getBuffers(SmbComTransaction req, SmbComTransactionResponse rsp) {
+        synchronized (cache) {
             req.txn_buf = getBuffer();
             rsp.txn_buf = getBuffer();
         }
     }
-    static public void releaseBuffer( byte[] buf ) {
-        synchronized( cache ) {
+
+    static public void releaseBuffer(byte[] buf) {
+        synchronized (cache) {
             if (freeBuffers < MAX_BUFFERS) {
                 for (int i = 0; i < MAX_BUFFERS; i++) {
                     if (cache[i] == null) {

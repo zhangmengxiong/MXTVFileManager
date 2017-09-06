@@ -1,6 +1,7 @@
 package com.mx.tv.file.samba
 
 import com.mx.tv.file.utils.NetUtils
+import jcifs.NetBios
 import jcifs.smb.SmbAuthException
 import jcifs.smb.SmbFile
 
@@ -23,16 +24,21 @@ class ScanRun(private val ip: String, private val index: Int, private val endCal
                 isFind = true
             }
             if (isFind) {
+                val netBios = NetBios()
                 try {
                     val smbFile = SmbFile(SambaUtil.fmtIP(ip))
                     if (smbFile.isDirectory) {
                         smbFile.listFiles().filter { !it.isHidden }.forEach {
                             println(it.path)
                         }
-                        findCall(SambaServer(ip, false))
+                        netBios.scan(ip)
+
+                        findCall(SambaServer(ip, false, netBios.name, netBios.workspace))
                     }
                 } catch (e: SmbAuthException) {
-                    findCall(SambaServer(ip, true))
+                    netBios.scan(ip)
+
+                    findCall(SambaServer(ip, false, netBios.name, netBios.workspace))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

@@ -23,7 +23,7 @@ class TransTransactNamedPipe extends SmbComTransaction {
     private byte[] pipeData;
     private int pipeFid, pipeDataOff, pipeDataLen;
 
-    TransTransactNamedPipe( int fid, byte[] data, int off, int len ) {
+    TransTransactNamedPipe(int fid, byte[] data, int off, int len) {
         pipeFid = fid;
         pipeData = data;
         pipeDataOff = off;
@@ -32,41 +32,47 @@ class TransTransactNamedPipe extends SmbComTransaction {
         subCommand = TRANS_TRANSACT_NAMED_PIPE;
         maxParameterCount = 0;
         maxDataCount = 0xFFFF;
-        maxSetupCount = (byte)0x00;
+        maxSetupCount = (byte) 0x00;
         setupCount = 2;
         name = "\\PIPE\\";
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
-        writeInt2( pipeFid, dst, dstIndex );
+        dst[dstIndex++] = (byte) 0x00;
+        writeInt2(pipeFid, dst, dstIndex);
         dstIndex += 2;
         return 4;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
-        if(( dst.length - dstIndex ) < pipeDataLen ) {
-            if( log.level >= 3 )
-                log.println( "TransTransactNamedPipe data too long for buffer" );
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
+        if ((dst.length - dstIndex) < pipeDataLen) {
+            if (log.level >= 3)
+                log.println("TransTransactNamedPipe data too long for buffer");
             return 0;
         }
-        System.arraycopy( pipeData, pipeDataOff, dst, dstIndex, pipeDataLen );
+        System.arraycopy(pipeData, pipeDataOff, dst, dstIndex, pipeDataLen);
         return pipeDataLen;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "TransTransactNamedPipe[" + super.toString() +
-            ",pipeFid=" + pipeFid + "]" );
+        return new String("TransTransactNamedPipe[" + super.toString() +
+                ",pipeFid=" + pipeFid + "]");
     }
 }

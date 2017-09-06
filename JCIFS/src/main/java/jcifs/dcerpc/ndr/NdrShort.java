@@ -30,6 +30,7 @@ public class NdrShort extends NdrObject {
     public void encode(NdrBuffer dst) throws NdrException {
         dst.enc_ndr_short(value);
     }
+
     public void decode(NdrBuffer src) throws NdrException {
         value = src.dec_ndr_short();
     }

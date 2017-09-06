@@ -21,11 +21,11 @@ package jcifs.util;
 import java.io.PrintStream;
 
 /**
-0 - nothing
-1 - critical [default]
-2 - basic info can be logged under load
-3 - almost everything
-N - debugging
+ * 0 - nothing
+ * 1 - critical [default]
+ * 2 - basic info can be logged under load
+ * 3 - almost everything
+ * N - debugging
  */
 
 public class LogStream extends PrintStream {
@@ -34,23 +34,25 @@ public class LogStream extends PrintStream {
 
     public static int level = 1;
 
-    public LogStream( PrintStream stream ) {
-        super( stream );
+    public LogStream(PrintStream stream) {
+        super(stream);
     }
 
-    public static void setLevel( int level ) {
+    public static void setLevel(int level) {
         LogStream.level = level;
     }
+
     /**
      * This must be called before <tt>getInstance</tt> is called or
      * it will have no effect.
      */
-    public static void setInstance( PrintStream stream ) {
-        inst = new LogStream( stream );
+    public static void setInstance(PrintStream stream) {
+        inst = new LogStream(stream);
     }
+
     public static LogStream getInstance() {
-        if( inst == null ) {
-            setInstance( System.err );
+        if (inst == null) {
+            setInstance(System.err);
         }
         return inst;
     }

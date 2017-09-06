@@ -19,15 +19,16 @@
 
 package jcifs.dcerpc;
 
-import jcifs.dcerpc.ndr.*;
+import jcifs.dcerpc.ndr.NdrBuffer;
+import jcifs.dcerpc.ndr.NdrException;
 
 public class DcerpcBind extends DcerpcMessage {
 
     static final String[] result_message = {
-        "0",
-        "DCERPC_BIND_ERR_ABSTRACT_SYNTAX_NOT_SUPPORTED",
-        "DCERPC_BIND_ERR_PROPOSED_TRANSFER_SYNTAXES_NOT_SUPPORTED",
-        "DCERPC_BIND_ERR_LOCAL_LIMIT_EXCEEDED"
+            "0",
+            "DCERPC_BIND_ERR_ABSTRACT_SYNTAX_NOT_SUPPORTED",
+            "DCERPC_BIND_ERR_PROPOSED_TRANSFER_SYNTAXES_NOT_SUPPORTED",
+            "DCERPC_BIND_ERR_LOCAL_LIMIT_EXCEEDED"
     };
 
     static String getResultMessage(int result) {
@@ -35,6 +36,7 @@ public class DcerpcBind extends DcerpcMessage {
                 result_message[result] :
                 "0x" + jcifs.util.Hexdump.toHexString(result, 4);
     }
+
     public DcerpcException getResult() {
         if (result != 0)
             return new DcerpcException(getResultMessage(result));
@@ -46,6 +48,7 @@ public class DcerpcBind extends DcerpcMessage {
 
     public DcerpcBind() {
     }
+
     DcerpcBind(DcerpcBinding binding, DcerpcHandle handle) {
         this.binding = binding;
         max_xmit = handle.max_xmit;
@@ -57,6 +60,7 @@ public class DcerpcBind extends DcerpcMessage {
     public int getOpnum() {
         return 0;
     }
+
     public void encode_in(NdrBuffer buf) throws NdrException {
         buf.enc_ndr_short(max_xmit);
         buf.enc_ndr_short(max_recv);
@@ -73,6 +77,7 @@ public class DcerpcBind extends DcerpcMessage {
         DCERPC_UUID_SYNTAX_NDR.encode(buf);
         buf.enc_ndr_long(2); /* syntax version */
     }
+
     public void decode_out(NdrBuffer buf) throws NdrException {
         buf.dec_ndr_short(); /* max transmit frag size */
         buf.dec_ndr_short(); /* max receive frag size */

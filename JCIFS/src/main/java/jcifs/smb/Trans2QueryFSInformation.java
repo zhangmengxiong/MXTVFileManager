@@ -24,7 +24,7 @@ class Trans2QueryFSInformation extends SmbComTransaction {
 
     private int informationLevel;
 
-    Trans2QueryFSInformation( int informationLevel ) {
+    Trans2QueryFSInformation(int informationLevel) {
         command = SMB_COM_TRANSACTION2;
         subCommand = TRANS2_QUERY_FS_INFORMATION;
         this.informationLevel = informationLevel;
@@ -35,15 +35,16 @@ class Trans2QueryFSInformation extends SmbComTransaction {
         maxSetupCount = 0;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         dst[dstIndex++] = subCommand;
-        dst[dstIndex++] = (byte)0x00;
+        dst[dstIndex++] = (byte) 0x00;
         return 2;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( informationLevel, dst, dstIndex );
+        writeInt2(informationLevel, dst, dstIndex);
         dstIndex += 2;
 
         /* windows98 has what appears to be another 4 0's followed by the share
@@ -55,20 +56,25 @@ class Trans2QueryFSInformation extends SmbComTransaction {
 
         return dstIndex - start;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
+
     public String toString() {
-        return new String( "Trans2QueryFSInformation[" + super.toString() +
-            ",informationLevel=0x" + Hexdump.toHexString( informationLevel, 3 ) + "]" );
+        return new String("Trans2QueryFSInformation[" + super.toString() +
+                ",informationLevel=0x" + Hexdump.toHexString(informationLevel, 3) + "]");
     }
 }

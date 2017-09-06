@@ -18,8 +18,6 @@
 
 package jcifs.smb;
 
-import java.io.UnsupportedEncodingException;
-
 class Trans2QueryFSInformationResponse extends SmbComTransactionResponse {
 
     // information levels
@@ -36,14 +34,16 @@ class Trans2QueryFSInformationResponse extends SmbComTransactionResponse {
         public long getCapacity() {
             return alloc * sectPerAlloc * bytesPerSect;
         }
+
         public long getFree() {
             return free * sectPerAlloc * bytesPerSect;
         }
+
         public String toString() {
-            return new String( "SmbInfoAllocation[" +
-                "alloc=" + alloc + ",free=" + free +
-                ",sectPerAlloc=" + sectPerAlloc +
-                ",bytesPerSect=" + bytesPerSect + "]" );
+            return new String("SmbInfoAllocation[" +
+                    "alloc=" + alloc + ",free=" + free +
+                    ",sectPerAlloc=" + sectPerAlloc +
+                    ",bytesPerSect=" + bytesPerSect + "]");
         }
     }
 
@@ -51,105 +51,111 @@ class Trans2QueryFSInformationResponse extends SmbComTransactionResponse {
 
     AllocInfo info;
 
-    Trans2QueryFSInformationResponse( int informationLevel ) {
+    Trans2QueryFSInformationResponse(int informationLevel) {
         this.informationLevel = informationLevel;
         command = SMB_COM_TRANSACTION2;
         subCommand = SmbComTransaction.TRANS2_QUERY_FS_INFORMATION;
     }
 
-    int writeSetupWireFormat( byte[] dst, int dstIndex ) {
+    int writeSetupWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeParametersWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParametersWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeDataWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeDataWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readSetupWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readSetupWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readParametersWireFormat( byte[] buffer, int bufferIndex, int len ) {
+
+    int readParametersWireFormat(byte[] buffer, int bufferIndex, int len) {
         return 0;
     }
-    int readDataWireFormat( byte[] buffer, int bufferIndex, int len ) {
-        switch( informationLevel ) {
+
+    int readDataWireFormat(byte[] buffer, int bufferIndex, int len) {
+        switch (informationLevel) {
             case SMB_INFO_ALLOCATION:
-                return readSmbInfoAllocationWireFormat( buffer, bufferIndex );
+                return readSmbInfoAllocationWireFormat(buffer, bufferIndex);
             case SMB_QUERY_FS_SIZE_INFO:
-                return readSmbQueryFSSizeInfoWireFormat( buffer, bufferIndex );
+                return readSmbQueryFSSizeInfoWireFormat(buffer, bufferIndex);
             case SMB_FS_FULL_SIZE_INFORMATION:
-                return readFsFullSizeInformationWireFormat( buffer, bufferIndex );
+                return readFsFullSizeInformationWireFormat(buffer, bufferIndex);
             default:
                 return 0;
         }
     }
 
-    int readSmbInfoAllocationWireFormat( byte[] buffer, int bufferIndex ) {
+    int readSmbInfoAllocationWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
         SmbInfoAllocation info = new SmbInfoAllocation();
 
         bufferIndex += 4; // skip idFileSystem
 
-        info.sectPerAlloc = readInt4( buffer, bufferIndex );
+        info.sectPerAlloc = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
 
-        info.alloc = readInt4( buffer, bufferIndex );
+        info.alloc = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
 
-        info.free = readInt4( buffer, bufferIndex );
+        info.free = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
 
-        info.bytesPerSect = readInt2( buffer, bufferIndex );
-        bufferIndex += 4;
-
-        this.info = info;
-
-        return bufferIndex - start;
-    }
-    int readSmbQueryFSSizeInfoWireFormat( byte[] buffer, int bufferIndex ) {
-        int start = bufferIndex;
-
-        SmbInfoAllocation info = new SmbInfoAllocation();
-
-        info.alloc = readInt8( buffer, bufferIndex );
-        bufferIndex += 8;
-
-        info.free = readInt8( buffer, bufferIndex );
-        bufferIndex += 8;
-
-        info.sectPerAlloc = readInt4( buffer, bufferIndex );
-        bufferIndex += 4;
-
-        info.bytesPerSect = readInt4( buffer, bufferIndex );
+        info.bytesPerSect = readInt2(buffer, bufferIndex);
         bufferIndex += 4;
 
         this.info = info;
 
         return bufferIndex - start;
     }
-    int readFsFullSizeInformationWireFormat( byte[] buffer, int bufferIndex )
-    {
+
+    int readSmbQueryFSSizeInfoWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
-        
+
         SmbInfoAllocation info = new SmbInfoAllocation();
-        
+
+        info.alloc = readInt8(buffer, bufferIndex);
+        bufferIndex += 8;
+
+        info.free = readInt8(buffer, bufferIndex);
+        bufferIndex += 8;
+
+        info.sectPerAlloc = readInt4(buffer, bufferIndex);
+        bufferIndex += 4;
+
+        info.bytesPerSect = readInt4(buffer, bufferIndex);
+        bufferIndex += 4;
+
+        this.info = info;
+
+        return bufferIndex - start;
+    }
+
+    int readFsFullSizeInformationWireFormat(byte[] buffer, int bufferIndex) {
+        int start = bufferIndex;
+
+        SmbInfoAllocation info = new SmbInfoAllocation();
+
         // Read total allocation units.
-        info.alloc = readInt8( buffer, bufferIndex );
+        info.alloc = readInt8(buffer, bufferIndex);
         bufferIndex += 8;
-        
+
         // read caller available allocation units 
-        info.free = readInt8( buffer, bufferIndex );
+        info.free = readInt8(buffer, bufferIndex);
         bufferIndex += 8;
 
         // skip actual free units
         bufferIndex += 8;
-        
-        info.sectPerAlloc = readInt4( buffer, bufferIndex );
+
+        info.sectPerAlloc = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
-        
-        info.bytesPerSect = readInt4( buffer, bufferIndex );
+
+        info.bytesPerSect = readInt4(buffer, bufferIndex);
         bufferIndex += 4;
 
         this.info = info;
@@ -158,7 +164,7 @@ class Trans2QueryFSInformationResponse extends SmbComTransactionResponse {
     }
 
     public String toString() {
-        return new String( "Trans2QueryFSInformationResponse[" +
-            super.toString() + "]" );
+        return new String("Trans2QueryFSInformationResponse[" +
+                super.toString() + "]");
     }
 }

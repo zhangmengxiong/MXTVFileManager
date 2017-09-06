@@ -22,20 +22,21 @@ import jcifs.Config;
 
 class SmbComReadAndX extends AndXServerMessageBlock {
 
-    private static final int BATCH_LIMIT = Config.getInt( "jcifs.smb.client.ReadAndX.Close", 1 );
+    private static final int BATCH_LIMIT = Config.getInt("jcifs.smb.client.ReadAndX.Close", 1);
 
     private long offset;
     private int fid,
-        openTimeout;
-int maxCount, minCount, remaining;
+            openTimeout;
+    int maxCount, minCount, remaining;
 
     SmbComReadAndX() {
-        super( null );
+        super(null);
         command = SMB_COM_READ_ANDX;
         openTimeout = 0xFFFFFFFF;
     }
-    SmbComReadAndX( int fid, long offset, int maxCount, ServerMessageBlock andx ) {
-        super( andx );
+
+    SmbComReadAndX(int fid, long offset, int maxCount, ServerMessageBlock andx) {
+        super(andx);
         this.fid = fid;
         this.offset = offset;
         this.maxCount = minCount = maxCount;
@@ -43,53 +44,59 @@ int maxCount, minCount, remaining;
         openTimeout = 0xFFFFFFFF;
     }
 
-    void setParam( int fid, long offset, int maxCount ) {
+    void setParam(int fid, long offset, int maxCount) {
         this.fid = fid;
         this.offset = offset;
         this.maxCount = minCount = maxCount;
     }
-    int getBatchLimit( byte command ) {
+
+    int getBatchLimit(byte command) {
         return command == SMB_COM_CLOSE ? BATCH_LIMIT : 0;
     }
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        writeInt2( fid, dst, dstIndex );
+        writeInt2(fid, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( offset, dst, dstIndex );
+        writeInt4(offset, dst, dstIndex);
         dstIndex += 4;
-        writeInt2( maxCount, dst, dstIndex );
+        writeInt2(maxCount, dst, dstIndex);
         dstIndex += 2;
-        writeInt2( minCount, dst, dstIndex );
+        writeInt2(minCount, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( openTimeout, dst, dstIndex );
+        writeInt4(openTimeout, dst, dstIndex);
         dstIndex += 4;
-        writeInt2( remaining, dst, dstIndex );
+        writeInt2(remaining, dst, dstIndex);
         dstIndex += 2;
-        writeInt4( offset >> 32, dst, dstIndex );
+        writeInt4(offset >> 32, dst, dstIndex);
         dstIndex += 4;
 
         return dstIndex - start;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComReadAndX[" +
-            super.toString() +
-            ",fid=" + fid +
-            ",offset=" + offset +
-            ",maxCount=" + maxCount +
-            ",minCount=" + minCount +
-            ",openTimeout=" + openTimeout +
-            ",remaining=" + remaining +
-            ",offset=" + offset +
-             "]" );
+        return new String("SmbComReadAndX[" +
+                super.toString() +
+                ",fid=" + fid +
+                ",offset=" + offset +
+                ",maxCount=" + maxCount +
+                ",minCount=" + minCount +
+                ",openTimeout=" + openTimeout +
+                ",remaining=" + remaining +
+                ",offset=" + offset +
+                "]");
     }
 }

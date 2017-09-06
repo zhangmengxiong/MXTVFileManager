@@ -18,12 +18,13 @@
 
 package jcifs.smb;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import jcifs.UniAddress;
-import jcifs.util.*;
 import jcifs.Config;
+import jcifs.UniAddress;
+import jcifs.util.LogStream;
 
 public class Dfs {
 
@@ -71,7 +72,7 @@ public class Dfs {
                     entry.map.put(domain, new HashMap());
                     dr = dr.next;
                 } while (dr != start);
-    
+
                 _domains = entry;
                 return _domains.map;
             }
@@ -79,22 +80,23 @@ public class Dfs {
             if (log.level >= 3)
                 ioe.printStackTrace(log);
             if (strictView && ioe instanceof SmbAuthException) {
-                throw (SmbAuthException)ioe;
+                throw (SmbAuthException) ioe;
             }
         }
         return null;
     }
+
     public boolean isTrustedDomain(String domain,
-                    NtlmPasswordAuthentication auth) throws SmbAuthException
-    {
+                                   NtlmPasswordAuthentication auth) throws SmbAuthException {
         HashMap domains = getTrustedDomains(auth);
         if (domains == null)
             return false;
         domain = domain.toLowerCase();
         return domains.get(domain) != null;
     }
+
     public SmbTransport getDc(String domain,
-                    NtlmPasswordAuthentication auth) throws SmbAuthException {
+                              NtlmPasswordAuthentication auth) throws SmbAuthException {
         if (DISABLED)
             return null;
 
@@ -123,16 +125,17 @@ public class Dfs {
             if (log.level >= 3)
                 ioe.printStackTrace(log);
             if (strictView && ioe instanceof SmbAuthException) {
-                throw (SmbAuthException)ioe;
+                throw (SmbAuthException) ioe;
             }
         }
         return null;
     }
+
     public DfsReferral getReferral(SmbTransport trans,
-                    String domain,
-                    String root,
-                    String path,
-                    NtlmPasswordAuthentication auth) throws SmbAuthException {
+                                   String domain,
+                                   String root,
+                                   String path,
+                                   NtlmPasswordAuthentication auth) throws SmbAuthException {
         if (DISABLED)
             return null;
 
@@ -147,15 +150,16 @@ public class Dfs {
             if (log.level >= 4)
                 ioe.printStackTrace(log);
             if (strictView && ioe instanceof SmbAuthException) {
-                throw (SmbAuthException)ioe;
+                throw (SmbAuthException) ioe;
             }
         }
         return null;
     }
+
     public synchronized DfsReferral resolve(String domain,
-                String root,
-                String path,
-                NtlmPasswordAuthentication auth) throws SmbAuthException {
+                                            String root,
+                                            String path,
+                                            NtlmPasswordAuthentication auth) throws SmbAuthException {
         DfsReferral dr = null;
         long now = System.currentTimeMillis();
 
@@ -169,7 +173,7 @@ public class Dfs {
             domain = domain.toLowerCase();
             /* domain-based DFS root shares to links for each
              */
-            HashMap roots = (HashMap)domains.get(domain);
+            HashMap roots = (HashMap) domains.get(domain);
             if (roots != null) {
                 SmbTransport trans = null;
 
@@ -178,7 +182,7 @@ public class Dfs {
                 /* The link entries contain maps of referrals by path representing DFS links.
                  * Note that paths are relative to the root like "\" and not "\example.com\root".
                  */
-                CacheEntry links = (CacheEntry)roots.get(root);
+                CacheEntry links = (CacheEntry) roots.get(root);
                 if (links != null && now > links.expiration) {
                     roots.remove(root);
                     links = null;
@@ -227,7 +231,7 @@ public class Dfs {
                     /* Lookup the domain based DFS root target referral. Note the
                      * path is just "\" and not "\example.com\root".
                      */
-                    dr = (DfsReferral)links.map.get(link);
+                    dr = (DfsReferral) links.map.get(link);
                     if (dr != null && now > dr.expiration) {
                         links.map.remove(link);
                         dr = null;
@@ -265,7 +269,7 @@ public class Dfs {
 
             Iterator iter = referrals.map.keySet().iterator();
             while (iter.hasNext()) {
-                String _key = (String)iter.next();
+                String _key = (String) iter.next();
                 int _klen = _key.length();
                 boolean match = false;
 
@@ -276,12 +280,13 @@ public class Dfs {
                 }
 
                 if (match)
-                    dr = (DfsReferral)referrals.map.get(_key);
+                    dr = (DfsReferral) referrals.map.get(_key);
             }
         }
 
         return dr;
     }
+
     synchronized void insert(String path, DfsReferral dr) {
         int s1, s2;
         String server, share, key;

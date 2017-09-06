@@ -24,34 +24,38 @@ class SmbComDelete extends ServerMessageBlock {
 
     private int searchAttributes;
 
-    SmbComDelete( String fileName ) {
+    SmbComDelete(String fileName) {
         this.path = fileName;
         command = SMB_COM_DELETE;
         searchAttributes = ATTR_HIDDEN | ATTR_HIDDEN | ATTR_SYSTEM;
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
-        writeInt2( searchAttributes, dst, dstIndex );
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
+        writeInt2(searchAttributes, dst, dstIndex);
         return 2;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         int start = dstIndex;
 
-        dst[dstIndex++] = (byte)0x04;
-        dstIndex += writeString( path, dst, dstIndex );
+        dst[dstIndex++] = (byte) 0x04;
+        dstIndex += writeString(path, dst, dstIndex);
 
         return dstIndex - start;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         return 0;
     }
+
     public String toString() {
-        return new String( "SmbComDelete[" +
-            super.toString() +
-            ",searchAttributes=0x" + Hexdump.toHexString( searchAttributes, 4 ) +
-            ",fileName=" + path + "]" );
+        return new String("SmbComDelete[" +
+                super.toString() +
+                ",searchAttributes=0x" + Hexdump.toHexString(searchAttributes, 4) +
+                ",fileName=" + path + "]");
     }
 }

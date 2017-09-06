@@ -1,10 +1,9 @@
 package jcifs.smb;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
-public class TestLocking implements Runnable
-{
+public class TestLocking implements Runnable {
 
     int numThreads = 1;
     int numIter = 1;
@@ -13,8 +12,7 @@ public class TestLocking implements Runnable
     int numComplete = 0;
     long ltime = 0L;
 
-    public void run()
-    {
+    public void run() {
         try {
             SmbFile f = new SmbFile(url);
             SmbFile d = new SmbFile(f.getParent());
@@ -55,8 +53,7 @@ public class TestLocking implements Runnable
         }
     }
 
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         if (args.length < 1) {
             System.err.println("usage: TestLocking [-t <numThreads>] [-i <numIter>] [-d <delay>] url");
             System.exit(1);
@@ -103,8 +100,8 @@ public class TestLocking implements Runnable
                         delay = expire - ctime;
                 }
 
-if (delay > 2)
-System.out.println("delay=" + delay);
+                if (delay > 2)
+                    System.out.println("delay=" + delay);
                 Thread.sleep(delay);
             } while (delay > 2);
 

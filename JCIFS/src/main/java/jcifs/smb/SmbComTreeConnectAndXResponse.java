@@ -23,33 +23,36 @@ import java.io.UnsupportedEncodingException;
 class SmbComTreeConnectAndXResponse extends AndXServerMessageBlock {
 
     private static final int SMB_SUPPORT_SEARCH_BITS = 0x0001;
-    private static final int SMB_SHARE_IS_IN_DFS     = 0x0002;
+    private static final int SMB_SHARE_IS_IN_DFS = 0x0002;
 
     boolean supportSearchBits, shareIsInDfs;
     String service, nativeFileSystem = "";
 
-    SmbComTreeConnectAndXResponse( ServerMessageBlock andx ) {
-        super( andx );
+    SmbComTreeConnectAndXResponse(ServerMessageBlock andx) {
+        super(andx);
     }
 
-    int writeParameterWordsWireFormat( byte[] dst, int dstIndex ) {
+    int writeParameterWordsWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int writeBytesWireFormat( byte[] dst, int dstIndex ) {
+
+    int writeBytesWireFormat(byte[] dst, int dstIndex) {
         return 0;
     }
-    int readParameterWordsWireFormat( byte[] buffer, int bufferIndex ) {
-        supportSearchBits = ( buffer[bufferIndex] & SMB_SUPPORT_SEARCH_BITS ) == SMB_SUPPORT_SEARCH_BITS;
-        shareIsInDfs = ( buffer[bufferIndex] & SMB_SHARE_IS_IN_DFS ) == SMB_SHARE_IS_IN_DFS;
+
+    int readParameterWordsWireFormat(byte[] buffer, int bufferIndex) {
+        supportSearchBits = (buffer[bufferIndex] & SMB_SUPPORT_SEARCH_BITS) == SMB_SUPPORT_SEARCH_BITS;
+        shareIsInDfs = (buffer[bufferIndex] & SMB_SHARE_IS_IN_DFS) == SMB_SHARE_IS_IN_DFS;
         return 2;
     }
-    int readBytesWireFormat( byte[] buffer, int bufferIndex ) {
+
+    int readBytesWireFormat(byte[] buffer, int bufferIndex) {
         int start = bufferIndex;
 
-        int len = readStringLength( buffer, bufferIndex, 32 );
+        int len = readStringLength(buffer, bufferIndex, 32);
         try {
-            service = new String( buffer, bufferIndex, len, "ASCII" );
-        } catch( UnsupportedEncodingException uee ) {
+            service = new String(buffer, bufferIndex, len, "ASCII");
+        } catch (UnsupportedEncodingException uee) {
             return 0;
         }
         bufferIndex += len + 1;
@@ -64,13 +67,14 @@ class SmbComTreeConnectAndXResponse extends AndXServerMessageBlock {
 
         return bufferIndex - start;
     }
+
     public String toString() {
-        String result = new String( "SmbComTreeConnectAndXResponse[" +
-            super.toString() +
-            ",supportSearchBits=" + supportSearchBits +
-            ",shareIsInDfs=" + shareIsInDfs +
-            ",service=" + service +
-            ",nativeFileSystem=" + nativeFileSystem + "]" );
+        String result = new String("SmbComTreeConnectAndXResponse[" +
+                super.toString() +
+                ",supportSearchBits=" + supportSearchBits +
+                ",shareIsInDfs=" + shareIsInDfs +
+                ",service=" + service +
+                ",nativeFileSystem=" + nativeFileSystem + "]");
         return result;
     }
 }

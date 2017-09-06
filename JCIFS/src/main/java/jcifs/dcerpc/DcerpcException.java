@@ -19,10 +19,12 @@
 
 package jcifs.dcerpc;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
-import jcifs.util.Hexdump;
 import jcifs.smb.WinError;
+import jcifs.util.Hexdump;
 
 public class DcerpcException extends IOException implements DcerpcError, WinError {
 
@@ -52,19 +54,24 @@ public class DcerpcException extends IOException implements DcerpcError, WinErro
         super(getMessageByDcerpcError(error));
         this.error = error;
     }
+
     public DcerpcException(String msg) {
         super(msg);
     }
+
     public DcerpcException(String msg, Throwable rootCause) {
         super(msg);
         this.rootCause = rootCause;
     }
+
     public int getErrorCode() {
         return error;
     }
+
     public Throwable getRootCause() {
         return rootCause;
     }
+
     public String toString() {
         if (rootCause != null) {
             StringWriter sw = new StringWriter();

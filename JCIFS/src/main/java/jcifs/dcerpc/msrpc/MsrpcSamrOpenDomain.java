@@ -18,14 +18,14 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.dcerpc.*;
+import jcifs.dcerpc.rpc;
 
 public class MsrpcSamrOpenDomain extends samr.SamrOpenDomain {
 
     public MsrpcSamrOpenDomain(SamrPolicyHandle handle,
-                    int access,
-                    rpc.sid_t sid,
-                    SamrDomainHandle domainHandle) {
+                               int access,
+                               rpc.sid_t sid,
+                               SamrDomainHandle domainHandle) {
         super(handle, access, sid, domainHandle);
         ptype = 0;
         flags = DCERPC_FIRST_FRAG | DCERPC_LAST_FRAG;

@@ -18,7 +18,6 @@
 
 package jcifs.smb;
 
-import java.io.OutputStream;
 import java.io.IOException;
 
 class TransactNamedPipeOutputStream extends SmbFileOutputStream {
@@ -28,41 +27,44 @@ class TransactNamedPipeOutputStream extends SmbFileOutputStream {
     private byte[] tmp = new byte[1];
     private boolean dcePipe;
 
-    TransactNamedPipeOutputStream( SmbNamedPipe pipe ) throws IOException {
+    TransactNamedPipeOutputStream(SmbNamedPipe pipe) throws IOException {
         super(pipe, false, (pipe.pipeType & 0xFFFF00FF) | SmbFile.O_EXCL);
         this.pipe = pipe;
-        this.dcePipe = ( pipe.pipeType & SmbNamedPipe.PIPE_TYPE_DCE_TRANSACT ) == SmbNamedPipe.PIPE_TYPE_DCE_TRANSACT;
+        this.dcePipe = (pipe.pipeType & SmbNamedPipe.PIPE_TYPE_DCE_TRANSACT) == SmbNamedPipe.PIPE_TYPE_DCE_TRANSACT;
         path = pipe.unc;
     }
 
     public void close() throws IOException {
         pipe.close();
     }
-    public void write( int b ) throws IOException {
-        tmp[0] = (byte)b;
-        write( tmp, 0, 1 );
+
+    public void write(int b) throws IOException {
+        tmp[0] = (byte) b;
+        write(tmp, 0, 1);
     }
-    public void write( byte[] b ) throws IOException {
-        write( b, 0, b.length );
+
+    public void write(byte[] b) throws IOException {
+        write(b, 0, b.length);
     }
-    public void write( byte[] b, int off, int len ) throws IOException {
-        if( len < 0 ) {
+
+    public void write(byte[] b, int off, int len) throws IOException {
+        if (len < 0) {
             len = 0;
         }
 
-        if(( pipe.pipeType & SmbNamedPipe.PIPE_TYPE_CALL ) == SmbNamedPipe.PIPE_TYPE_CALL ) {
-            pipe.send( new TransWaitNamedPipe( path ),
-                                        new TransWaitNamedPipeResponse() );
-            pipe.send( new TransCallNamedPipe( path, b, off, len ),
-                                        new TransCallNamedPipeResponse( pipe ));
-        } else if(( pipe.pipeType & SmbNamedPipe.PIPE_TYPE_TRANSACT ) ==
-                                                    SmbNamedPipe.PIPE_TYPE_TRANSACT ) {
+        if ((pipe.pipeType & SmbNamedPipe.PIPE_TYPE_CALL) == SmbNamedPipe.PIPE_TYPE_CALL) {
+            pipe.send(new TransWaitNamedPipe(path),
+                    new TransWaitNamedPipeResponse());
+            pipe.send(new TransCallNamedPipe(path, b, off, len),
+                    new TransCallNamedPipeResponse(pipe));
+        } else if ((pipe.pipeType & SmbNamedPipe.PIPE_TYPE_TRANSACT) ==
+                SmbNamedPipe.PIPE_TYPE_TRANSACT) {
             ensureOpen();
-            TransTransactNamedPipe req = new TransTransactNamedPipe( pipe.fid, b, off, len );
+            TransTransactNamedPipe req = new TransTransactNamedPipe(pipe.fid, b, off, len);
             if (dcePipe) {
                 req.maxDataCount = 1024;
             }
-            pipe.send( req, new TransTransactNamedPipeResponse( pipe ));
+            pipe.send(req, new TransTransactNamedPipeResponse(pipe));
         }
     }
 }

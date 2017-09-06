@@ -18,14 +18,11 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.smb.*;
-import jcifs.dcerpc.*;
-
 public class MsrpcEnumerateAliasesInDomain extends samr.SamrEnumerateAliasesInDomain {
 
     public MsrpcEnumerateAliasesInDomain(SamrDomainHandle domainHandle,
-                int acct_flags,
-                samr.SamrSamArray sam) {
+                                         int acct_flags,
+                                         samr.SamrSamArray sam) {
         super(domainHandle, 0, acct_flags, null, 0);
         this.sam = sam;
         ptype = 0;

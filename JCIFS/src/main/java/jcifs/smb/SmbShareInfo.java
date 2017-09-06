@@ -28,15 +28,17 @@ public class SmbShareInfo implements FileEntry {
 
     public SmbShareInfo() {
     }
-    public SmbShareInfo(String netName, int type, String remark)
-    {
+
+    public SmbShareInfo(String netName, int type, String remark) {
         this.netName = netName;
         this.type = type;
         this.remark = remark;
     }
+
     public String getName() {
         return netName;
     }
+
     public int getType() {
         /* 0x80000000 means hidden but SmbFile.isHidden() checks for $ at end
          */
@@ -48,35 +50,40 @@ public class SmbShareInfo implements FileEntry {
         }
         return SmbFile.TYPE_SHARE;
     }
+
     public int getAttributes() {
         return SmbFile.ATTR_READONLY | SmbFile.ATTR_DIRECTORY;
     }
+
     public long createTime() {
         return 0L;
     }
+
     public long lastModified() {
         return 0L;
     }
+
     public long length() {
         return 0L;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof SmbShareInfo) {
-            SmbShareInfo si = (SmbShareInfo)obj;
+            SmbShareInfo si = (SmbShareInfo) obj;
             return netName.equals(si.netName);
         }
         return false;
     }
+
     public int hashCode() {
         int hashCode = netName.hashCode();
         return hashCode;
     }
 
     public String toString() {
-        return new String( "SmbShareInfo[" +
+        return new String("SmbShareInfo[" +
                 "netName=" + netName +
-                ",type=0x" + Hexdump.toHexString( type, 8 ) +
-                ",remark=" + remark + "]" );
+                ",type=0x" + Hexdump.toHexString(type, 8) +
+                ",remark=" + remark + "]");
     }
 }

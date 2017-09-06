@@ -19,8 +19,9 @@
 
 package jcifs.dcerpc;
 
-import java.io.IOException;
-import jcifs.dcerpc.ndr.*;
+import jcifs.dcerpc.ndr.NdrBuffer;
+import jcifs.dcerpc.ndr.NdrException;
+import jcifs.dcerpc.ndr.NdrObject;
 
 public abstract class DcerpcMessage extends NdrObject implements DcerpcConstants {
 
@@ -34,12 +35,15 @@ public abstract class DcerpcMessage extends NdrObject implements DcerpcConstants
     public boolean isFlagSet(int flag) {
         return (flags & flag) == flag;
     }
+
     public void unsetFlag(int flag) {
         flags &= ~flag;
     }
+
     public void setFlag(int flag) {
         flags |= flag;
     }
+
     public DcerpcException getResult() {
         if (result != 0)
             return new DcerpcException(result);
@@ -56,6 +60,7 @@ public abstract class DcerpcMessage extends NdrObject implements DcerpcConstants
         buf.enc_ndr_short(0); /* length of auth_value */
         buf.enc_ndr_long(call_id);
     }
+
     void decode_header(NdrBuffer buf) throws NdrException {
          /* RPC major / minor version */
         if (buf.dec_ndr_small() != 5 || buf.dec_ndr_small() != 0)
@@ -69,6 +74,7 @@ public abstract class DcerpcMessage extends NdrObject implements DcerpcConstants
             throw new NdrException("DCERPC authentication not supported");
         call_id = buf.dec_ndr_long();
     }
+
     public void encode(NdrBuffer buf) throws NdrException {
         int start = buf.getIndex();
         int alloc_hint_index = 0;
@@ -94,6 +100,7 @@ public abstract class DcerpcMessage extends NdrObject implements DcerpcConstants
         encode_header(buf);
         buf.setIndex(start + length);
     }
+
     public void decode(NdrBuffer buf) throws NdrException {
         decode_header(buf);
 
@@ -113,6 +120,8 @@ public abstract class DcerpcMessage extends NdrObject implements DcerpcConstants
     }
 
     public abstract int getOpnum();
+
     public abstract void encode_in(NdrBuffer buf) throws NdrException;
+
     public abstract void decode_out(NdrBuffer buf) throws NdrException;
 }

@@ -19,9 +19,7 @@
 
 package jcifs.dcerpc.msrpc;
 
-import jcifs.smb.*;
-import jcifs.util.Hexdump;
-import jcifs.dcerpc.*;
+import jcifs.smb.SID;
 
 public class MsrpcLookupSids extends lsarpc.LsarLookupSids {
 
@@ -32,7 +30,7 @@ public class MsrpcLookupSids extends lsarpc.LsarLookupSids {
                 new LsarSidArrayX(sids),
                 new lsarpc.LsarRefDomainList(),
                 new lsarpc.LsarTransNameArray(),
-                (short)1,
+                (short) 1,
                 sids.length);
         this.sids = sids;
         ptype = 0;
