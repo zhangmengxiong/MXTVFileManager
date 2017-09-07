@@ -26,10 +26,12 @@ object SambaScanHelp {
         SmbCache.getInstance(context).getSmbList().forEach {
             ipList.add(it.IP!!)
         }
-        (0..SCAN_MAX)
-                .map { SambaUtil.getIP(ip, it) }
-                .filterNot { ipList.contains(it) }
-                .forEach { ipList.add(it) }
+        for (i in 0..SCAN_MAX) {
+            val cip = SambaUtil.getIP(ip, i)
+            if (!ipList.contains(cip)) {
+                ipList.add(cip)
+            }
+        }
 
         var finishSize = 0
         val maxSize = ipList.size
