@@ -10,7 +10,6 @@ import java.util.concurrent.Executors
  * 创建时间： 2017/8/31.
  * 联系方式: zmx_final@163.com
  */
-
 object SambaScanHelp {
     private val SCAN_MAX = 255
 
@@ -20,16 +19,27 @@ object SambaScanHelp {
             scanCall?.onScanEnd()
             return
         }
-
-        val executor = Executors.newFixedThreadPool(20)
-
+        val executor = Executors.newFixedThreadPool(30)
         scanCall?.onStart()
+
+        val ipList = ArrayList<String>()
+        SmbCache.getInstance(context).getSmbList().forEach {
+            ipList.add(it.IP!!)
+        }
+        (0..SCAN_MAX)
+                .map { SambaUtil.getIP(ip, it) }
+                .filterNot { ipList.contains(it) }
+                .forEach { ipList.add(it) }
+
         var finishSize = 0
-        for (i in 0..SCAN_MAX) {
-            executor.execute(ServerScanRun(ip, i,
+        val maxSize = ipList.size
+
+        ipList.forEach {
+            println(it)
+            executor.execute(ServerScanRun(it,
                     {
                         finishSize++
-                        if (finishSize >= SCAN_MAX) {
+                        if (finishSize >= maxSize) {
                             scanCall?.onScanEnd()
                         }
                     },

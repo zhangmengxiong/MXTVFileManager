@@ -6,12 +6,13 @@ import android.os.IBinder
 import com.mx.dlna.DeviceItem
 import com.mx.dlna.DlnaScan
 import com.mx.dlna.IDlnaScan
-import jcifs.FileService
-import org.fourthline.cling.android.AndroidUpnpService
-import org.greenrobot.eventbus.EventBus
 import com.mx.lib.samba.IScanCall
 import com.mx.lib.samba.SambaScanHelp
 import com.mx.lib.samba.SambaServer
+import com.mx.lib.samba.SmbCache
+import jcifs.FileService
+import org.fourthline.cling.android.AndroidUpnpService
+import org.greenrobot.eventbus.EventBus
 
 class XXService : Service() {
     val devList = ArrayList<DeviceItem>()
@@ -34,6 +35,7 @@ class XXService : Service() {
                         "服务器名字：${sambaServer.serverName}")
 
                 EventBus.getDefault().post(sambaServer)
+                SmbCache.getInstance(this@XXService).saveCache(sambaServer)
             }
 
             override fun onScanEnd() {

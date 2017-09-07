@@ -11,9 +11,8 @@ import jcifs.smb.SmbFile
  * 创建时间： 2017/8/31.
  * 联系方式: zmx_final@163.com
  */
-class ServerScanRun(private val ip: String, private val index: Int, private val endCall: () -> Unit, private val findCall: ((SambaServer) -> Unit)) : Runnable {
+class ServerScanRun(private val ip: String, private val endCall: () -> Unit, private val findCall: ((SambaServer) -> Unit)) : Runnable {
     override fun run() {
-        val ip = SambaUtil.getIP(ip, index)
         try {
             var isFind = false
             if (NetUtils.isHostConnectable(ip, SambaUtil.POET1)) {
