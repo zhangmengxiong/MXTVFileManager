@@ -132,9 +132,9 @@ public class Hexdump {
     }
 
     /**
-     * This is the same as {@link jcifs.util.Hexdump#toHexString(int val, int
+     * This is the same as {@link Hexdump#toHexString(int val, int
      * size)} but provides a more practical form when trying to avoid {@link
-     * java.lang.String} concatenation and {@link java.lang.StringBuffer}.
+     * String} concatenation and {@link StringBuffer}.
      */
     public static void toHexChars(int val, char dst[], int dstIndex, int size) {
         while (size > 0) {

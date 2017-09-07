@@ -1,8 +1,8 @@
 package com.mx.tv.file.samba
 
 import com.mx.tv.file.utils.NetUtils
+import jcifs.smb.SmbFile
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 
 /**
  * 创建人： zhangmengxiong
@@ -25,20 +25,32 @@ object SambaScanHelp {
         scanCall?.onStart()
         var finishSize = 0
         for (i in 0..SCAN_MAX) {
-            executor.execute(ScanRun(ip, i,
+            executor.execute(ServerScanRun(ip, i,
                     {
                         finishSize++
+                        if (finishSize >= SCAN_MAX) {
+                            scanCall?.onScanEnd()
+                        }
                     },
                     { s ->
                         scanCall?.onFind(s)
                     }))
         }
-        thread {
-            while (finishSize < SCAN_MAX) {
-                Thread.sleep(1000)
-            }
-            scanCall?.onScanEnd()
-        }
     }
 
+    fun getFileList(server: SambaServer, path: String): ArrayList<SmbFile> {
+        val list = ArrayList<SmbFile>()
+        try {
+            val smbFile = SmbFile(SambaUtil.fmtPath(server.IP, path, true))
+            if (smbFile.isDirectory) {
+                smbFile.listFiles().filter { !it.isHidden }.forEach {
+                    list.add(it)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            list.clear()
+        }
+        return list
+    }
 }

@@ -33,7 +33,7 @@ import jcifs.util.Hexdump;
  * <p> Applications can use the methods <code>getLocalHost</code>,
  * <code>getByName</code>, and
  * <code>getAllByAddress</code> to create a new NbtAddress instance. This
- * class is symmetric with {@link java.net.InetAddress}.
+ * class is symmetric with {@link InetAddress}.
  * <p>
  * <p><b>About NetBIOS:</b> The NetBIOS name
  * service is a dynamic distributed service that allows hosts to resolve
@@ -62,7 +62,7 @@ import jcifs.util.Hexdump;
  * </blockquote></pre>
  * <p> The hostname of this machine is <code>JMORRIS2</code>. It is
  * a member of the group(a.k.a workgroup and domain) <code>BILLING-NY</code>. To
- * obtain an {@link java.net.InetAddress} for a host one might do:
+ * obtain an {@link InetAddress} for a host one might do:
  * <p>
  * <pre>
  *   InetAddress addr = NbtAddress.getByName( "jmorris2" ).getInetAddress();
@@ -71,7 +71,7 @@ import jcifs.util.Hexdump;
  * diagnostics using the <code>nmblookup</code> utility.
  *
  * @author Michael B. Allen
- * @see java.net.InetAddress
+ * @see InetAddress
  * @since jcifs-0.1
  */
 
@@ -370,11 +370,11 @@ public final class NbtAddress {
     /**
      * Determines the address of a host given it's host name. The name can be a NetBIOS name like
      * "freto" or an IP address like "192.168.1.15". It cannot be a DNS name;
-     * the analygous {@link jcifs.UniAddress} or {@link java.net.InetAddress}
+     * the analygous {@link jcifs.UniAddress} or {@link InetAddress}
      * <code>getByName</code> methods can be used for that.
      *
      * @param host hostname to resolve
-     * @throws java.net.UnknownHostException if there is an error resolving the name
+     * @throws UnknownHostException if there is an error resolving the name
      */
 
     public static NbtAddress getByName(String host)
@@ -395,7 +395,7 @@ public final class NbtAddress {
      * @param host  the name to resolve
      * @param type  the hex code of the name
      * @param scope the scope of the name
-     * @throws java.net.UnknownHostException if there is an error resolving the name
+     * @throws UnknownHostException if there is an error resolving the name
      */
 
     public static NbtAddress getByName(String host,
@@ -406,7 +406,7 @@ public final class NbtAddress {
         return getByName(host, type, scope, null);
     }
 
-/* 
+/*
  * The additional <code>svr</code> parameter specifies the address to
  * query. This might be the address of a specific host, a name server,
  * or a broadcast address.
@@ -473,7 +473,7 @@ public final class NbtAddress {
      * host with the same IP address.
      *
      * @param host hostname to lookup all addresses for
-     * @throws java.net.UnknownHostException if there is an error resolving the name
+     * @throws UnknownHostException if there is an error resolving the name
      */
 
 
@@ -494,7 +494,7 @@ public final class NbtAddress {
      * @param host  hostname to lookup all addresses for
      * @param type  the hexcode of the name
      * @param scope the scope of the name
-     * @throws java.net.UnknownHostException if there is an error resolving the name
+     * @throws UnknownHostException if there is an error resolving the name
      */
 
 
@@ -665,24 +665,24 @@ public final class NbtAddress {
         return calledName;
     }
 
-/* 
+/*
  * There are three degrees of state that any NbtAddress can have.
- * 
+ *
  * 1) IP Address - If a dot-quad IP string is used with getByName (or used
  * to create an NbtAddress internal to this netbios package), no query is
  * sent on the wire and the only state this object has is it's IP address
  * (but that's enough to connect to a host using *SMBSERVER for CallingName).
- * 
+ *
  * 2) IP Address, NetBIOS name, nodeType, groupName - If however a
  * legal NetBIOS name string is used a name query request will retreive
  * the IP, node type, and whether or not this NbtAddress represents a
  * group name. This degree of state can be obtained with a Name Query
  * Request or Node Status Request.
- * 
+ *
  * 3) All - The NbtAddress will be populated with all state such as mac
  * address, isPermanent, isBeingDeleted, ...etc. This information can only
  * be retrieved with the Node Status request.
- * 
+ *
  * The degree of state that an NbtAddress has is dependant on how it was
  * created and what is required of it. The second degree of state is the
  * most common. This is the state information that would be retrieved from
@@ -719,9 +719,9 @@ public final class NbtAddress {
     /**
      * Checks the node type of this address.
      *
-     * @return {@link jcifs.netbios.NbtAddress#B_NODE},
-     * {@link jcifs.netbios.NbtAddress#P_NODE}, {@link jcifs.netbios.NbtAddress#M_NODE},
-     * {@link jcifs.netbios.NbtAddress#H_NODE}
+     * @return {@link NbtAddress#B_NODE},
+     * {@link NbtAddress#P_NODE}, {@link NbtAddress#M_NODE},
+     * {@link NbtAddress#H_NODE}
      * @throws UnknownHostException if the host cannot be resolved to find out.
      */
 
@@ -828,7 +828,7 @@ public final class NbtAddress {
     /**
      * To convert this address to an <code>InetAddress</code>.
      *
-     * @return the {@link java.net.InetAddress} representation of this address.
+     * @return the {@link InetAddress} representation of this address.
      */
 
     public InetAddress getInetAddress() throws UnknownHostException {
@@ -836,7 +836,7 @@ public final class NbtAddress {
     }
 
     /**
-     * Returns this IP adress as a {@link java.lang.String} in the form "%d.%d.%d.%d".
+     * Returns this IP adress as a {@link String} in the form "%d.%d.%d.%d".
      */
 
     public String getHostAddress() {
@@ -877,7 +877,7 @@ public final class NbtAddress {
     }
 
     /**
-     * Returns the {@link java.lang.String} representaion of this address.
+     * Returns the {@link String} representaion of this address.
      */
 
     public String toString() {

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context="com.mx.tv.file.FileListActivity">
+    tools:context="com.mx.tv.file.activity.FileListActivity">
 
     <RelativeLayout
         android:id="@+id/topLay"

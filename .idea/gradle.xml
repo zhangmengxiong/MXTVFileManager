@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/DLNA" />
-            <option value="$PROJECT_DIR$/JCIFS" />
+            <option value="$PROJECT_DIR$/SAMBA" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

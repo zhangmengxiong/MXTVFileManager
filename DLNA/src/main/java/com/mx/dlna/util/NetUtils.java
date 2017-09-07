@@ -19,7 +19,6 @@ public class NetUtils {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         int ipAddress = wifiInfo.getIpAddress();
 
-        InetAddress inetAddress;
         Message message = new Message();
         try {
             inetAddress = InetAddress.getByName(String.format("%d.%d.%d.%d",

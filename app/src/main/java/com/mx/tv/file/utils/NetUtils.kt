@@ -2,15 +2,12 @@ package com.mx.tv.file.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.util.Log
 
 
-import com.mx.tv.file.MyApp
+import com.mx.tv.file.base.MyApp
 
-import java.lang.reflect.Method
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NetworkInterface

@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DLNA/DLNA.iml" filepath="$PROJECT_DIR$/DLNA/DLNA.iml" />
-      <module fileurl="file://$PROJECT_DIR$/JCIFS/JCIFS.iml" filepath="$PROJECT_DIR$/JCIFS/JCIFS.iml" />
       <module fileurl="file://$PROJECT_DIR$/MXTVFileManager.iml" filepath="$PROJECT_DIR$/MXTVFileManager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SAMBA/SAMBA.iml" filepath="$PROJECT_DIR$/SAMBA/SAMBA.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

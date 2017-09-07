@@ -39,7 +39,7 @@ public class SmbFileInputStream extends InputStream {
     SmbFile file;
 
     /**
-     * Creates an {@link java.io.InputStream} for reading bytes from a file on
+     * Creates an {@link InputStream} for reading bytes from a file on
      * an SMB server addressed by the <code>url</code> parameter. See {@link
      * jcifs.smb.SmbFile} for a detailed description and examples of the smb
      * URL syntax.
@@ -52,7 +52,7 @@ public class SmbFileInputStream extends InputStream {
     }
 
     /**
-     * Creates an {@link java.io.InputStream} for reading bytes from a file on
+     * Creates an {@link InputStream} for reading bytes from a file on
      * an SMB server represented by the {@link jcifs.smb.SmbFile} parameter. See
      * {@link jcifs.smb.SmbFile} for a detailed description and examples of
      * the smb URL syntax.

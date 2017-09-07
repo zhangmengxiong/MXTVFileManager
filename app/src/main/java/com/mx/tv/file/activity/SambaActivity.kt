@@ -1,21 +1,24 @@
-package com.mx.tv.file
+package com.mx.tv.file.activity
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
-import com.mx.tv.file.adapts.FileListAdapt
-import com.mx.tv.file.models.FileBean
+import com.mx.tv.file.R
+import com.mx.tv.file.adapts.SambaListAdapt
+import com.mx.tv.file.base.BaseActivity
+import com.mx.tv.file.base.MyApp
+import com.mx.tv.file.samba.SambaServer
 import com.mx.tv.file.task.AsyncPostExecute
-import com.mx.tv.file.task.FileScanTask
+import com.mx.tv.file.task.SambaScanTask
 import com.mx.tv.file.utils.FileOpenUtil
 import com.mx.tv.file.utils.ViewUtils
+import jcifs.smb.SmbFile
 import java.io.File
 import java.util.*
 
-class FileListActivity : Activity() {
+class SambaActivity : BaseActivity() {
     @ViewUtils.ViewInject(R.id.listView)
     private val listView: ListView? = null
 
@@ -34,16 +37,16 @@ class FileListActivity : Activity() {
     @ViewUtils.ViewInject(R.id.loadingLay)
     private val loadingLay: View? = null
 
-    private val arrayList = ArrayList<FileBean>()
-    private var fileListAdapt: FileListAdapt? = null
-    private var fileScanTask: FileScanTask? = null
-    private var rootDir: File? = null
-    private var curDir: File? = null
+    private val arrayList = ArrayList<SmbFile>()
+    private var sambaListAdapt: SambaListAdapt? = null
+    private var sambaScanTask: SambaScanTask? = null
+    private lateinit var sambaServer: SambaServer
+    private var curDir = File("/")
     private var listIndexStr: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_file_list)
+        setContentView(R.layout.activity_samba)
         initView()
         initData()
     }
@@ -55,36 +58,33 @@ class FileListActivity : Activity() {
     }
 
     private fun initData() {
-        rootDir = File(intent.getStringExtra("PATH"))
-        curDir = rootDir
+        sambaServer = intent.getSerializableExtra("SambaServer") as SambaServer
 
-        fileListAdapt = FileListAdapt(arrayList)
-        listView!!.adapter = fileListAdapt
+        sambaListAdapt = SambaListAdapt(arrayList)
+        listView!!.adapter = sambaListAdapt
 
         reGetFileList()
     }
 
     private fun reGetFileList() {
-        if (curDir != null) {
-            if (fileScanTask != null) fileScanTask!!.cancel(true)
-            arrayList.clear()
-            fileListAdapt!!.notifyDataSetChanged()
+        if (sambaScanTask != null) sambaScanTask!!.cancel(true)
+        arrayList.clear()
+        sambaListAdapt!!.notifyDataSetChanged()
 
-            fileScanTask = FileScanTask(fileScanPost)
-            fileScanTask!!.executeOnExecutor(MyApp.executor, curDir!!.absolutePath)
+        sambaScanTask = SambaScanTask(sambaServer, fileScanPost)
+        sambaScanTask!!.executeOnExecutor(MyApp.executor, curDir.absolutePath)
 
-            curDirTxv!!.text = curDir!!.absolutePath
-            title!!.text = curDir!!.name
-            textView!!.text = String.format(listIndexStr!!, arrayList.size)
-        }
+        curDirTxv!!.text = curDir.absolutePath
+        title!!.text = sambaServer.serverName
+        textView!!.text = String.format(listIndexStr!!, arrayList.size)
     }
 
-    private val fileScanPost = object : AsyncPostExecute<ArrayList<FileBean>>() {
-        override fun onPostExecute(isOk: Boolean, result: ArrayList<FileBean>?) {
+    private val fileScanPost = object : AsyncPostExecute<ArrayList<SmbFile>>() {
+        override fun onPostExecute(isOk: Boolean, result: ArrayList<SmbFile>?) {
             if (isOk) {
                 arrayList.clear()
                 arrayList.addAll(result!!)
-                fileListAdapt!!.notifyDataSetChanged()
+                sambaListAdapt!!.notifyDataSetChanged()
 
                 emptyView!!.visibility = if (result.size <= 0) View.VISIBLE else View.GONE
                 textView!!.text = String.format(resources.getString(R.string.list_index_size_str), "" + arrayList.size)
@@ -100,28 +100,28 @@ class FileListActivity : Activity() {
     }
 
     private val fileItemClick = AdapterView.OnItemClickListener { adapterView, view, i, l ->
-        val bean = fileListAdapt!!.getItem(i)
+        val bean = sambaListAdapt!!.getItem(i) as SmbFile?
         if (bean != null) {
             if (bean.isDirectory) {
-                curDir = bean.FILE
+                curDir = File(bean.canon)
                 reGetFileList()
             } else {
-                FileOpenUtil.openFile(this@FileListActivity, bean.FILE!!)
+                FileOpenUtil.openFile(this@SambaActivity, "http://localhost:10001/" + bean.path!!)
             }
         }
     }
 
     override fun onBackPressed() {
-        if (curDir == rootDir)
+        if (curDir.absolutePath == "/")
             super.onBackPressed()
         else {
-            curDir = curDir!!.parentFile
+            curDir = curDir.parentFile
             reGetFileList()
         }
     }
 
     override fun onDestroy() {
-        if (fileScanTask != null) fileScanTask!!.cancel(true)
+        if (sambaScanTask != null) sambaScanTask!!.cancel(true)
         super.onDestroy()
     }
 }

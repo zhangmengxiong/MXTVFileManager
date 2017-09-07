@@ -6,7 +6,7 @@
     <string name="video_size_str" formatted="false">%s个视频</string>
     <string name="apk_size_str" formatted="false">%s个安装文件</string>
     <string name="sound_size_str" formatted="false">%s个音乐</string>
-    <string name="sum_size_str" formatted="false">共%s个文件</string>
+    <string name="sum_size_str" formatted="false">共 %s 个文件</string>
     <string name="has_use_str" formatted="false">已使用：%s</string>
     <string name="max_size_str" formatted="false">共有：%s</string>
 

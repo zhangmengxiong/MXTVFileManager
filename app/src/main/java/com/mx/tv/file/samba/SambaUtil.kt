@@ -16,4 +16,6 @@ object SambaUtil {
     }
 
     fun fmtIP(ip: String): String = "$HEAD$ip"
+
+    fun fmtPath(ip: String, path: String, isDir: Boolean = false): String = if (isDir) "$HEAD$ip$path/" else "$HEAD$ip$path"
 }

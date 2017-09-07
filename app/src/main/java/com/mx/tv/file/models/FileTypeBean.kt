@@ -1,8 +1,7 @@
 package com.mx.tv.file.models
 
 import android.text.TextUtils
-
-import java.util.Locale
+import java.util.*
 
 /**
  * 创建人： zhangmengxiong
@@ -18,17 +17,15 @@ enum class FileTypeBean {
 
 
     companion object {
-
         fun fromName(name: String): FileTypeBean {
             var name = name
             if (TextUtils.isEmpty(name)) return UNKNOW
             name = name.toLowerCase(Locale.ENGLISH)
-            if (name.endsWith("apk")) return APK
-            if (name.endsWith("png") || name.endsWith("jpg") || name.endsWith("jpeg") || name.endsWith("gif"))
+            if (name.endsWith(".apk")) return APK
+            if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif"))
                 return PIC
-            if (name.endsWith("mp4") || name.endsWith("avi") || name.endsWith("mov")) return VIDEO
-            return if (name.endsWith("mp3")) SOUND else UNKNOW
-
+            if (name.endsWith(".mp4") || name.endsWith(".avi") || name.endsWith(".mov")) return VIDEO
+            return if (name.endsWith(".mp3")) SOUND else UNKNOW
         }
     }
 }

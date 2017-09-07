@@ -1,12 +1,14 @@
-package com.mx.tv.file
+package com.mx.tv.file.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.mx.tv.file.R
+import com.mx.tv.file.base.BaseActivity
+import com.mx.tv.file.base.MyApp
 import com.mx.tv.file.models.FileTypeBean
 import com.mx.tv.file.models.SDCardBean
 import com.mx.tv.file.models.SDScanItem
@@ -18,7 +20,7 @@ import com.mx.tv.file.views.FileTypeCardView
 import com.mx.tv.file.views.SDCardView
 
 
-class SDDetailActivity : Activity() {
+class SDDetailActivity : BaseActivity() {
 
     @ViewUtils.ViewInject(R.id.progressBar)
     private val progressBar: ProgressBar? = null

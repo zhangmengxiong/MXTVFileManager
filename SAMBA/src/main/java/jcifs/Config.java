@@ -32,7 +32,7 @@ import java.util.StringTokenizer;
 import jcifs.util.LogStream;
 
 /**
- * This class uses a static {@link java.util.Properties} to act
+ * This class uses a static {@link Properties} to act
  * as a cental repository for all jCIFS configuration properties. It cannot be
  * instantiated. Similar to <code>System</code> properties the namespace
  * is global therefore property names should be unique. Before use,

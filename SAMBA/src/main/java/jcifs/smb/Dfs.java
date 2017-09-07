@@ -45,7 +45,7 @@ public class Dfs {
     static final long TTL = Config.getLong("jcifs.smb.client.dfs.ttl", 300);
     static final boolean DISABLED = Config.getBoolean("jcifs.smb.client.dfs.disabled", false);
 
-    protected static CacheEntry FALSE_ENTRY = new Dfs.CacheEntry(0L);
+    protected static CacheEntry FALSE_ENTRY = new CacheEntry(0L);
 
     protected CacheEntry _domains = null; /* aka trusted domains cache */
     protected CacheEntry referrals = null;

@@ -1250,6 +1250,10 @@ public class SmbFile extends URLConnection implements SmbConstants {
         return "smb://";
     }
 
+    public String getCanon() {
+        return canon;
+    }
+
     /**
      * Retrieves the share associated with this SMB resource. In
      * the case of <code>smb://</code>, <code>smb://workgroup/</code>,
@@ -2705,12 +2709,12 @@ public class SmbFile extends URLConnection implements SmbConstants {
     }
 
     /**
-     * Returns a {@link java.net.URL} for this <code>SmbFile</code>. The
+     * Returns a {@link URL} for this <code>SmbFile</code>. The
      * <code>URL</code> may be used as any other <code>URL</code> might to
      * access an SMB resource. Currently only retrieving data and information
      * is supported (i.e. no <tt>doOutput</tt>).
      *
-     * @return A new <code>{@link java.net.URL}</code> for this <code>SmbFile</code>
+     * @return A new <code>{@link URL}</code> for this <code>SmbFile</code>
      * @throws MalformedURLException
      * @deprecated Use getURL() instead
      */

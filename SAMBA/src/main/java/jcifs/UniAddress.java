@@ -33,7 +33,7 @@ import jcifs.util.LogStream;
  * handled internally to the <code>jcifs.smb</code> package.
  * <p>
  * This class is a wrapper for both {@link jcifs.netbios.NbtAddress}
- * and {@link java.net.InetAddress}. The name resolution mechanisms
+ * and {@link InetAddress}. The name resolution mechanisms
  * used will systematically query all available configured resolution
  * services including WINS, broadcasts, DNS, and LMHOSTS. See
  * <a href="../../resolver.html">Setting Name Resolution Properties</a>
@@ -196,7 +196,7 @@ public class UniAddress {
      * machine name like "jcifs.samba.org",  or an IP address like "192.168.1.15".
      *
      * @param hostname NetBIOS or DNS hostname to resolve
-     * @throws java.net.UnknownHostException if there is an error resolving the name
+     * @throws UnknownHostException if there is an error resolving the name
      */
 
     public static UniAddress getByName(String hostname)

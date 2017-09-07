@@ -19,24 +19,31 @@ object FileOpenUtil {
      *
      * @param file
      */
-    fun openFile(context: Context, file: File): Boolean {
+    fun openFile(context: Context, file: File): Boolean = openFile(context, file.absoluteFile)
+
+    /**
+     * 打开文件
+     *
+     * @param file
+     */
+    fun openFile(context: Context, url: String): Boolean {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         var isOK: Boolean
-        try {
+        isOK = try {
             //获取文件file的MIME类型
-            val type = getMIMEType(file)
+            val type = getMIMEType(url)
             //设置intent的data和Type属性。
-            intent.setDataAndType(Uri.fromFile(file), type)
+            intent.setDataAndType(Uri.parse(url), type)
             //跳转
             context.startActivity(intent)
-            isOK = true
+            true
         } catch (e: Exception) {
-            isOK = false
+            false
         }
 
         if (!isOK) {
-            intent.setDataAndType(Uri.fromFile(file), "*/*")
+            intent.setDataAndType(Uri.parse(url), "*/*")
             try {
                 //跳转
                 context.startActivity(intent)
@@ -55,16 +62,15 @@ object FileOpenUtil {
      *
      * @param file
      */
-    private fun getMIMEType(file: File): String {
+    private fun getMIMEType(file: String): String {
         var type = "*/*"
-        val fName = file.name
         //获取后缀名前的分隔符"."在fName中的位置。
-        val dotIndex = fName.lastIndexOf(".")
+        val dotIndex = file.lastIndexOf(".")
         if (dotIndex < 0) {
             return type
         }
         /* 获取文件的后缀名*/
-        val end = fName.substring(dotIndex, fName.length).toLowerCase()
+        val end = file.substring(dotIndex, file.length).toLowerCase()
         if (end === "") return type
         //在MIME和文件类型的匹配表中找到对应的MIME类型。
         for (aMIME_MapTable in MIME_MapTable) { //MIME_MapTable??在这里你一定有疑问，这个MIME_MapTable是什么？

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 public class DlnaScan {
     private static final String TAG = DlnaScan.class.getSimpleName();
     private Context mContext;
+    private IDlnaScan dlnaScan;
 
     private AndroidUpnpService upnpService;
     private MediaServer mediaServer;
@@ -38,6 +39,11 @@ public class DlnaScan {
 
     public DlnaScan(Context context) {
         mContext = context;
+        deviceListRegistryListener = new DeviceListRegistryListener();
+    }
+
+    public void scan(IDlnaScan dlnaScan) {
+        this.dlnaScan = dlnaScan;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -47,11 +53,6 @@ public class DlnaScan {
                         serviceConnection, Context.BIND_AUTO_CREATE);
             }
         }).start();
-        deviceListRegistryListener = new DeviceListRegistryListener();
-    }
-
-    public void scan() {
-
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -61,7 +62,9 @@ public class DlnaScan {
             mDmrList.clear();
 
             upnpService = (AndroidUpnpService) service;
-
+            if (dlnaScan != null && upnpService != null) {
+                dlnaScan.onStart(upnpService);
+            }
             Log.v(TAG, "Connected to UPnP Service");
 
             if (mediaServer == null) {
@@ -123,6 +126,7 @@ public class DlnaScan {
 
         @Override
         public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
+            Log.v(TAG, "remoteDeviceAdded: " + device.toString());
             if (device.getType().getNamespace().equals("schemas-upnp-org")
                     && device.getType().getType().equals("MediaServer")) {
                 final DeviceItem display = new DeviceItem(device, device
@@ -144,6 +148,7 @@ public class DlnaScan {
 
         @Override
         public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
+            Log.v(TAG, "remoteDeviceRemoved: " + device.toString());
             final DeviceItem display = new DeviceItem(device,
                     device.getDisplayString());
             deviceRemoved(display);
@@ -160,6 +165,7 @@ public class DlnaScan {
 
         @Override
         public void localDeviceAdded(Registry registry, LocalDevice device) {
+            Log.v(TAG, "localDeviceAdded: " + device.toString());
             final DeviceItem display = new DeviceItem(device, device
                     .getDetails().getFriendlyName(), device.getDisplayString(),
                     "(REMOTE) " + device.getType().getDisplayString());
@@ -168,33 +174,48 @@ public class DlnaScan {
 
         @Override
         public void localDeviceRemoved(Registry registry, LocalDevice device) {
+            Log.v(TAG, "localDeviceRemoved: " + device.toString());
             final DeviceItem display = new DeviceItem(device,
                     device.getDisplayString());
             deviceRemoved(display);
         }
 
         void deviceAdded(final DeviceItem di) {
-            Log.v(TAG, "deviceAdded: " + di.getDevice().toString());
+//            Log.v(TAG, "deviceAdded: " + di.getDevice().toString());
             if (!mDevList.contains(di)) {
                 mDevList.add(di);
+            }
+            if (dlnaScan != null) {
+                dlnaScan.findDevice(di);
             }
         }
 
         void deviceRemoved(final DeviceItem di) {
-            Log.v(TAG, "deviceRemoved: " + di.getDevice().toString());
+//            Log.v(TAG, "deviceRemoved: " + di.getDevice().toString());
             mDevList.remove(di);
+
+            if (dlnaScan != null) {
+                dlnaScan.removeDevice(di);
+            }
         }
 
         void dmrAdded(final DeviceItem di) {
-            Log.v(TAG, "dmrAdded: " + di.getDevice().toString());
+//            Log.v(TAG, "dmrAdded: " + di.getDevice().toString());
             if (!mDmrList.contains(di)) {
                 mDmrList.add(di);
+            }
+            if (dlnaScan != null) {
+                dlnaScan.findMediaRenderer(di);
             }
         }
 
         void dmrRemoved(final DeviceItem di) {
-            Log.v(TAG, "dmrRemoved: " + di.getDevice().toString());
-            mDmrList.remove(di);
+//            Log.v(TAG, "dmrRemoved: " + di.getDevice().toString());
+            if (mDmrList != null) mDmrList.remove(di);
+
+            if (dlnaScan != null) {
+                dlnaScan.removeMediaRenderer(di);
+            }
         }
     }
 }

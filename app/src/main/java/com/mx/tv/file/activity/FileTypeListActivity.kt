@@ -1,12 +1,14 @@
-package com.mx.tv.file
+package com.mx.tv.file.activity
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
+import com.mx.tv.file.R
 import com.mx.tv.file.adapts.FileListAdapt
+import com.mx.tv.file.base.BaseActivity
+import com.mx.tv.file.base.MyApp
 import com.mx.tv.file.models.FileBean
 import com.mx.tv.file.models.FileTypeBean
 import com.mx.tv.file.task.AsyncPostExecute
@@ -16,7 +18,7 @@ import com.mx.tv.file.utils.ViewUtils
 import java.io.File
 import java.util.*
 
-class FileTypeListActivity : Activity() {
+class FileTypeListActivity : BaseActivity() {
     @ViewUtils.ViewInject(R.id.listView)
     private val listView: ListView? = null
 

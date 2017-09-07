@@ -40,7 +40,7 @@ public class SmbFileOutputStream extends OutputStream {
     private SmbComWriteResponse rsp;
 
     /**
-     * Creates an {@link java.io.OutputStream} for writing to a file
+     * Creates an {@link OutputStream} for writing to a file
      * on an SMB server addressed by the URL parameter. See {@link
      * jcifs.smb.SmbFile} for a detailed description and examples of
      * the smb URL syntax.
@@ -53,7 +53,7 @@ public class SmbFileOutputStream extends OutputStream {
     }
 
     /**
-     * Creates an {@link java.io.OutputStream} for writing bytes to a file on
+     * Creates an {@link OutputStream} for writing bytes to a file on
      * an SMB server represented by the {@link jcifs.smb.SmbFile} parameter. See
      * {@link jcifs.smb.SmbFile} for a detailed description and examples of
      * the smb URL syntax.
@@ -66,7 +66,7 @@ public class SmbFileOutputStream extends OutputStream {
     }
 
     /**
-     * Creates an {@link java.io.OutputStream} for writing bytes to a file on an
+     * Creates an {@link OutputStream} for writing bytes to a file on an
      * SMB server addressed by the URL parameter. See {@link jcifs.smb.SmbFile}
      * for a detailed description and examples of the smb URL syntax. If the
      * second argument is <code>true</code>, then bytes will be written to the
@@ -81,7 +81,7 @@ public class SmbFileOutputStream extends OutputStream {
     }
 
     /**
-     * Creates an {@link java.io.OutputStream} for writing bytes to a file
+     * Creates an {@link OutputStream} for writing bytes to a file
      * on an SMB server addressed by the <code>SmbFile</code> parameter. See
      * {@link jcifs.smb.SmbFile} for a detailed description and examples of
      * the smb URL syntax. If the second argument is <code>true</code>, then
@@ -97,7 +97,7 @@ public class SmbFileOutputStream extends OutputStream {
     }
 
     /**
-     * Creates an {@link java.io.OutputStream} for writing bytes to a file
+     * Creates an {@link OutputStream} for writing bytes to a file
      * on an SMB server addressed by the <code>SmbFile</code> parameter. See
      * {@link jcifs.smb.SmbFile} for a detailed description and examples of
      * the smb URL syntax.
