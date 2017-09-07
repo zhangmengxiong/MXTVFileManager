@@ -80,7 +80,7 @@ class SambaListAdapt(private var arrayList: ArrayList<SmbFile>) : BaseAdapter() 
 
 private fun SmbFile.childSize(): Int {
     return try {
-        list().size
+        0
     } catch (e: Exception) {
         0
     }

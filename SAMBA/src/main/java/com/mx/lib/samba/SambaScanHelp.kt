@@ -53,6 +53,7 @@ object SambaScanHelp {
 
     fun getFileList(server: SambaServer, path: String): List<SmbFile> {
         val smbFile = SmbFile(SambaUtil.fmtPath(server, path, true))
+        smbFile.connect()
         if (smbFile.isDirectory) {
             return smbFile.listFiles().filter { !it.isHidden }
         }
