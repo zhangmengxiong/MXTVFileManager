@@ -1,4 +1,4 @@
-package com.mx.tv.file.samba
+package com.mx.lib.samba
 
 import java.io.Serializable
 
@@ -8,12 +8,12 @@ import java.io.Serializable
  * 联系方式: zmx_final@163.com
  */
 data class SambaServer(
-        val IP: String,
-        val needLogin: Boolean,
-        val serverName: String,
-        val workSpace: String,
-        val loginName: String = "",
-        val passWord: String = "") : Serializable {
+        var IP: String,
+        var needLogin: Boolean,
+        var serverName: String,
+        var workSpace: String,
+        var loginName: String = "",
+        var passWord: String = "") : Serializable {
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is SambaServer) return false

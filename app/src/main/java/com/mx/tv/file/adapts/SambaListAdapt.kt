@@ -55,7 +55,7 @@ class SambaListAdapt(private var arrayList: ArrayList<SmbFile>) : BaseAdapter() 
 
         if (bean.isDirectory) {
             holder.name!!.text = bean.name.dropLast(1)
-            holder.subName!!.text = String.format(viewGroup.resources.getString(R.string.sum_size_str), bean.list().size)
+            holder.subName!!.text = String.format(viewGroup.resources.getString(R.string.sum_size_str), bean.childSize())
             holder.icon!!.setImageResource(R.drawable.ico_folder)
         } else {
             holder.subName!!.text = StringFormate.fileSize2Show(bean.length())
@@ -75,5 +75,13 @@ class SambaListAdapt(private var arrayList: ArrayList<SmbFile>) : BaseAdapter() 
         var name: TextView? = null
         var subName: TextView? = null
         var time: TextView? = null
+    }
+}
+
+private fun SmbFile.childSize(): Int {
+    return try {
+        list().size
+    } catch (e: Exception) {
+        0
     }
 }

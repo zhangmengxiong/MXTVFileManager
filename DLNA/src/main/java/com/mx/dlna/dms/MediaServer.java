@@ -63,7 +63,7 @@ public class MediaServer {
         Log.v(LOGTAG, "manufacturer: " + details.getManufacturerDetails().getManufacturer());
         Log.v(LOGTAG, "model: " + details.getModelDetails().getModelName());
 
-        // start http server
+        // start com.mx.lib.samba.http server
         try {
             new HttpServer(PORT);
         } catch (IOException ioe) {

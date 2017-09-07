@@ -1,1 +1,1 @@
-include ':app', ':DLNA', ':SAMBA'
+include ':app', ':DLNA', ':SAMBA', ':lib'

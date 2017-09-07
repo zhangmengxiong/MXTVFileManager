@@ -1,4 +1,4 @@
-package http;
+package com.mx.lib.samba.http;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +27,7 @@ public class MyNanoHTTPD extends NanoHTTPD {
         init();
     }
 
-    ExecutorService executorService;// 连接线程池
+    private ExecutorService executorService;// 连接线程池
 
     /**
      * Used to initialize and customize the server.

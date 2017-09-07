@@ -1,4 +1,4 @@
-package http;
+package com.mx.lib.samba.http;
 
 /*
  * #%L

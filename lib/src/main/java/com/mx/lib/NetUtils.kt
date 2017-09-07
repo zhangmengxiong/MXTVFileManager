@@ -1,20 +1,11 @@
-package com.mx.tv.file.utils
+package com.mx.lib
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.util.Log
-
-
-import com.mx.tv.file.base.MyApp
-
-import java.net.InetAddress
-import java.net.InetSocketAddress
-import java.net.NetworkInterface
-import java.net.Socket
-import java.net.SocketException
-import java.net.UnknownHostException
-import java.util.Enumeration
+import java.net.*
+import java.util.*
 
 /**
  * 创建人： zhangmengxiong
@@ -26,38 +17,36 @@ object NetUtils {
     private val TAG = NetUtils::class.java.name
 
 
-    val ip: String
-        get() {
-            val address = getLocalInetAddress(MyApp.appContext)
-            if (address != null) {
-                return address.hostAddress
-            }
-            try {
-                val enNI: Enumeration<NetworkInterface>
-                enNI = NetworkInterface.getNetworkInterfaces()
-                while (enNI
-                        .hasMoreElements()) {
-                    val enumIpAddr = enNI.nextElement()
-                            .inetAddresses
-                    while (enumIpAddr.hasMoreElements()) {
-                        val localInetAddress = enumIpAddr.nextElement()
-                        if (!localInetAddress.isLoopbackAddress && !localInetAddress.isLinkLocalAddress)
-                            return localInetAddress.hostAddress.toString()
-                    }
-                }
-            } catch (localSocketException: SocketException) {
-                Log.e("PhoneActivity:", "can not get LocalIpAddress!")
-            }
-
-            return ""
+    fun getIp(context: Context): String {
+        val address = getLocalInetAddress(context.applicationContext)
+        if (address != null) {
+            return address.hostAddress
         }
+        try {
+            val enNI: Enumeration<NetworkInterface> = NetworkInterface.getNetworkInterfaces()
+            while (enNI
+                    .hasMoreElements()) {
+                val enumIpAddr = enNI.nextElement()
+                        .inetAddresses
+                while (enumIpAddr.hasMoreElements()) {
+                    val localInetAddress = enumIpAddr.nextElement()
+                    if (!localInetAddress.isLoopbackAddress && !localInetAddress.isLinkLocalAddress)
+                        return localInetAddress.hostAddress.toString()
+                }
+            }
+        } catch (localSocketException: SocketException) {
+            Log.e("PhoneActivity:", "can not get LocalIpAddress!")
+        }
+
+        return ""
+    }
 
     /**
      * Gets the local ip address
      *
      * @return local ip adress or null if not found
      */
-    fun getLocalInetAddress(context: Context?): InetAddress? {
+    private fun getLocalInetAddress(context: Context?): InetAddress? {
         if (!isNetConnected(context)) {
             Log.e(TAG, "getLocalInetAddress called and no connection")
             return null
@@ -72,8 +61,7 @@ object NetUtils {
         // some case
         // I'm receiving the routable address
         try {
-            val netinterfaces = NetworkInterface
-                    .getNetworkInterfaces()
+            val netinterfaces = NetworkInterface.getNetworkInterfaces()
             while (netinterfaces.hasMoreElements()) {
                 val netinterface = netinterfaces.nextElement()
                 val adresses = netinterface
@@ -98,7 +86,7 @@ object NetUtils {
      * @param context
      * @return true if connected using wifi
      */
-    fun isWIFIConnected(context: Context?): Boolean {
+    private fun isWIFIConnected(context: Context?): Boolean {
         if (context != null) {
             val mConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val mWiFiNetworkInfo = mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
@@ -109,7 +97,7 @@ object NetUtils {
         return false
     }
 
-    fun intToInet(value: Int): InetAddress? {
+    private fun intToInet(value: Int): InetAddress? {
         val bytes = ByteArray(4)
         for (i in 0..3) {
             bytes[i] = byteOfInt(value, i)
@@ -123,7 +111,7 @@ object NetUtils {
 
     }
 
-    fun byteOfInt(value: Int, which: Int): Byte {
+    private fun byteOfInt(value: Int, which: Int): Byte {
         val shift = which * 8
         return (value shr shift).toByte()
     }
@@ -135,7 +123,7 @@ object NetUtils {
      * @param context
      * @return true if connected to a local network
      */
-    fun isNetConnected(context: Context?): Boolean {
+    private fun isNetConnected(context: Context?): Boolean {
         var connected = false
         val cm = context!!
                 .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -169,34 +157,7 @@ object NetUtils {
                 socket.close()
             } catch (ignored: Exception) {
             }
-
         }
         return true
-    }
-
-    fun getHost(ip: String): String {
-        val ipStr = ip.split("[.]".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()         //IP地址转换为字符串数组
-        val ipBytes = ByteArray(4)             //声明存储转换后IP地址的字节数组
-        for (i in 0..3) {
-            val m = Integer.parseInt(ipStr[i])   //转换为整数
-            val b = (m and 0xff).toByte()              //转换为字节
-            ipBytes[i] = b
-        }
-        var inetAddr: InetAddress? = null //创建InetAddress对象
-        try {
-            inetAddr = InetAddress.getByAddress(ipBytes)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        val canonical = inetAddr!!.canonicalHostName       //获取域名
-        val host = inetAddr.hostName                     //获取主机名
-        return canonical
-    }
-
-    fun getMac(con: Context): String {
-        val wifi = con.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        val info = wifi.connectionInfo
-        return if (info != null) info.macAddress else ""
     }
 }

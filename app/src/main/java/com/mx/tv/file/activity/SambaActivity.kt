@@ -9,7 +9,7 @@ import com.mx.tv.file.R
 import com.mx.tv.file.adapts.SambaListAdapt
 import com.mx.tv.file.base.BaseActivity
 import com.mx.tv.file.base.MyApp
-import com.mx.tv.file.samba.SambaServer
+import com.mx.lib.samba.SambaServer
 import com.mx.tv.file.task.AsyncPostExecute
 import com.mx.tv.file.task.SambaScanTask
 import com.mx.tv.file.utils.FileOpenUtil
@@ -79,18 +79,24 @@ class SambaActivity : BaseActivity() {
         textView!!.text = String.format(listIndexStr!!, arrayList.size)
     }
 
-    private val fileScanPost = object : AsyncPostExecute<ArrayList<SmbFile>>() {
-        override fun onPostExecute(isOk: Boolean, result: ArrayList<SmbFile>?) {
+    private val fileScanPost = object : AsyncPostExecute<List<SmbFile>>() {
+        override fun onPostExecute(isOk: Boolean, result: List<SmbFile>?) {
             if (isOk) {
                 arrayList.clear()
                 arrayList.addAll(result!!)
                 sambaListAdapt!!.notifyDataSetChanged()
 
-                emptyView!!.visibility = if (result.size <= 0) View.VISIBLE else View.GONE
+                emptyView!!.visibility = if (result.isEmpty()) View.VISIBLE else View.GONE
                 textView!!.text = String.format(resources.getString(R.string.list_index_size_str), "" + arrayList.size)
             }
 
             loadingLay!!.visibility = View.GONE
+        }
+
+        override fun onProgressUpdate(value: Any?) {
+            if (value == "auth_error") {
+                showToast("需要验证账号密码")
+            }
         }
 
         override fun onPreExecute() {
@@ -99,7 +105,7 @@ class SambaActivity : BaseActivity() {
         }
     }
 
-    private val fileItemClick = AdapterView.OnItemClickListener { adapterView, view, i, l ->
+    private val fileItemClick = AdapterView.OnItemClickListener { _, _, i, _ ->
         val bean = sambaListAdapt!!.getItem(i) as SmbFile?
         if (bean != null) {
             if (bean.isDirectory) {

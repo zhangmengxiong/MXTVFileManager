@@ -1,6 +1,7 @@
-package com.mx.tv.file.samba
+package com.mx.lib.samba
 
-import com.mx.tv.file.utils.NetUtils
+import android.content.Context
+import com.mx.lib.NetUtils
 import jcifs.smb.SmbFile
 import java.util.concurrent.Executors
 
@@ -13,14 +14,14 @@ import java.util.concurrent.Executors
 object SambaScanHelp {
     private val SCAN_MAX = 255
 
-    fun scan(scanCall: IScanCall?) {
-        val ip = NetUtils.ip
-        if (ip.isNullOrEmpty()) {
+    fun scan(context: Context, scanCall: IScanCall?) {
+        val ip = NetUtils.getIp(context)
+        if (ip.isEmpty()) {
             scanCall?.onScanEnd()
             return
         }
 
-        val executor = Executors.newFixedThreadPool(50)
+        val executor = Executors.newFixedThreadPool(20)
 
         scanCall?.onStart()
         var finishSize = 0
@@ -38,19 +39,11 @@ object SambaScanHelp {
         }
     }
 
-    fun getFileList(server: SambaServer, path: String): ArrayList<SmbFile> {
-        val list = ArrayList<SmbFile>()
-        try {
-            val smbFile = SmbFile(SambaUtil.fmtPath(server.IP, path, true))
-            if (smbFile.isDirectory) {
-                smbFile.listFiles().filter { !it.isHidden }.forEach {
-                    list.add(it)
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            list.clear()
+    fun getFileList(server: SambaServer, path: String): List<SmbFile> {
+        val smbFile = SmbFile(SambaUtil.fmtPath(server, path, true))
+        if (smbFile.isDirectory) {
+            return smbFile.listFiles().filter { !it.isHidden }
         }
-        return list
+        return emptyList()
     }
 }

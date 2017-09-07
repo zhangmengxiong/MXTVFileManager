@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/DLNA" />
             <option value="$PROJECT_DIR$/SAMBA" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/lib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

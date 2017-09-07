@@ -1,6 +1,6 @@
-package com.mx.tv.file.samba
+package com.mx.lib.samba
 
-import com.mx.tv.file.utils.NetUtils
+import com.mx.lib.NetUtils
 import jcifs.NetBios
 import jcifs.smb.SmbAuthException
 import jcifs.smb.SmbFile
@@ -38,7 +38,7 @@ class ServerScanRun(private val ip: String, private val index: Int, private val 
                 } catch (e: SmbAuthException) {
                     netBios.scan(ip)
 
-                    findCall(SambaServer(ip, false, netBios.name, netBios.workspace))
+                    findCall(SambaServer(ip, true, netBios.name, netBios.workspace))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

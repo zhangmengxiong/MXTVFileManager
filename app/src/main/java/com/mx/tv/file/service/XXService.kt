@@ -6,12 +6,12 @@ import android.os.IBinder
 import com.mx.dlna.DeviceItem
 import com.mx.dlna.DlnaScan
 import com.mx.dlna.IDlnaScan
-import com.mx.tv.file.samba.IScanCall
-import com.mx.tv.file.samba.SambaScanHelp
-import com.mx.tv.file.samba.SambaServer
 import jcifs.FileService
 import org.fourthline.cling.android.AndroidUpnpService
 import org.greenrobot.eventbus.EventBus
+import com.mx.lib.samba.IScanCall
+import com.mx.lib.samba.SambaScanHelp
+import com.mx.lib.samba.SambaServer
 
 class XXService : Service() {
     val devList = ArrayList<DeviceItem>()
@@ -24,7 +24,7 @@ class XXService : Service() {
         super.onCreate()
         startService(Intent(this, FileService::class.java))
 
-        SambaScanHelp.scan(object : IScanCall {
+        SambaScanHelp.scan(this, object : IScanCall {
             override fun onStart() {
                 println("onStart()")
             }

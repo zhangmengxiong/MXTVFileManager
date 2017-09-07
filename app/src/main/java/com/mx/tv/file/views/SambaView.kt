@@ -8,8 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.mx.tv.file.R
-import com.mx.tv.file.samba.SambaServer
-import com.mx.tv.file.utils.StringFormate
+import com.mx.lib.samba.SambaServer
 
 /**
  * 创建人： zhangmengxiong

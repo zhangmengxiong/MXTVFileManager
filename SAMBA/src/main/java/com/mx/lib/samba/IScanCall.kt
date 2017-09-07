@@ -1,4 +1,4 @@
-package com.mx.tv.file.samba
+package com.mx.lib.samba
 
 /**
  * 创建人： zhangmengxiong

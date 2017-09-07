@@ -14,7 +14,7 @@ import com.mx.tv.file.R
 import com.mx.tv.file.base.BaseActivity
 import com.mx.tv.file.base.MyApp
 import com.mx.tv.file.models.SDCardBean
-import com.mx.tv.file.samba.SambaServer
+import com.mx.lib.samba.SambaServer
 import com.mx.tv.file.task.AsyncPostExecute
 import com.mx.tv.file.task.SDScanTask
 import com.mx.tv.file.views.SDCardView
