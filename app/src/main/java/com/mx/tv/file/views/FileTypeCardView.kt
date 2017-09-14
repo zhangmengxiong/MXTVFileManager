@@ -43,7 +43,6 @@ class FileTypeCardView : RelativeLayout {
     private fun init(context: Context) {
         LayoutInflater.from(context).inflate(R.layout.filetype_item_lay, this, true)
         isFocusable = true
-        setBackgroundResource(R.drawable.sd_item_bg)
 
         name = findViewById<View>(R.id.name) as TextView
         size = findViewById<View>(R.id.size) as TextView

@@ -8,29 +8,38 @@ import java.io.Serializable
  * 创建时间： 2016-7-12.
  * 联系方式: zmx_final@163.com
  */
-class SDCardBean(var FILE: File?) : Serializable {
-    var NAME: String? = null
+class SDCardBean : Serializable {
 
-    init {
-        if (FILE != null && FILE!!.exists()) {
-            NAME = FILE!!.name
+    constructor(file: File) {
+        PATH = file.absolutePath
+        if (file.exists()) {
+            NAME = file.name
         }
     }
 
-    val totalSpace: Long
-        get() = if (FILE != null) FILE!!.totalSpace else 0L
+    constructor(path: String) : this(File(path))
 
-    val freeSpace: Long
-        get() = if (FILE != null) FILE!!.freeSpace else 0L
+    var PATH: String? = null
+    var NAME: String? = null
 
-    override fun equals(o: Any?): Boolean {
-        if (o == null) return false
-        val bean = o as SDCardBean?
+    fun getFile(): File = File(PATH)
 
-        return bean!!.totalSpace == totalSpace && bean.freeSpace == freeSpace
+    fun getTotalSpace(): Long {
+        val file = File(PATH)
+        return if (file.exists()) file.totalSpace else 0L
     }
 
-    override fun toString(): String {
-        return NAME + ":[" + FILE!!.absolutePath + "," + freeSpace + "/" + totalSpace + "]"
+    fun getFreeSpace(): Long {
+        val file = File(PATH)
+        return if (file.exists()) file.freeSpace else 0L
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null || other !is SDCardBean) return false
+
+        return other.getTotalSpace() == getTotalSpace() && other.getFreeSpace() == getFreeSpace()
+    }
+
+    override fun toString(): String =
+            NAME + ":[" + PATH + " , " + getFreeSpace() + "/" + getTotalSpace() + "]"
 }

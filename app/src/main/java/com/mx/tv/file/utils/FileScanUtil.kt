@@ -15,24 +15,62 @@ import java.util.*
 object FileScanUtil {
     private val TAG = FileScanUtil::class.java.simpleName
 
+
     /**
-     * 过滤视频的参数组，大小写不敏感
+     * 过滤视频的参数组
      */
-    private val VIDEO_TAIL = arrayOf("*.[Mm][Pp]4", "*.[Ww][Mm][Vv]", "*.[Mm][Oo][Vv]", "*.[Aa][Vv][Ii]", "*.[Mm][Pp][Ee][Gg]", "*.[Mm][Pp][Gg]")//avi、mpg、mov、swf mp4 mpeg wmv
+    private val VIDEO = arrayOf(
+            ".mp4",
+            ".wmv",
+            ".mov",
+            ".avi",
+            ".mpge",
+            ".mpg")
     /**
-     * 图片的过滤参数组，大小写不敏感
+     * 图片的过滤参数组
      */
-    private val PIC_TAIL = arrayOf("*.[Bb][Mm][Pp]", "*.[Gg][Ii][Ff]", "*.[Pp][Nn][Gg]", "*.[Pp][Ii][Cc]", "*.[Tt][Ii][Ff]", "*.[Jj][Pp][Gg]")//bmp、gif、jpg、pic、png、tif
+    private val PIC = arrayOf(
+            ".bmp",
+            ".gif",
+            ".jpg",
+            ".pic",
+            ".png",
+            ".tif")
     /**
      * 过滤应用的参数组，大小写不敏感
      */
-    private val APK_TAIL = arrayOf("*.[Aa][Pp][Kk]")
-
+    private val APK = arrayOf(".apk")
     /**
      * 过滤声音文件的参数组，过滤大小写
      */
-    private val SOUND_TAIL = arrayOf("*.[Mm][Pp]3", "*.[Ww][Mm][Aa]", "*.[Aa][Aa][Cc]", "*.[Ww][Aa][Vv]")//wav 、aif 、au 、mp3 、ram 、wma、mmf、amr、aac、flac
+    private val SOUND = arrayOf(
+            ".mp3",
+            ".wma",
+            ".amr",
+            ".aac",
+            ".flac"
+    )
 
+    private val VIDEO_TAIL = VIDEO.map { getCMDTail(it) }.toTypedArray()
+    private val PIC_TAIL = PIC.map { getCMDTail(it) }.toTypedArray()
+    private val APK_TAIL = APK.map { getCMDTail(it) }.toTypedArray()
+    private val SOUND_TAIL = SOUND.map { getCMDTail(it) }.toTypedArray()
+
+
+    private val ZM = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    private fun getCMDTail(str: String): String {
+        val builder = StringBuffer()
+        builder.append('*')
+        str.forEach {
+            if (ZM.contains(it)) {
+                builder.append("[${it.toLowerCase()}${it.toUpperCase()}]")
+            } else {
+                builder.append(it)
+            }
+        }
+        return builder.toString()
+    }
 
     /**
      * 文件夹排序器

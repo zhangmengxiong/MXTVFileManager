@@ -10,10 +10,10 @@ import java.io.InputStreamReader
  * 联系方式: zmx_final@163.com
  */
 object CMDUtils {
-    val COMMAND_SH = "sh"
-    val COMMAND_SU = "su hanyastar123"
-    val COMMAND_LINE_END = "\n"
-    val COMMAND_EXIT = "exit\n"
+    private val COMMAND_SH = "sh"
+    private val COMMAND_SU = "su hanyastar123"
+    private val COMMAND_LINE_END = "\n"
+    private val COMMAND_EXIT = "exit\n"
 
     /**
      * 执行一条cmd命令，得到返回结果

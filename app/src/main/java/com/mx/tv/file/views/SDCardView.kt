@@ -29,7 +29,7 @@ class SDCardView : LinearLayout {
             }
             if (size != null) {
                 val s = resources.getString(R.string.sd_size_formate)
-                size!!.text = String.format(s, StringFormate.fileSize2Show(sdCardBean!!.freeSpace), StringFormate.fileSize2Show(sdCardBean!!.totalSpace))
+                size!!.text = String.format(s, StringFormate.fileSize2Show(sdCardBean!!.getFreeSpace()), StringFormate.fileSize2Show(sdCardBean!!.getTotalSpace()))
             }
         }
 
@@ -49,7 +49,6 @@ class SDCardView : LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.sd_item_lay, this, true)
         orientation = LinearLayout.VERTICAL
         isFocusable = true
-        setBackgroundResource(R.drawable.sd_item_bg)
 
         icoImg = findViewById<View>(R.id.icoImg) as ImageView
         name = findViewById<View>(R.id.name) as TextView
@@ -58,7 +57,7 @@ class SDCardView : LinearLayout {
         if (sdCardBean != null) {
             name!!.text = sdCardBean!!.NAME
             val s = resources.getString(R.string.sd_size_formate)
-            size!!.text = String.format(s, StringFormate.fileSize2Show(sdCardBean!!.freeSpace), StringFormate.fileSize2Show(sdCardBean!!.totalSpace))
+            size!!.text = String.format(s, StringFormate.fileSize2Show(sdCardBean!!.getFreeSpace()), StringFormate.fileSize2Show(sdCardBean!!.getTotalSpace()))
         }
     }
 

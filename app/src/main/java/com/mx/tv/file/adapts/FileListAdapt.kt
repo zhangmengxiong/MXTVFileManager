@@ -7,9 +7,9 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.mx.tv.file.R
-import com.mx.tv.file.models.FileBean
 import com.mx.tv.file.models.FileTypeBean
 import com.mx.tv.file.utils.StringFormate
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,14 +18,14 @@ import java.util.*
  * 创建时间： 2016-7-14.
  * 联系方式: zmx_final@163.com
  */
-class FileListAdapt(private var arrayList: ArrayList<FileBean>) : BaseAdapter() {
+class FileListAdapt(private var arrayList: ArrayList<File>) : BaseAdapter() {
     private val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:ss")
 
     override fun getCount(): Int {
         return arrayList.size
     }
 
-    override fun getItem(i: Int): FileBean {
+    override fun getItem(i: Int): File {
         return arrayList[i]
     }
 
@@ -49,16 +49,16 @@ class FileListAdapt(private var arrayList: ArrayList<FileBean>) : BaseAdapter() 
             holder = view.tag as ViewHolder
         }
 
-        holder.name!!.text = bean.NAME
-        holder.time!!.text = simpleDateFormat.format(Date(bean.FILE!!.lastModified()))
+        holder.name!!.text = bean.name
+        holder.time!!.text = simpleDateFormat.format(Date(bean.lastModified()))
         holder.icon!!.setImageResource(R.drawable.ico_folder)
 
         if (bean.isDirectory) {
-            holder.subName!!.text = String.format(viewGroup.resources.getString(R.string.sum_size_str), "" + bean.CHILD_SIZE)
+            holder.subName!!.text = String.format(viewGroup.resources.getString(R.string.sum_size_str), "" + bean.listFiles().size)
             holder.icon!!.setImageResource(R.drawable.ico_folder)
         } else {
-            holder.subName!!.text = StringFormate.fileSize2Show(bean.FILE!!.length())
-            when (bean.TYPE) {
+            holder.subName!!.text = StringFormate.fileSize2Show(bean.length())
+            when (FileTypeBean.fromName(bean.name)) {
                 FileTypeBean.APK -> holder.icon!!.setImageResource(R.drawable.i_apk)
                 FileTypeBean.VIDEO -> holder.icon!!.setImageResource(R.drawable.i_video)
                 FileTypeBean.PIC -> holder.icon!!.setImageResource(R.drawable.i_pic)

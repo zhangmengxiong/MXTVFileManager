@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">文件管理器</string>
+    <string name="app_name">XX文件管理器</string>
     <string name="sd_size_formate" formatted="false">%s可用/共%s</string>
     <string name="sub_title_str" formatted="false">共有%s个设备</string>
     <string name="pic_size_str" formatted="false">%s个图片</string>

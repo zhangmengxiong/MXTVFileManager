@@ -9,7 +9,6 @@ import com.mx.tv.file.R
 import com.mx.tv.file.adapts.FileListAdapt
 import com.mx.tv.file.base.BaseActivity
 import com.mx.tv.file.base.MyApp
-import com.mx.tv.file.models.FileBean
 import com.mx.tv.file.models.FileTypeBean
 import com.mx.tv.file.task.AsyncPostExecute
 import com.mx.tv.file.task.FileTypeScanTask
@@ -37,7 +36,7 @@ class FileTypeListActivity : BaseActivity() {
     @ViewUtils.ViewInject(R.id.loadingLay)
     private val loadingLay: View? = null
 
-    private val arrayList = ArrayList<FileBean>()
+    private val arrayList = ArrayList<File>()
     private var fileListAdapt: FileListAdapt? = null
     private var fileTypeScanTask: FileTypeScanTask? = null
     private var rootDir: File? = null
@@ -85,14 +84,14 @@ class FileTypeListActivity : BaseActivity() {
         }
     }
 
-    private val fileScanPost = object : AsyncPostExecute<ArrayList<FileBean>>() {
-        override fun onPostExecute(isOk: Boolean, result: ArrayList<FileBean>?) {
+    private val fileScanPost = object : AsyncPostExecute<List<File>>() {
+        override fun onPostExecute(isOk: Boolean, result: List<File>?) {
             if (isOk) {
                 arrayList.clear()
                 arrayList.addAll(result!!)
                 fileListAdapt!!.notifyDataSetChanged()
 
-                emptyView!!.visibility = if (result.size <= 0) View.VISIBLE else View.GONE
+                emptyView!!.visibility = if (result.isEmpty()) View.VISIBLE else View.GONE
                 textView!!.text = String.format(resources.getString(R.string.sum_size_str), "" + arrayList.size)
             }
 
@@ -106,9 +105,9 @@ class FileTypeListActivity : BaseActivity() {
     }
 
     private val fileItemClick = AdapterView.OnItemClickListener { adapterView, view, i, l ->
-        val bean = fileListAdapt!!.getItem(i)
+        val bean = fileListAdapt!!.getItem(i) as File?
         if (bean != null) {
-            FileOpenUtil.openFile(this@FileTypeListActivity, bean.FILE!!)
+            FileOpenUtil.openFile(this@FileTypeListActivity, bean)
         }
     }
 

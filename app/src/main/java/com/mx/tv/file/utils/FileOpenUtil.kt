@@ -20,7 +20,7 @@ object FileOpenUtil {
      *
      * @param file
      */
-    fun openFile(context: Context, file: File): Boolean = openFile(context, file.absoluteFile)
+    fun openFile(context: Context, file: File): Boolean = openFile(context, file.absolutePath)
 
     /**
      * 打开文件

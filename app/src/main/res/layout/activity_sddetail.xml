@@ -10,7 +10,7 @@
         android:paddingTop="15dp">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/titleTxv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -38,137 +38,6 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/sd_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/topLay"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="20" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="130"
-            android:orientation="vertical">
-
-            <Space
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:layout_weight="80" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="396"
-                android:orientation="horizontal">
-
-                <com.mx.tv.file.views.SDCardView
-                    android:id="@+id/groupView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.9" />
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <com.mx.tv.file.views.FileTypeCardView
-                        android:id="@+id/pkgView"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <com.mx.tv.file.views.FileTypeCardView
-                        android:id="@+id/picView"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <com.mx.tv.file.views.FileTypeCardView
-                        android:id="@+id/videoView"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <com.mx.tv.file.views.FileTypeCardView
-                        android:id="@+id/musicView"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="162"
-                android:paddingTop="20dp">
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:max="10000"
-                    android:progress="100"
-                    android:progressDrawable="@drawable/sd_size_bg" />
-
-                <TextView
-                    android:id="@+id/spaceTxv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/progressBar"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="已使用1.123G"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/totalTxv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/progressBar"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="共有1.123G"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="20" />
-    </LinearLayout>
-
     <ProgressBar
         android:id="@+id/progressBar2"
         android:layout_width="wrap_content"
@@ -178,4 +47,114 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp" />
+
+    <LinearLayout
+        android:id="@+id/bottomLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topLay"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="396"
+            android:orientation="horizontal">
+
+            <com.mx.tv.file.views.SDCardView
+                android:id="@+id/groupView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.mx.tv.file.views.FileTypeCardView
+                    android:id="@+id/pkgView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <com.mx.tv.file.views.FileTypeCardView
+                    android:id="@+id/picView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.mx.tv.file.views.FileTypeCardView
+                    android:id="@+id/videoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <com.mx.tv.file.views.FileTypeCardView
+                    android:id="@+id/musicView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:max="10000"
+                android:progress="100"
+                android:progressDrawable="@drawable/sd_size_bg" />
+
+            <TextView
+                android:id="@+id/spaceTxv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/progressBar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="已使用1.123G"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/totalTxv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/progressBar"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:text="共有1.123G"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

@@ -2,11 +2,10 @@ package com.mx.tv.file.task
 
 
 import android.os.AsyncTask
-
 import com.mx.tv.file.models.SDCardBean
+import com.mx.tv.file.utils.CacheBiz
 import com.mx.tv.file.utils.FileScanUtil
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * 扫描本地的SD卡
@@ -21,7 +20,9 @@ class SDScanTask(private val postExecute: AsyncPostExecute<ArrayList<SDCardBean>
     }
 
     override fun doInBackground(vararg strings: String): ArrayList<SDCardBean> {
-        return FileScanUtil.sdList
+        val list = FileScanUtil.getSdList()
+        list.forEach { CacheBiz.addSDCardItem(it) }
+        return list
     }
 
     override fun onPostExecute(result: ArrayList<SDCardBean>?) {
